@@ -197,28 +197,33 @@ export default function CostMovementSimulation() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         {/* Header */}
-        <div className="bg-gray-800 border-b border-gray-600 p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="bg-gray-800 border-b border-gray-600 p-4 md:p-6">
+          <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center md:gap-4">
               <Button 
                 onClick={handleBackToList}
                 variant="outline" 
-                className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600 w-fit"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Back to List
+                <span className="hidden sm:inline">Back to List</span>
+                <span className="sm:hidden">Back</span>
               </Button>
               <div>
-                <h1 className="text-3xl font-bold text-white">Cost Movement Detail</h1>
-                <p className="text-gray-300 mt-1">Detailed cost analysis for {currentPart.partNo}</p>
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">Cost Movement Detail</h1>
+                <p className="text-gray-300 mt-1 text-sm md:text-base">Detailed cost analysis for {currentPart.partNo}</p>
               </div>
             </div>
-            <Button variant="outline" className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600">
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600 w-fit md:w-auto"
+            >
               <RefreshCw className="h-4 w-4" />
-              Refresh Data
+              <span className="hidden sm:inline">Refresh Data</span>
+              <span className="sm:hidden">Refresh</span>
             </Button>
           </div>
         </div>
@@ -313,7 +318,8 @@ export default function CostMovementSimulation() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
+            <div className="overflow-x-auto">
+              <Table>
               <TableHeader>
                 <TableRow className="border-gray-600">
                   <TableHead className="w-[300px] text-gray-300">Cost Component</TableHead>
@@ -368,11 +374,12 @@ export default function CostMovementSimulation() {
                 <CostRow component={currentPart.costs.totalCost} isGrandTotal />
               </TableBody>
             </Table>
+            </div>
           </CardContent>
         </Card>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-300">Total Cost Change</CardTitle>
