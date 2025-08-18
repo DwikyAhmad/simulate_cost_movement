@@ -379,7 +379,8 @@ export default function CostMovementSimulation() {
         </Card>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {/* Row 1 - Main Components */}
           <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-300">Total Cost Change</CardTitle>
@@ -393,9 +394,53 @@ export default function CostMovementSimulation() {
               </p>
             </CardContent>
           </Card>
+          
           <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Purchase Cost Impact</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Non-LVA Change</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.nonLVA.total.difference)}`}>
+                {currentPart.costs.nonLVA.total.difference >= 0 ? '+' : '-'}{formatCurrency(Math.abs(currentPart.costs.nonLVA.total.difference))}
+              </div>
+              <p className="text-xs text-gray-400">
+                {currentPart.costs.nonLVA.total.percentageChange >= 0 ? '+' : ''}{currentPart.costs.nonLVA.total.percentageChange.toFixed(2)}% from last year
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-300">LVA Change</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.lva.total.difference)}`}>
+                {currentPart.costs.lva.total.difference >= 0 ? '+' : '-'}{formatCurrency(Math.abs(currentPart.costs.lva.total.difference))}
+              </div>
+              <p className="text-xs text-gray-400">
+                {currentPart.costs.lva.total.percentageChange >= 0 ? '+' : ''}{currentPart.costs.lva.total.percentageChange.toFixed(2)}% from last year
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-300">Tooling Outhouse Change</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.toolingOuthouse.difference)}`}>
+                {currentPart.costs.toolingOuthouse.difference >= 0 ? '+' : '-'}{formatCurrency(Math.abs(currentPart.costs.toolingOuthouse.difference))}
+              </div>
+              <p className="text-xs text-gray-400">
+                {currentPart.costs.toolingOuthouse.percentageChange >= 0 ? '+' : ''}{currentPart.costs.toolingOuthouse.percentageChange.toFixed(2)}% from last year
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Row 2 - Additional Components */}
+          <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-300">Purchase Cost Change</CardTitle>
             </CardHeader>
             <CardContent>
               <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.totalPurchaseCost.difference)}`}>
@@ -406,9 +451,10 @@ export default function CostMovementSimulation() {
               </p>
             </CardContent>
           </Card>
+
           <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Processing Cost Impact</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Processing Cost Change</CardTitle>
             </CardHeader>
             <CardContent>
               <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.processingCost.total.difference)}`}>
@@ -419,9 +465,10 @@ export default function CostMovementSimulation() {
               </p>
             </CardContent>
           </Card>
+
           <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-300">Warning Count</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Above Threshold</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-400">
@@ -445,6 +492,20 @@ export default function CostMovementSimulation() {
               </div>
               <p className="text-xs text-gray-400">
                 Components ≥5% increase
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-300">Percentage Change</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${getDifferenceColor(currentPart.costs.totalCost.difference)}`}>
+                {currentPart.costs.totalCost.percentageChange >= 0 ? '+' : ''}{currentPart.costs.totalCost.percentageChange.toFixed(2)}%
+              </div>
+              <p className="text-xs text-gray-400">
+                Total cost change
               </p>
             </CardContent>
           </Card>
