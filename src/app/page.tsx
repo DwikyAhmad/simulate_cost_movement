@@ -83,6 +83,34 @@ export default function MainMenu() {
                             </Button>
                         </CardContent>
                     </Card>
+
+                    {/* Master Data */}
+                    <Card className="bg-gray-800 border-2 border-gray-600 hover:border-green-500 transition-colors">
+                        <CardHeader className="text-center">
+                            <div className="flex justify-center mb-4">
+                                <div className="p-3 bg-green-600 rounded-lg">
+                                    <Table className="h-8 w-8 text-white" />
+                                </div>
+                            </div>
+                            <CardTitle className="text-white text-xl">
+                                Master Data Management
+                            </CardTitle>
+                            <CardDescription className="text-gray-300">
+                                Manage master data for cost calculations including
+                                TMMIN E/G OP, Insurance rates, and Exchange rates
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="text-center mt-auto">
+                            <Button
+                                onClick={() =>
+                                    (window.location.href = "/masterdata")
+                                }
+                                className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 w-full cursor-pointer"
+                            >
+                                Manage Master Data
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </div>
