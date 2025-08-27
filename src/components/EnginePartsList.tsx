@@ -54,47 +54,27 @@ export default function EnginePartsList({
     const partNumbers = Object.keys(engineParts);
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
-                {/* Header */}
-                <div className="bg-gray-800 border-b border-gray-600 p-4 md:p-6">
-                    <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-bold text-white">
-                                Engine Parts Cost Overview
-                            </h1>
-                            <p className="text-gray-300 mt-1 text-sm md:text-base">
-                                Monitor cost movements across all engine
-                                components
-                            </p>
-                        </div>
-                        <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center md:gap-4">
-                            <Button 
-                                onClick={() => window.location.href = '/partList'}
-                                className="bg-orange-600 hover:bg-orange-700 text-white rounded-none border-2 border-orange-500 w-fit"
-                            >
-                                <span className="hidden sm:inline">Part List</span>
-                                <span className="sm:hidden">Parts</span>
-                            </Button>
-                            {onGoToComparison && (
-                                <Button 
-                                    onClick={onGoToComparison}
-                                    className="bg-purple-600 hover:bg-purple-700 text-white rounded-none border-2 border-purple-500 w-fit"
-                                >
-                                    <BarChart3 className="h-4 w-4 mr-2" />
-                                    <span className="hidden sm:inline">Compare Parts</span>
-                                    <span className="sm:hidden">Compare</span>
-                                </Button>
-                            )}
-                            <div className="text-left md:text-right">
-                                <p className="text-sm text-gray-400">
-                                    Period: August 2025
-                                </p>
-                                <p className="text-sm text-gray-400">
-                                    Comparison: August 2024
-                                </p>
-                            </div>
-                        </div>
+                {/* Period Info and Actions */}
+                <div className="flex justify-between items-center">
+                    {onGoToComparison && (
+                        <Button 
+                            onClick={onGoToComparison}
+                            className="bg-purple-600 hover:bg-purple-700 text-white rounded-none border-2 border-purple-500 w-fit"
+                        >
+                            <BarChart3 className="h-4 w-4 mr-2" />
+                            <span className="hidden sm:inline">Compare Parts</span>
+                            <span className="sm:hidden">Compare</span>
+                        </Button>
+                    )}
+                    <div className="text-right">
+                        <p className="text-sm text-gray-400">
+                            Period: August 2025
+                        </p>
+                        <p className="text-sm text-gray-400">
+                            Comparison: August 2024
+                        </p>
                     </div>
                 </div>
 

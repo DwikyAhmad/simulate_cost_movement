@@ -169,8 +169,17 @@ export default function PartListTable() {
                                 </div>
                             </th>
                         </tr>
-                        {/* Engine Assy Sub-headers */}
+                        {/* Engine Assy Sub-headers - only for engine assy columns */}
                         <tr className="bg-green-400">
+                            {/* Empty cells for the main columns */}
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-600 p-1"></th>
+                            {/* Engine Assy Sub-headers */}
                             {engineAssyCodes.map((code) => (
                                 <th
                                     key={code}
