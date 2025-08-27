@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { FileDown } from "lucide-react";
 
 // Simple part data structure for the table matching the image
 interface PartData {
@@ -239,18 +240,15 @@ export default function PartListTable() {
 
             <div className="p-4 bg-gray-700 border-t border-gray-600">
                 <div className="flex flex-col space-y-4 items-end">
-                    <p className="text-sm text-gray-300">
-                        Click &quot;Request JSP&quot; or &quot;Request MSP&quot;
-                        to send price requests to TMA (Toyota Motor Asia)
-                    </p>
 
                     <div className="flex gap-2">
                         <Button
                             onClick={() => handleRequestJSP("1")}
                             size="sm"
-                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 text-xs"
+                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md border-2 border-blue-500 text-xs w-fit self-end cursor-pointer"
                         >
-                            Request JSP & MSP
+                            <FileDown className="h-4 w-4" />
+                            Export to Excel
                         </Button>
                     </div>
                 </div>
