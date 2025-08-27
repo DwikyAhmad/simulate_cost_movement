@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { BarChart3, Mail, Table } from "lucide-react";
+import { BarChart3, Mail, Table, Upload } from "lucide-react";
 
 export default function MainMenu() {
     return (
@@ -108,6 +108,34 @@ export default function MainMenu() {
                                 className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 w-full cursor-pointer"
                             >
                                 Manage Master Data
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    {/* Upload FD */}
+                    <Card className="bg-gray-800 border-2 border-gray-600 hover:border-orange-500 transition-colors">
+                        <CardHeader className="text-center">
+                            <div className="flex justify-center mb-4">
+                                <div className="p-3 bg-orange-600 rounded-lg">
+                                    <Upload className="h-8 w-8 text-white" />
+                                </div>
+                            </div>
+                            <CardTitle className="text-white text-xl">
+                                Upload FD Data
+                            </CardTitle>
+                            <CardDescription className="text-gray-300">
+                                Download Excel templates and upload LSP & IH cost data
+                                for processing and analysis
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="text-center">
+                            <Button
+                                onClick={() =>
+                                    (window.location.href = "/uploadfd")
+                                }
+                                className="bg-orange-600 hover:bg-orange-700 text-white rounded-none border-2 border-orange-500 w-full cursor-pointer"
+                            >
+                                Upload Data
                             </Button>
                         </CardContent>
                     </Card>
