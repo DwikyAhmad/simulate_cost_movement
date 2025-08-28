@@ -112,6 +112,34 @@ export default function MainMenu() {
                         </CardContent>
                     </Card>
 
+                    {/* Core Business Process */}
+                    <Card className="bg-gray-800 border-2 border-gray-600 hover:border-indigo-500 transition-colors">
+                        <CardHeader className="text-center">
+                            <div className="flex justify-center mb-4">
+                                <div className="p-3 bg-indigo-600 rounded-lg">
+                                    <BarChart3 className="h-8 w-8 text-white" />
+                                </div>
+                            </div>
+                            <CardTitle className="text-white text-xl">
+                                Core Business Process
+                            </CardTitle>
+                            <CardDescription className="text-gray-300">
+                                Manage data sources, monitor cost movements, and trigger
+                                FOB calculations for pricing analysis
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="text-center">
+                            <Button
+                                onClick={() =>
+                                    (window.location.href = "/core")
+                                }
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-none border-2 border-indigo-500 w-full cursor-pointer"
+                            >
+                                Access Core Process
+                            </Button>
+                        </CardContent>
+                    </Card>
+
                     {/* Upload FD */}
                     <Card className="bg-gray-800 border-2 border-gray-600 hover:border-orange-500 transition-colors">
                         <CardHeader className="text-center">
