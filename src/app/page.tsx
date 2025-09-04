@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { DatabaseLogModal } from "@/components/DatabaseLogModal";
 
 interface DataSource {
     id: string;
@@ -208,15 +209,17 @@ export default function CorePage() {
                             className="flex flex-col items-center space-y-4 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300"
                         >
                             {/* Database Icon */}
-                            <div className="bg-gradient-to-br from-cyan-400 to-blue-500 p-4 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-200 hover:cursor-pointer">
-                                <Image
-                                    src="/database.svg"
-                                    alt="Database"
-                                    width={200}
-                                    height={200}
-                                    className="w-12 h-12 filter brightness-0 invert"
-                                />
-                            </div>
+                            <DatabaseLogModal dataSourceName={dataSource.name}>
+                                <div className="bg-gradient-to-br from-cyan-400 to-blue-500 p-4 rounded-2xl shadow-lg hover:scale-105 transition-transform duration-200 hover:cursor-pointer">
+                                    <Image
+                                        src="/database.svg"
+                                        alt="Database"
+                                        width={200}
+                                        height={200}
+                                        className="w-12 h-12 filter brightness-0 invert"
+                                    />
+                                </div>
+                            </DatabaseLogModal>
 
                             {/* Data Source Name */}
                             <h3 className="text-sm font-bold text-center bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent">
