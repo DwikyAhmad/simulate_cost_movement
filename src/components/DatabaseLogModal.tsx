@@ -69,8 +69,8 @@ export function DatabaseLogModal({
             id: "4",
             timestamp: "2024-01-15 10:15:33",
             action: "upload",
-            status: "failed",
-            recordsAffected: 0,
+            status: "success",
+            recordsAffected: 20,
         },
         {
             id: "5",

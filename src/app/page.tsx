@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { DatabaseLogModal } from "@/components/DatabaseLogModal";
+import { DownloadDataModal } from "@/components/DownloadDataModal";
 
 interface DataSource {
     id: string;
@@ -129,11 +130,6 @@ export default function CorePage() {
         setUploadProgress(0);
     };
 
-    const handleDownload = (dataSourceId: string) => {
-        // Handle download logic
-        console.log(`Downloading data from ${dataSourceId}`);
-    };
-
     const handleCostMovementDownload = () => {
         router.push("/partlistcost");
     };
@@ -236,17 +232,16 @@ export default function CorePage() {
 
                             {/* Actions */}
                             <div className="flex flex-col space-y-2 w-full max-w-xs">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="w-full text-sm bg-gradient-to-r from-purple-600 to-purple-700 text-white border-purple-500 hover:from-purple-700 hover:to-purple-800 hover:text-white shadow-lg transform hover:scale-105 transition-all duration-200"
-                                    onClick={() =>
-                                        handleDownload(dataSource.id)
-                                    }
-                                >
-                                    <Download className="h-3 w-3 mr-2" />
-                                    Download Data
-                                </Button>
+                                <DownloadDataModal dataSourceName={dataSource.name}>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="w-full text-sm bg-gradient-to-r from-purple-600 to-purple-700 text-white border-purple-500 hover:from-purple-700 hover:to-purple-800 hover:text-white shadow-lg transform hover:scale-105 transition-all duration-200"
+                                    >
+                                        <Download className="h-3 w-3 mr-2" />
+                                        Download Data
+                                    </Button>
+                                </DownloadDataModal>
 
                                 <Button
                                     variant="outline"
