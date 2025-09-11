@@ -131,7 +131,7 @@ export default function CorePage() {
     };
 
     const handleCostMovementDownload = () => {
-        router.push("/partlistcost");
+        router.push("/costmovement/engine");
     };
 
     const handleGoToRequestData = () => {

@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { engineParts } from "@/data/sampleData";
 import { Eye, AlertTriangle, BarChart3 } from "lucide-react";
-import { formatCurrency, getDifferenceColor } from "@/lib/utils";
 
 interface EnginePartsListProps {
     onSelectPart: (partNo: string) => void;
@@ -23,32 +22,26 @@ export default function EnginePartsList({
     onGoToComparison,
 }: EnginePartsListProps) {
 
+    const getComponentsAboveThreshold = (
+        part: (typeof engineParts)[string]
+    ) => {
+        const components = [
+            part.costs.nonLVA.jsp,
+            part.costs.nonLVA.msp,
+            part.costs.lva.localOH,
+            part.costs.lva.rawMaterial,
+            part.costs.toolingOuthouse,
+            part.costs.processingCost.labor,
+            part.costs.processingCost.fohFixed,
+            part.costs.processingCost.fohVar,
+            part.costs.processingCost.unfinishDepre,
+            part.costs.processingCost.exclusiveDepre,
+            part.costs.totalPurchaseCost,
+        ];
 
-    const getStatusIndicator = (percentageChange: number) => {
-        if (Math.abs(percentageChange) >= 5) {
-            return percentageChange > 0 ? (
-                <Badge variant="destructive" className="ml-2 rounded-none">
-                    <AlertTriangle className="h-3 w-3 mr-1" />
-                    Above Threshold
-                </Badge>
-            ) : (
-                <Badge
-                    variant="default"
-                    className="ml-2 rounded-none bg-green-600 text-white"
-                >
-                    Good
-                </Badge>
-            );
-        } else {
-            return (
-                <Badge
-                    variant="outline"
-                    className="ml-2 rounded-none text-white"
-                >
-                    Stable
-                </Badge>
-            );
-        }
+        return components.filter(
+            (component) => component.percentageChange <= -5
+        ).length;
     };
 
     const partNumbers = Object.keys(engineParts);
@@ -59,13 +52,15 @@ export default function EnginePartsList({
                 {/* Period Info and Actions */}
                 <div className="flex justify-between items-center">
                     {onGoToComparison && (
-                        <Button 
+                        <Button
                             onClick={onGoToComparison}
                             className="bg-purple-600 hover:bg-purple-700 text-white rounded-none border-2 border-purple-500 w-fit"
                         >
                             <BarChart3 className="h-4 w-4 mr-2" />
-                            <span className="hidden sm:inline">Compare Parts</span>
-                            <span className="sm:hidden">Compare</span>
+                            <span className="hidden sm:inline">
+                                Additional Analysis
+                            </span>
+                            <span className="sm:hidden">Additional Analysis</span>
                         </Button>
                     )}
                     <div className="text-right">
@@ -93,7 +88,6 @@ export default function EnginePartsList({
                         <div className="grid grid-cols-1 gap-4">
                             {partNumbers.map((partNo) => {
                                 const part = engineParts[partNo];
-                                const totalCost = part.costs.totalCost;
 
                                 return (
                                     <div
@@ -108,63 +102,30 @@ export default function EnginePartsList({
                                                         <h3 className="text-lg font-semibold text-white">
                                                             {partNo}
                                                         </h3>
+                                                        <p className="text-sm text-gray-400 mt-1">
+                                                            {getComponentsAboveThreshold(
+                                                                part
+                                                            )}{" "}
+                                                            of 11 components
+                                                            above threshold
+                                                        </p>
                                                     </div>
                                                     <div className="flex items-center">
-                                                        {getStatusIndicator(
-                                                            totalCost.percentageChange
+                                                        {getComponentsAboveThreshold(part) >= 1 ? (
+                                                            <Badge variant="destructive" className="ml-2 rounded-none">
+                                                                <AlertTriangle className="h-3 w-3 mr-1" />
+                                                                Above Threshold
+                                                            </Badge>
+                                                        ) : (
+                                                            <Badge variant="outline" className="ml-2 rounded-none text-white">
+                                                                Stable
+                                                            </Badge>
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center gap-6">
-                                                <div className="text-right">
-                                                    <p className="text-sm text-gray-400">
-                                                        Current Total Cost
-                                                    </p>
-                                                    <p className="text-lg font-semibold text-white">
-                                                        {formatCurrency(
-                                                            totalCost.currentYear
-                                                        )}
-                                                    </p>
-                                                </div>
-
-                                                <div className="text-right">
-                                                    <p className="text-sm text-gray-400">
-                                                        Change from Last Year
-                                                    </p>
-                                                    <p
-                                                        className={`text-lg font-semibold ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        {totalCost.difference >=
-                                                        0
-                                                            ? "+"
-                                                            : "-"}
-                                                        {formatCurrency(
-                                                            Math.abs(
-                                                                totalCost.difference
-                                                            )
-                                                        )}
-                                                    </p>
-                                                    <p
-                                                        className={`text-sm ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        (
-                                                        {totalCost.percentageChange >=
-                                                        0
-                                                            ? "+"
-                                                            : ""}
-                                                        {totalCost.percentageChange.toFixed(
-                                                            2
-                                                        )}
-                                                        %)
-                                                    </p>
-                                                </div>
-
                                                 <Button
                                                     onClick={() =>
                                                         onSelectPart(partNo)
@@ -176,150 +137,6 @@ export default function EnginePartsList({
                                                 </Button>
                                             </div>
                                         </div>
-
-                                        {/* Tablet Layout */}
-                                        <div className="hidden md:flex lg:hidden flex-col space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-3">
-                                                    <h3 className="text-lg font-semibold text-white">
-                                                        {partNo}
-                                                    </h3>
-                                                    {getStatusIndicator(
-                                                        totalCost.percentageChange
-                                                    )}
-                                                </div>
-                                                <Button
-                                                    onClick={() =>
-                                                        onSelectPart(partNo)
-                                                    }
-                                                    size="sm"
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500"
-                                                >
-                                                    <Eye className="h-4 w-4 mr-1" />
-                                                    Details
-                                                </Button>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <p className="text-sm text-gray-400">
-                                                        Current Total Cost
-                                                    </p>
-                                                    <p className="text-lg font-semibold text-white">
-                                                        {formatCurrency(
-                                                            totalCost.currentYear
-                                                        )}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm text-gray-400">
-                                                        Change from Last Year
-                                                    </p>
-                                                    <p
-                                                        className={`text-lg font-semibold ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        {totalCost.difference >=
-                                                        0
-                                                            ? "+"
-                                                            : "-"}
-                                                        {formatCurrency(
-                                                            Math.abs(
-                                                                totalCost.difference
-                                                            )
-                                                        )}
-                                                    </p>
-                                                    <p
-                                                        className={`text-sm ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        (
-                                                        {totalCost.percentageChange >=
-                                                        0
-                                                            ? "+"
-                                                            : ""}
-                                                        {totalCost.percentageChange.toFixed(
-                                                            2
-                                                        )}
-                                                        %)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Mobile Layout */}
-                                        <div className="md:hidden flex flex-col space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <h3 className="text-lg font-semibold text-white">
-                                                    {partNo}
-                                                </h3>
-                                                <Button
-                                                    onClick={() =>
-                                                        onSelectPart(partNo)
-                                                    }
-                                                    size="sm"
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500"
-                                                >
-                                                    <Eye className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-
-                                            <div className="flex justify-center">
-                                                {getStatusIndicator(
-                                                    totalCost.percentageChange
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <div>
-                                                    <p className="text-xs text-gray-400">
-                                                        Current Total Cost
-                                                    </p>
-                                                    <p className="text-base font-semibold text-white">
-                                                        {formatCurrency(
-                                                            totalCost.currentYear
-                                                        )}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs text-gray-400">
-                                                        Change from Last Year
-                                                    </p>
-                                                    <p
-                                                        className={`text-base font-semibold ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        {totalCost.difference >=
-                                                        0
-                                                            ? "+"
-                                                            : "-"}
-                                                        {formatCurrency(
-                                                            Math.abs(
-                                                                totalCost.difference
-                                                            )
-                                                        )}
-                                                    </p>
-                                                    <p
-                                                        className={`text-xs ${getDifferenceColor(
-                                                            totalCost.difference
-                                                        )}`}
-                                                    >
-                                                        (
-                                                        {totalCost.percentageChange >=
-                                                        0
-                                                            ? "+"
-                                                            : ""}
-                                                        {totalCost.percentageChange.toFixed(
-                                                            2
-                                                        )}
-                                                        %)
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 );
                             })}
@@ -327,92 +144,6 @@ export default function EnginePartsList({
                     </CardContent>
                 </Card>
 
-                {/* Summary Statistics */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-gray-300">
-                                Total Parts
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-white">
-                                {partNumbers.length}
-                            </div>
-                            <p className="text-xs text-gray-400">
-                                Active engine parts
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-gray-300">
-                                Above Threshold
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-red-400">
-                                {
-                                    partNumbers.filter(
-                                        (partNo) =>
-                                            engineParts[partNo].costs.totalCost
-                                                .percentageChange >= 5
-                                    ).length
-                                }
-                            </div>
-                            <p className="text-xs text-gray-400">
-                                ≥5% cost increase
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-gray-300">
-                                Cost Reduction
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-green-400">
-                                {
-                                    partNumbers.filter(
-                                        (partNo) =>
-                                            engineParts[partNo].costs.totalCost
-                                                .percentageChange <= -5
-                                    ).length
-                                }
-                            </div>
-                            <p className="text-xs text-gray-400">
-                                ≥5% cost decrease
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-gray-300">
-                                Stable Parts
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-blue-400">
-                                {
-                                    partNumbers.filter(
-                                        (partNo) =>
-                                            Math.abs(
-                                                engineParts[partNo].costs
-                                                    .totalCost.percentageChange
-                                            ) < 2
-                                    ).length
-                                }
-                            </div>
-                            <p className="text-xs text-gray-400">
-                                &lt;2% change
-                            </p>
-                        </CardContent>
-                    </Card>
-                </div>
             </div>
         </div>
     );

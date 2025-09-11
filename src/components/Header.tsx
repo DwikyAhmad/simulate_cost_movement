@@ -29,7 +29,7 @@ export default function Header({
               className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600 w-fit"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Back to List</span>
+              <span className="hidden sm:inline">Back</span>
               <span className="sm:hidden">Back</span>
             </Button>
           )}

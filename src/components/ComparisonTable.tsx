@@ -4,8 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, TrendingUp, TrendingDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { engineParts } from "@/data/sampleData";
 import { formatCurrency, getDifferenceColor } from "@/lib/utils";
 import { CostComponent } from "@/types/cost";
@@ -20,8 +19,6 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
     lva: true,
     processingCost: true
   });
-  const [sortBy, setSortBy] = useState<'name' | 'totalCost' | 'percentage'>('totalCost');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   const toggleSection = (section: string) => {
     setOpenSections(prev => ({
@@ -43,34 +40,6 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
     return <Badge variant="outline" className={`${baseClasses} text-white`}>0.00%</Badge>;
   };
 
-  const sortedParts = [...selectedParts].sort((a, b) => {
-    const partA = engineParts[a];
-    const partB = engineParts[b];
-    
-    let comparison = 0;
-    switch (sortBy) {
-      case 'name':
-        comparison = a.localeCompare(b);
-        break;
-      case 'totalCost':
-        comparison = partA.costs.totalCost.currentYear - partB.costs.totalCost.currentYear;
-        break;
-      case 'percentage':
-        comparison = partA.costs.totalCost.percentageChange - partB.costs.totalCost.percentageChange;
-        break;
-    }
-    
-    return sortOrder === 'asc' ? comparison : -comparison;
-  });
-
-  const handleSort = (newSortBy: typeof sortBy) => {
-    if (sortBy === newSortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(newSortBy);
-      setSortOrder('desc');
-    }
-  };
 
   const CostComparisonRow = ({ 
     componentName,
@@ -107,7 +76,7 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
         <TableCell className={`${cellClass} ${nameClass} sticky left-0 bg-gray-800 min-w-[200px]`}>
           {componentName}
         </TableCell>
-        {sortedParts.map((partNo) => {
+        {selectedParts.map((partNo) => {
           const component = getComponent(partNo);
           return (
             <TableCell key={partNo} className="text-center min-w-[180px]">
@@ -158,7 +127,7 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
               {title}
             </div>
           </TableCell>
-          {sortedParts.map((partNo) => {
+          {selectedParts.map((partNo) => {
             const part = engineParts[partNo];
             let totalComponent;
             
@@ -213,42 +182,11 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
   return (
     <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
       <CardHeader>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <CardTitle className="text-white">Detailed Cost Comparison</CardTitle>
-            <CardDescription className="text-gray-300">
-              Side-by-side comparison of cost components across {selectedParts.length} parts
-            </CardDescription>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant={sortBy === 'name' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => handleSort('name')}
-              className="rounded-none border-gray-500 text-xs"
-            >
-              Sort by Name
-              {sortBy === 'name' && (sortOrder === 'asc' ? <TrendingUp className="h-3 w-3 ml-1" /> : <TrendingDown className="h-3 w-3 ml-1" />)}
-            </Button>
-            <Button
-              variant={sortBy === 'totalCost' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => handleSort('totalCost')}
-              className="rounded-none border-gray-500 text-xs"
-            >
-              Sort by Cost
-              {sortBy === 'totalCost' && (sortOrder === 'asc' ? <TrendingUp className="h-3 w-3 ml-1" /> : <TrendingDown className="h-3 w-3 ml-1" />)}
-            </Button>
-            <Button
-              variant={sortBy === 'percentage' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => handleSort('percentage')}
-              className="rounded-none border-gray-500 text-xs"
-            >
-              Sort by %
-              {sortBy === 'percentage' && (sortOrder === 'asc' ? <TrendingUp className="h-3 w-3 ml-1" /> : <TrendingDown className="h-3 w-3 ml-1" />)}
-            </Button>
-          </div>
+        <div>
+          <CardTitle className="text-white">Detailed Cost Comparison</CardTitle>
+          <CardDescription className="text-gray-300">
+            Side-by-side comparison of cost components across {selectedParts.length} parts
+          </CardDescription>
         </div>
       </CardHeader>
       <CardContent>
@@ -259,7 +197,7 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
                 <TableHead className="text-gray-300 sticky left-0 bg-gray-800 min-w-[200px]">
                   Cost Component
                 </TableHead>
-                {sortedParts.map((partNo) => (
+                {selectedParts.map((partNo) => (
                   <TableHead key={partNo} className="text-center text-gray-300 min-w-[180px]">
                     <div className="space-y-1">
                       <div className="font-mono font-semibold">{partNo}</div>

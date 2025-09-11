@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { engineParts } from "@/data/sampleData";
 import Header from "./Header";
 import ControlPanel from "./ControlPanel";
 import PartInfo from "./PartInfo";
 import CostTable from "./CostTable";
-import SummaryCards from "./SummaryCards";
 
 interface CostDetailViewProps {
   initialPart: string;
@@ -14,11 +14,18 @@ interface CostDetailViewProps {
 }
 
 export default function CostDetailView({ initialPart, onBackToList }: CostDetailViewProps) {
-  const [selectedPart, setSelectedPart] = useState<string>(initialPart);
+  const router = useRouter();
+  const [selectedPart] = useState<string>(initialPart);
   const [selectedMonth, setSelectedMonth] = useState<string>("august-2025");
   const [comparisonYear, setComparisonYear] = useState<string>("2024");
 
   const currentPart = engineParts[selectedPart];
+
+  const handlePartChange = (newPart: string) => {
+    if (newPart !== selectedPart) {
+      router.push(`/costmovement/engine/${newPart}`);
+    }
+  };
 
   const handleRefresh = () => {
     // Implement refresh logic here
@@ -42,7 +49,7 @@ export default function CostDetailView({ initialPart, onBackToList }: CostDetail
           selectedPart={selectedPart}
           selectedMonth={selectedMonth}
           comparisonYear={comparisonYear}
-          onPartChange={setSelectedPart}
+          onPartChange={handlePartChange}
           onMonthChange={setSelectedMonth}
           onYearChange={setComparisonYear}
         />
@@ -57,8 +64,6 @@ export default function CostDetailView({ initialPart, onBackToList }: CostDetail
         {/* Cost Breakdown Table */}
         <CostTable partData={currentPart} />
 
-        {/* Summary Cards */}
-        <SummaryCards partData={currentPart} />
       </div>
     </div>
   );
