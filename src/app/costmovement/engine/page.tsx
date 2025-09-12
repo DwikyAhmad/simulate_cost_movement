@@ -13,7 +13,7 @@ export default function EnginePartsListPage() {
   };
 
   const handleGoToComparison = () => {
-    router.push('/costmovement/engine/additional/');
+    router.push('/costmovement/engine/additional/bypart');
   };
 
   const handleBackToHome = () => {

@@ -26,7 +26,7 @@ export default function ByPartComparisonPage() {
     const [showSuggestions2, setShowSuggestions2] = useState<boolean>(false);
 
     const handleBackToComparison = () => {
-        router.push("/costmovement/engine/additional");
+        router.push("/costmovement/engine");
     };
 
     const handleRefresh = () => {

@@ -4,6 +4,8 @@ import { EnginePart } from "@/types/cost";
 export const engineParts: { [key: string]: EnginePart } = {
   "120000Y140": {
     partNo: "120000Y140",
+    model: "681W",
+    destination: "TSAM",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -122,6 +124,8 @@ export const engineParts: { [key: string]: EnginePart } = {
   },
   "120000Y170": {
     partNo: "120000Y170",
+    model: "786W",
+    destination: "TMV",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -150,6 +154,8 @@ export const engineParts: { [key: string]: EnginePart } = {
   },
   "120000Y280": {
     partNo: "120000Y280",
+    model: "834W",
+    destination: "TASA",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -178,6 +184,8 @@ export const engineParts: { [key: string]: EnginePart } = {
   },
   "120000Y340": {
     partNo: "120000Y340",
+    model: "847W",
+    destination: "IMC",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -206,6 +214,8 @@ export const engineParts: { [key: string]: EnginePart } = {
   },
   "160000Y200": {
     partNo: "160000Y200",
+    model: "938W",
+    destination: "UMW",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -230,6 +240,126 @@ export const engineParts: { [key: string]: EnginePart } = {
         total: { name: "Processing Cost", currentYear: 3100000, lastYear: 3000000, difference: 100000, percentageChange: 3.33 }
       },
       totalCost: { name: "Total Cost", currentYear: 15625000, lastYear: 15730000, difference: -105000, percentageChange: -0.67 }
+    }
+  },
+  "140000Y450": {
+    partNo: "140000Y450",
+    model: "D33H",
+    destination: "TMEE",
+    currentDate: "August 2025",
+    lastYearDate: "August 2024",
+    costs: {
+      nonLVA: {
+        jsp: { name: "JSP", currentYear: 2200000, lastYear: 2150000, difference: 50000, percentageChange: 2.33 },
+        msp: { name: "MSP", currentYear: 1750000, lastYear: 1650000, difference: 100000, percentageChange: 6.06 },
+        total: { name: "NON LVA", currentYear: 3950000, lastYear: 3800000, difference: 150000, percentageChange: 3.95 }
+      },
+      lva: {
+        localOH: { name: "Local OH", currentYear: 9800000, lastYear: 9500000, difference: 300000, percentageChange: 3.16 },
+        rawMaterial: { name: "Raw Material", currentYear: 1150000, lastYear: 1000000, difference: 150000, percentageChange: 15.00 },
+        total: { name: "LVA", currentYear: 10950000, lastYear: 10500000, difference: 450000, percentageChange: 4.29 }
+      },
+      toolingOuthouse: { name: "Tooling Outhouse", currentYear: 85000, lastYear: 90000, difference: -5000, percentageChange: -5.56 },
+      totalPurchaseCost: { name: "Total Purchase Cost", currentYear: 14985000, lastYear: 14390000, difference: 595000, percentageChange: 4.14 },
+      processingCost: {
+        labor: { name: "Labor", currentYear: 1100000, lastYear: 1050000, difference: 50000, percentageChange: 4.76 },
+        fohFixed: { name: "FOH Fixed", currentYear: 650000, lastYear: 600000, difference: 50000, percentageChange: 8.33 },
+        fohVar: { name: "FOH Variable", currentYear: 820000, lastYear: 850000, difference: -30000, percentageChange: -3.53 },
+        unfinishDepre: { name: "Unfinish Depreciation", currentYear: 980000, lastYear: 900000, difference: 80000, percentageChange: 8.89 },
+        exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 160000, lastYear: 180000, difference: -20000, percentageChange: -11.11 },
+        total: { name: "Processing Cost", currentYear: 3710000, lastYear: 3580000, difference: 130000, percentageChange: 3.63 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 18695000, lastYear: 17970000, difference: 725000, percentageChange: 4.03 }
+    }
+  },
+  "150000Y560": {
+    partNo: "150000Y560",
+    model: "D46H",
+    destination: "TMT",
+    currentDate: "August 2025",
+    lastYearDate: "August 2024",
+    costs: {
+      nonLVA: {
+        jsp: { name: "JSP", currentYear: 1950000, lastYear: 2000000, difference: -50000, percentageChange: -2.50 },
+        msp: { name: "MSP", currentYear: 1450000, lastYear: 1400000, difference: 50000, percentageChange: 3.57 },
+        total: { name: "NON LVA", currentYear: 3400000, lastYear: 3400000, difference: 0, percentageChange: 0.00 }
+      },
+      lva: {
+        localOH: { name: "Local OH", currentYear: 7200000, lastYear: 7500000, difference: -300000, percentageChange: -4.00 },
+        rawMaterial: { name: "Raw Material", currentYear: 800000, lastYear: 750000, difference: 50000, percentageChange: 6.67 },
+        total: { name: "LVA", currentYear: 8000000, lastYear: 8250000, difference: -250000, percentageChange: -3.03 }
+      },
+      toolingOuthouse: { name: "Tooling Outhouse", currentYear: 55000, lastYear: 60000, difference: -5000, percentageChange: -8.33 },
+      totalPurchaseCost: { name: "Total Purchase Cost", currentYear: 11455000, lastYear: 11710000, difference: -255000, percentageChange: -2.18 },
+      processingCost: {
+        labor: { name: "Labor", currentYear: 850000, lastYear: 800000, difference: 50000, percentageChange: 6.25 },
+        fohFixed: { name: "FOH Fixed", currentYear: 420000, lastYear: 450000, difference: -30000, percentageChange: -6.67 },
+        fohVar: { name: "FOH Variable", currentYear: 580000, lastYear: 600000, difference: -20000, percentageChange: -3.33 },
+        unfinishDepre: { name: "Unfinish Depreciation", currentYear: 720000, lastYear: 680000, difference: 40000, percentageChange: 5.88 },
+        exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 110000, lastYear: 120000, difference: -10000, percentageChange: -8.33 },
+        total: { name: "Processing Cost", currentYear: 2680000, lastYear: 2650000, difference: 30000, percentageChange: 1.13 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 14135000, lastYear: 14360000, difference: -225000, percentageChange: -1.57 }
+    }
+  },
+  "170000Y670": {
+    partNo: "170000Y670",
+    model: "681W",
+    destination: "TKM",
+    currentDate: "August 2025",
+    lastYearDate: "August 2024",
+    costs: {
+      nonLVA: {
+        jsp: { name: "JSP", currentYear: 1600000, lastYear: 1550000, difference: 50000, percentageChange: 3.23 },
+        msp: { name: "MSP", currentYear: 1200000, lastYear: 1180000, difference: 20000, percentageChange: 1.69 },
+        total: { name: "NON LVA", currentYear: 2800000, lastYear: 2730000, difference: 70000, percentageChange: 2.56 }
+      },
+      lva: {
+        localOH: { name: "Local OH", currentYear: 6500000, lastYear: 6800000, difference: -300000, percentageChange: -4.41 },
+        rawMaterial: { name: "Raw Material", currentYear: 720000, lastYear: 680000, difference: 40000, percentageChange: 5.88 },
+        total: { name: "LVA", currentYear: 7220000, lastYear: 7480000, difference: -260000, percentageChange: -3.47 }
+      },
+      toolingOuthouse: { name: "Tooling Outhouse", currentYear: 48000, lastYear: 52000, difference: -4000, percentageChange: -7.69 },
+      totalPurchaseCost: { name: "Total Purchase Cost", currentYear: 10068000, lastYear: 10262000, difference: -194000, percentageChange: -1.89 },
+      processingCost: {
+        labor: { name: "Labor", currentYear: 720000, lastYear: 750000, difference: -30000, percentageChange: -4.00 },
+        fohFixed: { name: "FOH Fixed", currentYear: 380000, lastYear: 360000, difference: 20000, percentageChange: 5.56 },
+        fohVar: { name: "FOH Variable", currentYear: 490000, lastYear: 520000, difference: -30000, percentageChange: -5.77 },
+        unfinishDepre: { name: "Unfinish Depreciation", currentYear: 620000, lastYear: 580000, difference: 40000, percentageChange: 6.90 },
+        exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 95000, lastYear: 100000, difference: -5000, percentageChange: -5.00 },
+        total: { name: "Processing Cost", currentYear: 2305000, lastYear: 2310000, difference: -5000, percentageChange: -0.22 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 12373000, lastYear: 12572000, difference: -199000, percentageChange: -1.58 }
+    }
+  },
+  "180000Y780": {
+    partNo: "180000Y780",
+    model: "786W",
+    destination: "TMP",
+    currentDate: "August 2025",
+    lastYearDate: "August 2024",
+    costs: {
+      nonLVA: {
+        jsp: { name: "JSP", currentYear: 2500000, lastYear: 2300000, difference: 200000, percentageChange: 8.70 },
+        msp: { name: "MSP", currentYear: 1800000, lastYear: 1750000, difference: 50000, percentageChange: 2.86 },
+        total: { name: "NON LVA", currentYear: 4300000, lastYear: 4050000, difference: 250000, percentageChange: 6.17 }
+      },
+      lva: {
+        localOH: { name: "Local OH", currentYear: 11500000, lastYear: 11000000, difference: 500000, percentageChange: 4.55 },
+        rawMaterial: { name: "Raw Material", currentYear: 1350000, lastYear: 1200000, difference: 150000, percentageChange: 12.50 },
+        total: { name: "LVA", currentYear: 12850000, lastYear: 12200000, difference: 650000, percentageChange: 5.33 }
+      },
+      toolingOuthouse: { name: "Tooling Outhouse", currentYear: 105000, lastYear: 95000, difference: 10000, percentageChange: 10.53 },
+      totalPurchaseCost: { name: "Total Purchase Cost", currentYear: 17255000, lastYear: 16345000, difference: 910000, percentageChange: 5.57 },
+      processingCost: {
+        labor: { name: "Labor", currentYear: 1400000, lastYear: 1320000, difference: 80000, percentageChange: 6.06 },
+        fohFixed: { name: "FOH Fixed", currentYear: 780000, lastYear: 750000, difference: 30000, percentageChange: 4.00 },
+        fohVar: { name: "FOH Variable", currentYear: 1050000, lastYear: 1100000, difference: -50000, percentageChange: -4.55 },
+        unfinishDepre: { name: "Unfinish Depreciation", currentYear: 1250000, lastYear: 1150000, difference: 100000, percentageChange: 8.70 },
+        exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 200000, lastYear: 190000, difference: 10000, percentageChange: 5.26 },
+        total: { name: "Processing Cost", currentYear: 4680000, lastYear: 4510000, difference: 170000, percentageChange: 3.77 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 21935000, lastYear: 20855000, difference: 1080000, percentageChange: 5.18 }
     }
   }
 };
