@@ -36,12 +36,23 @@ export default function CostTable({ partData }: CostTableProps) {
         processingCost: true,
     });
 
+    const [openComponents, setOpenComponents] = useState<{
+        [key: string]: boolean;
+    }>({});
+
     const [selectedRemark, setSelectedRemark] = useState<string | null>(null);
 
     const toggleSection = (section: string) => {
         setOpenSections((prev) => ({
             ...prev,
             [section]: !prev[section],
+        }));
+    };
+
+    const toggleComponent = (componentKey: string) => {
+        setOpenComponents((prev) => ({
+            ...prev,
+            [componentKey]: !prev[componentKey],
         }));
     };
 
@@ -168,24 +179,51 @@ export default function CostTable({ partData }: CostTableProps) {
         }
     };
 
+    const PartLevel2Row = ({ part }: { part: any }) => {
+        return (
+            <TableRow className="bg-gray-800 border-gray-700 text-gray-200 font-light">
+                <TableCell className="pl-12 text-sm">
+                    {part.partNumber} - {part.partName}
+                </TableCell>
+                <TableCell className="text-right text-sm">
+                    Qty: {part.quantity}
+                </TableCell>
+                <TableCell className="text-right text-sm">
+                    {formatCurrency(part.amount)}
+                </TableCell>
+                <TableCell className="text-right text-sm">
+                    -
+                </TableCell>
+                <TableCell className="text-right text-sm">
+                    -
+                </TableCell>
+                <TableCell className="text-center">
+                    -
+                </TableCell>
+            </TableRow>
+        );
+    };
+
     const CostRow = ({
         component,
         isSubItem = false,
         isTotal = false,
         isGrandTotal = false,
         sectionBg = "",
+        componentKey = "",
     }: {
         component: CostComponent;
         isSubItem?: boolean;
         isTotal?: boolean;
         isGrandTotal?: boolean;
         sectionBg?: string;
+        componentKey?: string;
     }) => {
         const cellClass = isGrandTotal
             ? "font-bold text-lg text-white"
             : isTotal
             ? "font-semibold text-white"
-            : "text-gray-300";
+            : "text-gray-100";
 
         const nameClass = isSubItem ? "pl-6" : "";
         const rowClass = isGrandTotal
@@ -196,13 +234,29 @@ export default function CostTable({ partData }: CostTableProps) {
             ? sectionBg
             : "border-gray-700";
 
+        const hasLevel2Parts = component.parts && component.parts.length > 0;
+        const isComponentOpen = openComponents[componentKey];
+
         return (
-            <TableRow
-                className={`${rowClass} hover:bg-gray-750 border-gray-600`}
-            >
-                <TableCell className={`${cellClass} ${nameClass}`}>
-                    {component.name}
-                </TableCell>
+            <>
+                <TableRow
+                    className={`${rowClass} border-gray-600 ${hasLevel2Parts ? 'cursor-pointer' : ''}`}
+                    onClick={hasLevel2Parts ? () => toggleComponent(componentKey) : undefined}
+                >
+                    <TableCell className={`${cellClass} ${nameClass}`}>
+                        <div className="flex items-center">
+                            {hasLevel2Parts && (
+                                <>
+                                    {isComponentOpen ? (
+                                        <ChevronDown className="h-4 w-4 mr-2" />
+                                    ) : (
+                                        <ChevronRight className="h-4 w-4 mr-2" />
+                                    )}
+                                </>
+                            )}
+                            {component.name}
+                        </div>
+                    </TableCell>
                 <TableCell className={`text-right ${cellClass}`}>
                     {component.currentYear
                         ? formatCurrency(component.currentYear)
@@ -234,15 +288,23 @@ export default function CostTable({ partData }: CostTableProps) {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => showRemark(component.name)}
-                                className="rounded-none border-gray-500 text-black hover:bg-gray-700"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    showRemark(component.name);
+                                }}
+                                className="rounded-none border-gray-500 text-black"
                             >
                                 <MessageSquare className="h-4 w-4 mr-1" />
                                 Remark
                             </Button>
                         )}
                 </TableCell>
-            </TableRow>
+                </TableRow>
+                {/* Level 2 Parts */}
+                {hasLevel2Parts && isComponentOpen && component.parts?.map((part, index) => (
+                    <PartLevel2Row key={`${componentKey}-part-${index}`} part={part} />
+                ))}
+            </>
         );
     };
 
@@ -264,7 +326,7 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 <TableRow
-                    className={`${sectionBg} hover:bg-gray-750 border-gray-600 cursor-pointer`}
+                    className={`${sectionBg} border-gray-600 cursor-pointer`}
                     onClick={() => toggleSection(sectionKey)}
                 >
                     <TableCell className="font-semibold text-white">
@@ -355,10 +417,12 @@ export default function CostTable({ partData }: CostTableProps) {
                                     <CostRow
                                         component={partData.costs.nonLVA.jsp}
                                         isSubItem
+                                        componentKey="jsp"
                                     />
                                     <CostRow
                                         component={partData.costs.nonLVA.msp}
                                         isSubItem
+                                        componentKey="msp"
                                     />
                                 </CollapsibleSection>
 
@@ -372,12 +436,14 @@ export default function CostTable({ partData }: CostTableProps) {
                                     <CostRow
                                         component={partData.costs.lva.localOH}
                                         isSubItem
+                                        componentKey="localOH"
                                     />
                                     <CostRow
                                         component={
                                             partData.costs.lva.rawMaterial
                                         }
                                         isSubItem
+                                        componentKey="rawMaterial"
                                     />
                                 </CollapsibleSection>
 
@@ -458,7 +524,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                 variant="outline"
                                 size="sm"
                                 onClick={closeRemark}
-                                className="rounded-none border-gray-500 text-black hover:bg-gray-700 p-1"
+                                className="rounded-none border-gray-500 text-black p-1"
                             >
                                 <X className="h-4 w-4" />
                             </Button>

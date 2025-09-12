@@ -15,14 +15,26 @@ export const engineParts: { [key: string]: EnginePart } = {
           currentYear: 1997926,
           lastYear: 2100000,
           difference: -102074,
-          percentageChange: -4.86
+          percentageChange: -4.86,
+          parts: [
+            { partNumber: "23300-AB100", partName: "Fuel Injection Pump", quantity: 1, amount: 850000 },
+            { partNumber: "23310-AB200", partName: "Injection Nozzle Set", quantity: 4, amount: 420000 },
+            { partNumber: "23320-AB300", partName: "High Pressure Pipe", quantity: 6, amount: 320000 },
+            { partNumber: "23330-AB400", partName: "Fuel Rail Assembly", quantity: 1, amount: 407926 }
+          ]
         },
         msp: {
           name: "MSP",
           currentYear: 1392630,
           lastYear: 1280000,
           difference: 112630,
-          percentageChange: 8.80
+          percentageChange: 8.80,
+          parts: [
+            { partNumber: "12345-CD100", partName: "Engine Block Assembly", quantity: 1, amount: 580000 },
+            { partNumber: "12346-CD200", partName: "Cylinder Head", quantity: 1, amount: 450000 },
+            { partNumber: "12347-CD300", partName: "Crankshaft", quantity: 1, amount: 220000 },
+            { partNumber: "12348-CD400", partName: "Piston Set", quantity: 4, amount: 142630 }
+          ]
         },
         total: {
           name: "NON LVA",
@@ -38,7 +50,14 @@ export const engineParts: { [key: string]: EnginePart } = {
           currentYear: 8322631,
           lastYear: 8650000,
           difference: -327369,
-          percentageChange: -3.78
+          percentageChange: -3.78,
+          parts: [
+            { partNumber: "45100-EF100", partName: "Transmission Case", quantity: 1, amount: 2800000 },
+            { partNumber: "45200-EF200", partName: "Gear Set Assembly", quantity: 1, amount: 1950000 },
+            { partNumber: "45300-EF300", partName: "Clutch Assembly", quantity: 1, amount: 1650000 },
+            { partNumber: "45400-EF400", partName: "Differential Unit", quantity: 1, amount: 1200000 },
+            { partNumber: "45500-EF500", partName: "Drive Shaft", quantity: 2, amount: 722631 }
+          ]
         },
         rawMaterial: {
           name: "Raw Material",
@@ -130,12 +149,48 @@ export const engineParts: { [key: string]: EnginePart } = {
     lastYearDate: "August 2024",
     costs: {
       nonLVA: {
-        jsp: { name: "JSP", currentYear: 1845000, lastYear: 1750000, difference: 95000, percentageChange: 5.43 },
-        msp: { name: "MSP", currentYear: 1254000, lastYear: 1200000, difference: 54000, percentageChange: 4.50 },
+        jsp: { 
+          name: "JSP", 
+          currentYear: 1845000, 
+          lastYear: 1750000, 
+          difference: 95000, 
+          percentageChange: 5.43,
+          parts: [
+            { partNumber: "23400-GH100", partName: "Common Rail System", quantity: 1, amount: 750000 },
+            { partNumber: "23410-GH200", partName: "Fuel Pressure Sensor", quantity: 2, amount: 380000 },
+            { partNumber: "23420-GH300", partName: "Injection Control Unit", quantity: 1, amount: 520000 },
+            { partNumber: "23430-GH400", partName: "Fuel Filter Assembly", quantity: 1, amount: 195000 }
+          ]
+        },
+        msp: { 
+          name: "MSP", 
+          currentYear: 1254000, 
+          lastYear: 1200000, 
+          difference: 54000, 
+          percentageChange: 4.50,
+          parts: [
+            { partNumber: "12400-IJ100", partName: "Engine Mount Bracket", quantity: 2, amount: 320000 },
+            { partNumber: "12410-IJ200", partName: "Timing Belt Cover", quantity: 1, amount: 180000 },
+            { partNumber: "12420-IJ300", partName: "Oil Pan Assembly", quantity: 1, amount: 420000 },
+            { partNumber: "12430-IJ400", partName: "Valve Cover", quantity: 1, amount: 334000 }
+          ]
+        },
         total: { name: "NON LVA", currentYear: 3099000, lastYear: 2950000, difference: 149000, percentageChange: 5.05 }
       },
       lva: {
-        localOH: { name: "Local OH", currentYear: 7200000, lastYear: 6800000, difference: 400000, percentageChange: 5.88 },
+        localOH: { 
+          name: "Local OH", 
+          currentYear: 7200000, 
+          lastYear: 6800000, 
+          difference: 400000, 
+          percentageChange: 5.88,
+          parts: [
+            { partNumber: "45600-KL100", partName: "Suspension Strut", quantity: 4, amount: 2400000 },
+            { partNumber: "45610-KL200", partName: "Brake Disc Assembly", quantity: 4, amount: 1800000 },
+            { partNumber: "45620-KL300", partName: "Steering Rack", quantity: 1, amount: 1600000 },
+            { partNumber: "45630-KL400", partName: "Wheel Hub Unit", quantity: 4, amount: 1400000 }
+          ]
+        },
         rawMaterial: { name: "Raw Material", currentYear: 850000, lastYear: 950000, difference: -100000, percentageChange: -10.53 },
         total: { name: "LVA", currentYear: 8050000, lastYear: 7750000, difference: 300000, percentageChange: 3.87 }
       },
@@ -160,7 +215,19 @@ export const engineParts: { [key: string]: EnginePart } = {
     lastYearDate: "August 2024",
     costs: {
       nonLVA: {
-        jsp: { name: "JSP", currentYear: 1200000, lastYear: 1350000, difference: -150000, percentageChange: -11.11 },
+        jsp: { 
+          name: "JSP", 
+          currentYear: 1200000, 
+          lastYear: 1350000, 
+          difference: -150000, 
+          percentageChange: -11.11,
+          parts: [
+            { partNumber: "23500-MN100", partName: "Turbocharger Unit", quantity: 1, amount: 480000 },
+            { partNumber: "23510-MN200", partName: "Intercooler Assembly", quantity: 1, amount: 320000 },
+            { partNumber: "23520-MN300", partName: "Wastegate Actuator", quantity: 1, amount: 220000 },
+            { partNumber: "23530-MN400", partName: "Boost Sensor", quantity: 1, amount: 180000 }
+          ]
+        },
         msp: { name: "MSP", currentYear: 980000, lastYear: 920000, difference: 60000, percentageChange: 6.52 },
         total: { name: "NON LVA", currentYear: 2180000, lastYear: 2270000, difference: -90000, percentageChange: -3.96 }
       },

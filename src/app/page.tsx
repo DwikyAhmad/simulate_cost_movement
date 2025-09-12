@@ -9,13 +9,10 @@ import {
     Calendar,
     Play,
     ArrowRight,
-    FileText,
-    Table,
     X,
     Activity,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { DatabaseLogModal } from "@/components/DatabaseLogModal";
 import { DownloadDataModal } from "@/components/DownloadDataModal";
 
@@ -134,9 +131,6 @@ export default function CorePage() {
         router.push("/costmovement/engine");
     };
 
-    const handleGoToRequestData = () => {
-        router.push("/requestdata");
-    };
 
     const handleTriggerCalculation = () => {
         // Trigger FOB calculation
@@ -168,32 +162,6 @@ export default function CorePage() {
                 </div>
             </div>
 
-            {/* Navigation Section */}
-            <div className="bg-gray-800 border-b border-gray-600 px-6 py-3">
-                <div className="flex gap-3">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleGoToRequestData}
-                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
-                    >
-                        <Link href="/requestdata" className="flex items-center gap-2">
-                            <FileText className="h-4 w-4" />
-                            Request Data
-                        </Link>
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
-                    >
-                        <Link href="/masterdata" className="flex items-center gap-2">
-                            <Table className="h-4 w-4" />
-                            Maintain Master Data
-                        </Link>
-                    </Button>
-                </div>
-            </div>
 
             {/* Main Content */}
             <div className="flex-1 px-6 mt-25">
@@ -339,15 +307,6 @@ export default function CorePage() {
                                     Start Calculation
                                 </Button>
 
-                                <Button 
-                                    variant="outline" 
-                                    size="sm"
-                                    onClick={() => router.push('/cal')}
-                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
-                                >
-                                    <Download className="h-4 w-4 mr-2" />
-                                    Download Pricing Data
-                                </Button>
                             </div>
                         </div>
                     </div>
