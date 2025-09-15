@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Plus, Search, Edit, Trash2 } from 'lucide-react';
 
 interface MasterDataItem {
   id: string;
+  category: string;
   name: string;
   valueString: string;
   createdAt: string;
@@ -15,8 +17,10 @@ interface MasterDataItem {
 
 export default function MasterDataPage() {
   const [masterData, setMasterData] = useState<MasterDataItem[]>([
+    // Calculation Parameter
     {
       id: "1",
+      category: "Calculation Parameter",
       name: "TMMIN E/G OP",
       valueString: "3.5%",
       createdAt: "2024-01-01",
@@ -24,6 +28,7 @@ export default function MasterDataPage() {
     },
     {
       id: "2",
+      category: "Calculation Parameter",
       name: "Selling and General Admin",
       valueString: "1.37%",
       createdAt: "2024-01-01",
@@ -31,13 +36,15 @@ export default function MasterDataPage() {
     },
     {
       id: "3",
+      category: "Calculation Parameter",
       name: "Exchange rate",
-      valueString: "1.00",
+      valueString: "16374",
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01"
     },
     {
       id: "4",
+      category: "Calculation Parameter",
       name: "Inland Insurance JSP",
       valueString: "0.06%",
       createdAt: "2024-01-01",
@@ -45,6 +52,7 @@ export default function MasterDataPage() {
     },
     {
       id: "5",
+      category: "Calculation Parameter",
       name: "Inland Insurance MSP",
       valueString: "0.10%",
       createdAt: "2024-01-01",
@@ -52,37 +60,118 @@ export default function MasterDataPage() {
     },
     {
       id: "6",
+      category: "Calculation Parameter",
       name: "O/H Insurance",
       valueString: "0.2018%",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "7",
+      category: "Calculation Parameter",
+      name: "Royalty",
+      valueString: "6%",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    // Engine Volume
+    {
+      id: "8",
+      category: "Engine Volume",
+      name: "2TR-FE",
+      valueString: "2700",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "9",
+      category: "Engine Volume",
+      name: "1GR-FE",
+      valueString: "4000",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "10",
+      category: "Engine Volume",
+      name: "1KD-FTV",
+      valueString: "3000",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "11",
+      category: "Engine Volume",
+      name: "1UR-FE",
+      valueString: "4600",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    // Engine Type Suffix
+    {
+      id: "12",
+      category: "Engine Type Suffix",
+      name: "Y*** prefix",
+      valueString: "NR",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "13",
+      category: "Engine Type Suffix",
+      name: "1*** prefix",
+      valueString: "TR",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "14",
+      category: "Engine Type Suffix",
+      name: "2*** prefix",
+      valueString: "TR",
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01"
+    },
+    {
+      id: "15",
+      category: "Engine Type Suffix",
+      name: "0*** prefix",
+      valueString: "NR",
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01"
     }
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const [editingItem, setEditingItem] = useState<MasterDataItem | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [newItem, setNewItem] = useState<Omit<MasterDataItem, 'id' | 'createdAt' | 'updatedAt'>>({
+    category: '',
     name: '',
     valueString: ''
   });
 
-  const filteredData = masterData.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.valueString.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredData = masterData.filter(item => {
+    const matchesSearch = item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.valueString.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
 
   const handleAddNew = () => {
-    if (newItem.name && newItem.valueString) {
+    if (newItem.category && newItem.name && newItem.valueString) {
       const item: MasterDataItem = {
         id: Date.now().toString(),
+        category: newItem.category,
         name: newItem.name,
         valueString: newItem.valueString,
         createdAt: new Date().toISOString().split('T')[0],
         updatedAt: new Date().toISOString().split('T')[0]
       };
       setMasterData([...masterData, item]);
-      setNewItem({ name: '', valueString: '' });
+      setNewItem({ category: '', name: '', valueString: '' });
       setIsAddingNew(false);
     }
   };
@@ -155,7 +244,17 @@ export default function MasterDataPage() {
           {isAddingNew && (
             <div className="bg-gray-700 border border-gray-500 p-4 rounded-lg space-y-3">
               <h3 className="text-white font-medium">Add New Master Data</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <Select value={newItem.category} onValueChange={(value) => setNewItem({ ...newItem, category: value })}>
+                  <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                    <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
+                    <SelectItem value="Engine Volume">Engine Volume</SelectItem>
+                    <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Input
                   placeholder="Name"
                   value={newItem.name}
@@ -187,21 +286,39 @@ export default function MasterDataPage() {
             </div>
           )}
 
-          {/* Search */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Search by name
-            </label>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Search master data..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1 bg-gray-600 border-gray-500 text-white placeholder-gray-400"
-              />
-              <div className="bg-gray-600 border border-gray-500 rounded px-3 py-2 flex items-center">
-                <Search className="h-4 w-4 text-gray-400" />
+          {/* Search and Filter */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Search by name or value
+              </label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Search master data..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="flex-1 bg-gray-600 border-gray-500 text-white placeholder-gray-400"
+                />
+                <div className="bg-gray-600 border border-gray-500 rounded px-3 py-2 flex items-center">
+                  <Search className="h-4 w-4 text-gray-400" />
+                </div>
               </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Filter by category
+              </label>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
+                  <SelectItem value="Engine Volume">Engine Volume</SelectItem>
+                  <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -213,6 +330,7 @@ export default function MasterDataPage() {
               <thead>
                 <tr className="bg-gray-700">
                   <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">ID</th>
+                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">Category</th>
                   <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">Name</th>
                   <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">ValueString</th>
                   <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">createdAt</th>
@@ -224,6 +342,28 @@ export default function MasterDataPage() {
                 {filteredData.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-700">
                     <td className="border border-gray-600 p-3 text-white text-sm">{item.id}</td>
+                    <td className="border border-gray-600 p-3 text-white text-sm">
+                      {editingItem?.id === item.id ? (
+                        <Select value={editingItem.category} onValueChange={(value) => setEditingItem({ ...editingItem, category: value })}>
+                          <SelectTrigger className="bg-gray-600 border-gray-500 text-white text-sm h-8 rounded-none">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                            <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
+                            <SelectItem value="Engine Volume">Engine Volume</SelectItem>
+                            <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          item.category === 'Calculation Parameter' ? 'bg-blue-900 text-blue-200' :
+                          item.category === 'Engine Volume' ? 'bg-green-900 text-green-200' :
+                          'bg-purple-900 text-purple-200'
+                        }`}>
+                          {item.category}
+                        </span>
+                      )}
+                    </td>
                     <td className="border border-gray-600 p-3 text-white text-sm">
                       {editingItem?.id === item.id ? (
                         <Input
