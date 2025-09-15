@@ -6,6 +6,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "120000Y140",
     model: "681W",
     destination: "TSAM",
+    engineType: "TR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -210,6 +211,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "120000Y170",
     model: "786W",
     destination: "TMV",
+    engineType: "NR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -336,6 +338,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "120000Y280",
     model: "834W",
     destination: "TASA",
+    engineType: "TR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -462,6 +465,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "120000Y340",
     model: "847W",
     destination: "IMC",
+    engineType: "NR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -588,6 +592,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "160000Y200",
     model: "938W",
     destination: "UMW",
+    engineType: "TR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -714,6 +719,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "140000Y450",
     model: "D33H",
     destination: "TMEE",
+    engineType: "NR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -840,6 +846,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "150000Y560",
     model: "D46H",
     destination: "TMT",
+    engineType: "TR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -966,6 +973,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "170000Y670",
     model: "681W",
     destination: "TKM",
+    engineType: "NR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {
@@ -1092,6 +1100,7 @@ export const engineParts: { [key: string]: EnginePart } = {
     partNo: "180000Y780",
     model: "786W",
     destination: "TMP",
+    engineType: "TR",
     currentDate: "August 2025",
     lastYearDate: "August 2024",
     costs: {

@@ -51,6 +51,7 @@ export interface EnginePart {
   partNo: string;
   model: string;
   destination: string;
+  engineType: string; // TR or NR
   currentDate: string;
   lastYearDate: string;
   costs: CostBreakdown;

@@ -42,6 +42,7 @@ export default function EnginePartsList({
     const [partNumberFilter, setPartNumberFilter] = useState("");
     const [modelFilter, setModelFilter] = useState("all");
     const [destinationFilter, setDestinationFilter] = useState("all");
+    const [engineTypeFilter, setEngineTypeFilter] = useState("all");
     const [selectedParts, setSelectedParts] = useState<string[]>([]);
     const [showFilters, setShowFilters] = useState(false);
 
@@ -67,8 +68,8 @@ export default function EnginePartsList({
         ).length;
     };
 
-    // Get unique models and destinations for filter options
-    const { models, destinations } = useMemo(() => {
+    // Get unique models, destinations, and engine types for filter options
+    const { models, destinations, engineTypes } = useMemo(() => {
         const partsArray = Object.values(engineParts);
         const models = [
             ...new Set(partsArray.map((part) => part.model)),
@@ -76,7 +77,10 @@ export default function EnginePartsList({
         const destinations = [
             ...new Set(partsArray.map((part) => part.destination)),
         ].sort();
-        return { models, destinations };
+        const engineTypes = [
+            ...new Set(partsArray.map((part) => part.engineType)),
+        ].sort();
+        return { models, destinations, engineTypes };
     }, []);
 
     // Filter parts based on current filter values
@@ -95,9 +99,18 @@ export default function EnginePartsList({
                 destinationFilter === "all" ||
                 part.destination === destinationFilter;
 
-            return matchesPartNumber && matchesModel && matchesDestination;
+            const matchesEngineType =
+                engineTypeFilter === "all" ||
+                part.engineType === engineTypeFilter;
+
+            return (
+                matchesPartNumber &&
+                matchesModel &&
+                matchesDestination &&
+                matchesEngineType
+            );
         });
-    }, [partNumberFilter, modelFilter, destinationFilter]);
+    }, [partNumberFilter, modelFilter, destinationFilter, engineTypeFilter]);
 
     const handlePartSelect = (partNo: string) => {
         setSelectedParts((prev) => {
@@ -131,11 +144,13 @@ export default function EnginePartsList({
         setPartNumberFilter("");
         setModelFilter("all");
         setDestinationFilter("all");
+        setEngineTypeFilter("all");
         setSelectedParts([]);
     };
 
     // Check if all filtered parts are selected
-    const allFilteredSelected = filteredParts.length > 0 && 
+    const allFilteredSelected =
+        filteredParts.length > 0 &&
         filteredParts.every(([partNo]) => selectedParts.includes(partNo));
 
     return (
@@ -150,9 +165,7 @@ export default function EnginePartsList({
                                 className="bg-purple-600 hover:bg-purple-700 text-white rounded-none border-2 border-purple-500 w-fit"
                             >
                                 <BarChart3 className="h-4 w-4 mr-2" />
-                                <span className="">
-                                    1v1 Comparison
-                                </span>
+                                <span className="">1v1 Comparison</span>
                             </Button>
                         )}
                         <Button
@@ -211,10 +224,38 @@ export default function EnginePartsList({
                                     </div>
                                 </div>
 
+                                {/* Engine Type Filter */}
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-white">
+                                        Engine Type
+                                    </label>
+                                    <Select
+                                        value={engineTypeFilter}
+                                        onValueChange={setEngineTypeFilter}
+                                    >
+                                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white rounded-none">
+                                            <SelectValue placeholder="Select engine type" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-gray-700 border-gray-600 text-white">
+                                            <SelectItem value="all">
+                                                All Types
+                                            </SelectItem>
+                                            {engineTypes.map((engineType) => (
+                                                <SelectItem
+                                                    key={engineType}
+                                                    value={engineType}
+                                                >
+                                                    {engineType}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
                                 {/* Model Filter */}
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-white">
-                                        Model
+                                        CFC
                                     </label>
                                     <Select
                                         value={modelFilter}
@@ -225,7 +266,7 @@ export default function EnginePartsList({
                                         </SelectTrigger>
                                         <SelectContent className="bg-gray-700 border-gray-600 text-white">
                                             <SelectItem value="all">
-                                                All Models
+                                                All CFC
                                             </SelectItem>
                                             {models.map((model) => (
                                                 <SelectItem
@@ -416,6 +457,14 @@ export default function EnginePartsList({
                                                                     >
                                                                         {
                                                                             part.destination
+                                                                        }
+                                                                    </Badge>
+                                                                    <Badge
+                                                                        variant="outline"
+                                                                        className="text-xs rounded-none text-yellow-300 border-yellow-300"
+                                                                    >
+                                                                        {
+                                                                            part.engineType
                                                                         }
                                                                     </Badge>
                                                                 </div>
