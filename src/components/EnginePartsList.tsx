@@ -118,12 +118,25 @@ export default function EnginePartsList({
         }
     };
 
+    const handleSelectAll = () => {
+        const filteredPartNumbers = filteredParts.map(([partNo]) => partNo);
+        setSelectedParts(filteredPartNumbers);
+    };
+
+    const handleDeselectAll = () => {
+        setSelectedParts([]);
+    };
+
     const clearFilters = () => {
         setPartNumberFilter("");
         setModelFilter("all");
         setDestinationFilter("all");
         setSelectedParts([]);
     };
+
+    // Check if all filtered parts are selected
+    const allFilteredSelected = filteredParts.length > 0 && 
+        filteredParts.every(([partNo]) => selectedParts.includes(partNo));
 
     return (
         <div className="p-3 md:p-6">
@@ -273,13 +286,36 @@ export default function EnginePartsList({
                                         </Badge>
                                     )}
                                 </div>
-                                <Button
-                                    onClick={clearFilters}
-                                    variant="outline"
-                                    className="rounded-none border-gray-500 text-black hover:bg-gray-700"
-                                >
-                                    Clear All
-                                </Button>
+                                <div className="flex items-center gap-2">
+                                    {filteredParts.length > 0 && (
+                                        <>
+                                            {allFilteredSelected ? (
+                                                <Button
+                                                    onClick={handleDeselectAll}
+                                                    variant="outline"
+                                                    className="rounded-none border-orange-500 text-orange-400 hover:bg-orange-600 hover:text-white"
+                                                >
+                                                    Deselect All
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    onClick={handleSelectAll}
+                                                    variant="outline"
+                                                    className="rounded-none  text-black hover:bg-gray-700"
+                                                >
+                                                    Select All Filtered
+                                                </Button>
+                                            )}
+                                        </>
+                                    )}
+                                    <Button
+                                        onClick={clearFilters}
+                                        variant="outline"
+                                        className="rounded-none border-gray-500 text-black hover:bg-gray-700"
+                                    >
+                                        Clear All
+                                    </Button>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>

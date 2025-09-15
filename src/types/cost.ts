@@ -2,8 +2,16 @@
 export interface PartLevel2 {
   partNumber: string;
   partName: string;
-  quantity: number;
-  amount: number;
+  currentYear: {
+    quantity: number;
+    pricePerItem: number;
+    amount: number;
+  };
+  lastYear: {
+    quantity: number;
+    pricePerItem: number;
+    amount: number;
+  };
 }
 
 export interface CostComponent {

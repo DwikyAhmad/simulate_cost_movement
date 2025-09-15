@@ -11,7 +11,10 @@ import {
     ArrowRight,
     X,
     Activity,
+    FileText,
+    Table,
 } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 import { DatabaseLogModal } from "@/components/DatabaseLogModal";
 import { DownloadDataModal } from "@/components/DownloadDataModal";
@@ -162,6 +165,34 @@ export default function CorePage() {
                 </div>
             </div>
 
+            {/* Navigation Section */}
+            <div className="bg-gray-800 border-b border-gray-600 px-6 py-3">
+                <div className="flex gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => (window.location.href = "/requestdata")}
+                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                    >
+                        <Link href="/requestdata" className="flex items-center gap-2">
+                            <FileText className="h-4 w-4" />
+                            Request Data
+                        </Link>
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                    >
+                        <Link href="/masterdata" className="flex items-center gap-2">
+                            <Table className="h-4 w-4" />
+                            Maintain Master Data
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+        
+
 
             {/* Main Content */}
             <div className="flex-1 px-6 mt-25">
@@ -172,11 +203,11 @@ export default function CorePage() {
                             {dataSources.map((dataSource) => (
                                 <div
                                     key={dataSource.id}
-                                    className="flex flex-col items-center space-y-4 bg-gray-800 rounded-lg p-4 border border-gray-600 shadow-sm hover:shadow-md transition-shadow w-max"
+                                    className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-4 border border-gray-600 shadow-sm hover:shadow-md transition-shadow w-max"
                                 >
                                     {/* Database Icon */}
                                     <DatabaseLogModal dataSourceName={dataSource.name}>
-                                        <div className="bg-gray-700 p-4 rounded-lg hover:bg-gray-650 transition-colors cursor-pointer">
+                                        <div className="bg-purple-700 p-4 rounded-sm hover:bg-purple-900 transition-colors cursor-pointer">
                                             <Image
                                                 src="/database.svg"
                                                 alt="Database"
@@ -206,7 +237,7 @@ export default function CorePage() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="w-full text-sm border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                                                className="w-full rounded-sm text-sm border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
                                             >
                                                 <Download className="h-3 w-3 mr-2" />
                                                 Download Data
@@ -215,7 +246,7 @@ export default function CorePage() {
 
                                         <Button
                                             size="sm"
-                                            className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white"
+                                            className="w-full rounded-sm text-sm bg-blue-600 hover:bg-blue-700 text-white"
                                             onClick={() =>
                                                 handleOpenUploadModal(dataSource)
                                             }
@@ -233,15 +264,15 @@ export default function CorePage() {
 
                         {/* Flow Arrow */}
                         <div className="flex justify-center">
-                            <div className="bg-gray-600 p-2 rounded-full">
+                            <div className="bg-gray-600 p-2 rounded-sm">
                                 <ArrowRight className="h-5 w-5 text-white" />
                             </div>
                         </div>
 
                         {/* Cost Movement Process */}
-                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-lg p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
                             {/* Process Icon */}
-                            <div className="bg-gray-700 p-4 rounded-lg">
+                            <div className="bg-green-700 p-4 rounded-sm">
                                 <div className="flex space-x-1 items-end">
                                     <div className="w-2 h-6 bg-white rounded-sm"></div>
                                     <div className="w-2 h-8 bg-white rounded-sm"></div>
@@ -262,7 +293,7 @@ export default function CorePage() {
                             <Button
                                 onClick={handleCostMovementDownload}
                                 size="sm"
-                                className="bg-blue-600 hover:bg-blue-700 text-white"
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-sm"
                             >
                                 <Activity className="h-4 w-4 mr-2" />
                                 Analyze Cost Movement
@@ -271,15 +302,15 @@ export default function CorePage() {
 
                         {/* Flow Arrow to FOB */}
                         <div className="flex justify-center">
-                            <div className="bg-gray-600 p-2 rounded-full">
+                            <div className="bg-gray-600 p-2 rounded-sm">
                                 <ArrowRight className="h-5 w-5 text-white" />
                             </div>
                         </div>
 
                         {/* FOB Calculation */}
-                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-lg p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
-                            <div className="bg-gray-700 p-4 rounded-lg">
-                                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-orange-700 p-4 rounded-sm">
+                                <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center">
                                     <div className="text-xl font-bold text-gray-800">
                                         =
                                     </div>
@@ -301,10 +332,21 @@ export default function CorePage() {
                                 <Button
                                     onClick={handleTriggerCalculation}
                                     size="sm"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-sm"
                                 >
                                     <Play className="h-4 w-4 mr-2" />
                                     Start Calculation
+                                </Button>
+
+                                
+                                <Button 
+                                    variant="outline" 
+                                    size="sm"
+                                    onClick={() => router.push('/cal')}
+                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600 rounded-sm"
+                                >
+                                    <Download className="h-4 w-4 mr-2" />
+                                    Download Pricing Data
                                 </Button>
 
                             </div>
@@ -316,7 +358,7 @@ export default function CorePage() {
             {/* Upload Modal */}
             {showUploadModal && selectedDataSource && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto shadow-lg border border-gray-600">
+                    <div className="bg-gray-800 rounded-sm w-full max-w-md max-h-[90vh] overflow-y-auto shadow-lg border border-gray-600">
                         {/* Modal Header */}
                         <div className="border-b border-gray-600 p-6 flex items-start justify-between">
                             <div className="mr-10">
@@ -389,7 +431,7 @@ export default function CorePage() {
 
                             {/* Upload Progress */}
                             {uploading === selectedDataSource.id && (
-                                <div className="bg-gray-700 border border-gray-600 rounded-lg p-4">
+                                <div className="bg-gray-700 border border-gray-600 rounded-sm p-4">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-white text-sm font-medium">
                                             Upload Progress
@@ -398,9 +440,9 @@ export default function CorePage() {
                                             {uploadProgress}%
                                         </span>
                                     </div>
-                                    <div className="w-full bg-gray-600 rounded-full h-2">
+                                    <div className="w-full bg-gray-600 rounded-sm h-2">
                                         <div
-                                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                            className="bg-blue-600 h-2 rounded-sm transition-all duration-300"
                                             style={{
                                                 width: `${uploadProgress}%`,
                                             }}

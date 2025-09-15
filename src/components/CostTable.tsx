@@ -180,27 +180,64 @@ export default function CostTable({ partData }: CostTableProps) {
     };
 
     const PartLevel2Row = ({ part }: { part: any }) => {
+        const difference = part.currentYear.amount - part.lastYear.amount;
+        const percentageChange = part.lastYear.amount !== 0 
+            ? ((difference / part.lastYear.amount) * 100) 
+            : 0;
+
         return (
-            <TableRow className="bg-gray-800 border-gray-700 text-gray-200 font-light">
-                <TableCell className="pl-12 text-sm">
-                    {part.partNumber} - {part.partName}
-                </TableCell>
-                <TableCell className="text-right text-sm">
-                    Qty: {part.quantity}
-                </TableCell>
-                <TableCell className="text-right text-sm">
-                    {formatCurrency(part.amount)}
-                </TableCell>
-                <TableCell className="text-right text-sm">
-                    -
-                </TableCell>
-                <TableCell className="text-right text-sm">
-                    -
-                </TableCell>
-                <TableCell className="text-center">
-                    -
-                </TableCell>
-            </TableRow>
+            <>
+                {/* Main Level 2 Part Row - spans all columns */}
+                <TableRow className="bg-gray-800 border-gray-700">
+                    <TableCell colSpan={6} className="pl-12 py-2">
+                        <div className="bg-gray-750 border border-gray-600 rounded-sm p-3">
+                            <div className="text-sm font-medium text-gray-200 mb-2">
+                                {part.partNumber} - {part.partName}
+                            </div>
+                            
+                            {/* Detailed breakdown table */}
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-xs">
+                                    <thead>
+                                        <tr className="border-b border-gray-600">
+                                            <th className="text-left text-gray-400 py-1 pr-2">Period</th>
+                                            <th className="text-right text-gray-400 py-1 px-2">Quantity</th>
+                                            <th className="text-right text-gray-400 py-1 px-2">Price/Item</th>
+                                            <th className="text-right text-gray-400 py-1 px-2">Total Amount</th>
+                                            <th className="text-right text-gray-400 py-1 pl-2">Difference</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="border-b border-gray-700">
+                                            <td className="text-gray-300 py-1 pr-2">Last Year</td>
+                                            <td className="text-right text-gray-300 py-1 px-2">{part.lastYear.quantity}</td>
+                                            <td className="text-right text-gray-300 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
+                                            <td className="text-right text-gray-300 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
+                                            <td className="text-right text-gray-400 py-1 pl-2">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-gray-200 py-1 pr-2 font-medium">Current Year</td>
+                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
+                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
+                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
+                                            <td className="text-right py-1 pl-2">
+                                                <span className={getDifferenceColor(difference)}>
+                                                    {difference >= 0 ? "+" : "-"}{formatCurrency(Math.abs(difference))}
+                                                </span>
+                                                <div className="text-xs mt-1">
+                                                    <span className={`${percentageChange >= 0 ? 'text-red-400' : 'text-green-400'}`}>
+                                                        ({percentageChange >= 0 ? "+" : ""}{percentageChange.toFixed(1)}%)
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </TableCell>
+                </TableRow>
+            </>
         );
     };
 

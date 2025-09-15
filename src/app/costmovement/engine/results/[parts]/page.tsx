@@ -114,149 +114,1373 @@ export default function ComparisonResultsPage({
                     onRefreshClick={handleRefresh}
                 />
 
-                {/* Parts Overview */}
+                {/* Period Information */}
                 <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
                     <CardHeader>
                         <CardTitle className="text-white">
-                            Selected Parts Overview ({partsData.length} parts)
+                            Cost Movement Analysis - Multiple Parts Comparison
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                            <div>
+                                <p className="text-sm font-medium text-gray-400">
+                                    Current Period
+                                </p>
+                                <p className="text-lg font-semibold text-white">
+                                    August 2025
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-400">
+                                    Comparison Period
+                                </p>
+                                <p className="text-lg font-semibold text-white">
+                                    August 2024
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-gray-400">
+                                    Parts Selected
+                                </p>
+                                <p className="text-lg font-semibold text-white">
+                                    {partsData.length} parts
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
                             {partsData.map((part) => (
                                 <div
                                     key={part.partNo}
-                                    className="bg-gray-700 border border-gray-600 p-3 rounded-none"
+                                    className="flex items-center gap-2"
                                 >
-                                    <h4 className="text-white font-semibold">
+                                    <Badge
+                                        variant="outline"
+                                        className="rounded-none text-white border-gray-500 bg-gray-700"
+                                    >
                                         {part.partNo}
-                                    </h4>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <Badge
-                                            variant="outline"
-                                            className="text-xs rounded-none text-blue-300 border-blue-300"
-                                        >
-                                            {part.model}
-                                        </Badge>
-                                        <Badge
-                                            variant="outline"
-                                            className="text-xs rounded-none text-green-300 border-green-300"
-                                        >
-                                            {part.destination}
-                                        </Badge>
-                                    </div>
+                                    </Badge>
+                                    <Badge
+                                        variant="outline"
+                                        className="text-xs rounded-none text-blue-300 border-blue-300"
+                                    >
+                                        {part.model}
+                                    </Badge>
+                                    <Badge
+                                        variant="outline"
+                                        className="text-xs rounded-none text-green-300 border-green-300"
+                                    >
+                                        {part.destination}
+                                    </Badge>
                                 </div>
                             ))}
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* Cost Breakdown by Category */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    {/* NON LVA Section */}
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader>
-                            <CardTitle className="text-white text-lg">
-                                NON LVA Costs
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {partsData.map((part) => (
-                                    <div
-                                        key={`${part.partNo}-nonlva`}
-                                        className="bg-gray-700 p-3 rounded-none"
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-white font-medium">
-                                                {part.partNo}
-                                            </span>
-                                            {getChangeBadge(
-                                                part.costs.nonLVA.total
-                                                    .percentageChange
-                                            )}
-                                        </div>
-                                        <div className="text-sm text-gray-400 mt-1">
-                                            {formatCurrency(
-                                                part.costs.nonLVA.total
-                                                    .currentYear
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                {/* Detailed Cost Component Breakdown */}
+                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <CardHeader>
+                        <CardTitle className="text-white">
+                            Detailed Cost Component Analysis
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-8">
+                            {/* NON LVA Components */}
+                            <div>
+                                <h4 className="text-white font-semibold mb-4 text-lg border-b border-gray-600 pb-2">
+                                    NON LVA Components
+                                </h4>
 
-                    {/* LVA Section */}
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader>
-                            <CardTitle className="text-white text-lg">
-                                LVA Costs
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {partsData.map((part) => (
-                                    <div
-                                        key={`${part.partNo}-lva`}
-                                        className="bg-gray-700 p-3 rounded-none"
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-white font-medium">
-                                                {part.partNo}
-                                            </span>
-                                            {getChangeBadge(
-                                                part.costs.lva.total
-                                                    .percentageChange
-                                            )}
-                                        </div>
-                                        <div className="text-sm text-gray-400 mt-1">
-                                            {formatCurrency(
-                                                part.costs.lva.total.currentYear
-                                            )}
-                                        </div>
+                                {/* JSP Component */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        JSP
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-jsp`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA.jsp
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA.jsp
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .jsp
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .nonLVA.jsp
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .jsp
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .nonLVA.jsp
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
                                     </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                                </div>
 
-                    {/* Processing Cost Section */}
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
-                        <CardHeader>
-                            <CardTitle className="text-white text-lg">
-                                Processing Costs
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {partsData.map((part) => (
-                                    <div
-                                        key={`${part.partNo}-processing`}
-                                        className="bg-gray-700 p-3 rounded-none"
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-white font-medium">
-                                                {part.partNo}
-                                            </span>
-                                            {getChangeBadge(
-                                                part.costs.processingCost.total
-                                                    .percentageChange
-                                            )}
-                                        </div>
-                                        <div className="text-sm text-gray-400 mt-1">
-                                            {formatCurrency(
-                                                part.costs.processingCost.total
-                                                    .currentYear
-                                            )}
-                                        </div>
+                                {/* MSP Component */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        MSP
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-msp`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA.msp
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA.msp
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .msp
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .nonLVA.msp
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .msp
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .nonLVA.msp
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
                                     </div>
-                                ))}
+                                </div>
+
+                                {/* NON LVA Total */}
+                                <div className="bg-blue-900/20 p-3 rounded-none">
+                                    <h5 className="text-white font-semibold mb-2 text-md">
+                                        NON LVA Total
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-nonlva-total`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-semibold">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA
+                                                                    .total
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .nonLVA
+                                                                    .total
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .total
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .nonLVA
+                                                                    .total
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .nonLVA
+                                                                        .total
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .nonLVA
+                                                                    .total
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
+
+                            {/* LVA Components */}
+                            <div>
+                                <h4 className="text-white font-semibold mb-4 text-lg border-b border-gray-600 pb-2">
+                                    LVA Components
+                                </h4>
+
+                                {/* Local OH Component */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        Local OH (Overhead)
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-localoh`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .localOH
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .localOH
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .lva
+                                                                        .localOH
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs.lva
+                                                                    .localOH
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .lva
+                                                                        .localOH
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs.lva
+                                                                    .localOH
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* Raw Material Component */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        Raw Material
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-rawmaterial`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .rawMaterial
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .rawMaterial
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .lva
+                                                                        .rawMaterial
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs.lva
+                                                                    .rawMaterial
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .lva
+                                                                        .rawMaterial
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs.lva
+                                                                    .rawMaterial
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* LVA Total */}
+                                <div className="bg-green-900/20 p-3 rounded-none">
+                                    <h5 className="text-white font-semibold mb-2 text-md">
+                                        LVA Total
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-lva-total`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-semibold">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .total
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs.lva
+                                                                    .total
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .lva
+                                                                        .total
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs.lva
+                                                                    .total
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .lva
+                                                                        .total
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs.lva
+                                                                    .total
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Tooling Outhouse */}
+                            <div>
+                                <h4 className="text-white font-semibold mb-4 text-lg border-b border-gray-600 pb-2">
+                                    Tooling Outhouse
+                                </h4>
+                                <div className="overflow-x-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="border-gray-600">
+                                                <TableHead className="text-gray-300">
+                                                    Part Number
+                                                </TableHead>
+                                                <TableHead className="text-gray-300 text-right">
+                                                    Current Year
+                                                </TableHead>
+                                                <TableHead className="text-gray-300 text-right">
+                                                    Last Year
+                                                </TableHead>
+                                                <TableHead className="text-gray-300 text-right">
+                                                    Difference
+                                                </TableHead>
+                                                <TableHead className="text-gray-300 text-center">
+                                                    Change %
+                                                </TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {partsData.map((part) => (
+                                                <TableRow
+                                                    key={`${part.partNo}-tooling`}
+                                                    className="border-gray-600"
+                                                >
+                                                    <TableCell className="text-white font-medium">
+                                                        {part.partNo}
+                                                    </TableCell>
+                                                    <TableCell className="text-white text-right">
+                                                        {formatCurrency(
+                                                            part.costs
+                                                                .toolingOuthouse
+                                                                .currentYear
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="text-white text-right">
+                                                        {formatCurrency(
+                                                            part.costs
+                                                                .toolingOuthouse
+                                                                .lastYear
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="text-white text-right">
+                                                        <span
+                                                            className={
+                                                                part.costs
+                                                                    .toolingOuthouse
+                                                                    .difference >=
+                                                                0
+                                                                    ? "text-red-400"
+                                                                    : "text-green-400"
+                                                            }
+                                                        >
+                                                            {part.costs
+                                                                .toolingOuthouse
+                                                                .difference >= 0
+                                                                ? "+"
+                                                                : ""}
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .toolingOuthouse
+                                                                    .difference
+                                                            )}
+                                                        </span>
+                                                    </TableCell>
+                                                    <TableCell className="text-center">
+                                                        {getChangeBadge(
+                                                            part.costs
+                                                                .toolingOuthouse
+                                                                .percentageChange
+                                                        )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </div>
+
+                            {/* Total Purchase Cost */}
+                            <div>
+                                <h4 className="text-white font-semibold mb-4 text-lg border-b border-gray-600 pb-2">
+                                    Total Purchase Cost
+                                </h4>
+                                <div className="bg-pink-900/20 p-3 rounded-none">
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-totalpurchase`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-semibold">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .totalPurchaseCost
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .totalPurchaseCost
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .totalPurchaseCost
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .totalPurchaseCost
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .totalPurchaseCost
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .totalPurchaseCost
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Processing Cost Components */}
+                            <div>
+                                <h4 className="text-white font-semibold mb-4 text-lg border-b border-gray-600 pb-2">
+                                    Processing Cost Components
+                                </h4>
+
+                                {/* Labor */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        Labor
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-labor`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .labor
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .labor
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .labor
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .labor
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .labor
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .labor
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* FOH Fixed */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        FOH Fixed
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-fohfixed`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohFixed
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohFixed
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .fohFixed
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .fohFixed
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .fohFixed
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohFixed
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* FOH Variable */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        FOH Variable
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-fohvar`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohVar
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohVar
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .fohVar
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .fohVar
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .fohVar
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .fohVar
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* Unfinish Depreciation */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        Unfinish Depreciation
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-unfinishdepre`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .unfinishDepre
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .unfinishDepre
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .unfinishDepre
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .unfinishDepre
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .unfinishDepre
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .unfinishDepre
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* Exclusive Depreciation */}
+                                <div className="mb-4">
+                                    <h5 className="text-white font-medium mb-2 text-md">
+                                        Exclusive Depreciation
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-exclusivedepre`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .exclusiveDepre
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .exclusiveDepre
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .exclusiveDepre
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .exclusiveDepre
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .exclusiveDepre
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .exclusiveDepre
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+
+                                {/* Processing Cost Total */}
+                                <div className="bg-purple-900/20 p-3 rounded-none">
+                                    <h5 className="text-white font-semibold mb-2 text-md">
+                                        Processing Cost Total
+                                    </h5>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow className="border-gray-600">
+                                                    <TableHead className="text-gray-300">
+                                                        Part Number
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Current Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Last Year
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-right">
+                                                        Difference
+                                                    </TableHead>
+                                                    <TableHead className="text-gray-300 text-center">
+                                                        Change %
+                                                    </TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {partsData.map((part) => (
+                                                    <TableRow
+                                                        key={`${part.partNo}-processing-total`}
+                                                        className="border-gray-600"
+                                                    >
+                                                        <TableCell className="text-white font-semibold">
+                                                            {part.partNo}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .total
+                                                                    .currentYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            {formatCurrency(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .total
+                                                                    .lastYear
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-white text-right font-semibold">
+                                                            <span
+                                                                className={
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .total
+                                                                        .difference >=
+                                                                    0
+                                                                        ? "text-red-400"
+                                                                        : "text-green-400"
+                                                                }
+                                                            >
+                                                                {part.costs
+                                                                    .processingCost
+                                                                    .total
+                                                                    .difference >=
+                                                                0
+                                                                    ? "+"
+                                                                    : ""}
+                                                                {formatCurrency(
+                                                                    part.costs
+                                                                        .processingCost
+                                                                        .total
+                                                                        .difference
+                                                                )}
+                                                            </span>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {getChangeBadge(
+                                                                part.costs
+                                                                    .processingCost
+                                                                    .total
+                                                                    .percentageChange
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     );
