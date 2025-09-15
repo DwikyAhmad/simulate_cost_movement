@@ -445,6 +445,14 @@ export default function EnginePartsList({
                                                                     </p>
                                                                     <Badge
                                                                         variant="outline"
+                                                                        className="text-xs rounded-none text-yellow-300 border-yellow-300"
+                                                                    >
+                                                                        {
+                                                                            part.engineType
+                                                                        }
+                                                                    </Badge>
+                                                                    <Badge
+                                                                        variant="outline"
                                                                         className="text-xs rounded-none text-blue-300 border-blue-300"
                                                                     >
                                                                         {
@@ -457,14 +465,6 @@ export default function EnginePartsList({
                                                                     >
                                                                         {
                                                                             part.destination
-                                                                        }
-                                                                    </Badge>
-                                                                    <Badge
-                                                                        variant="outline"
-                                                                        className="text-xs rounded-none text-yellow-300 border-yellow-300"
-                                                                    >
-                                                                        {
-                                                                            part.engineType
                                                                         }
                                                                     </Badge>
                                                                 </div>
