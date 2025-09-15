@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Download, FileSpreadsheet, Search, Calculator, RefreshCw } from 'lucide-react';
+import { ArrowLeft, FileSpreadsheet, Search, Calculator } from 'lucide-react';
 import { engineParts } from '@/data/sampleData';
 import { EnginePart } from '@/types/cost';
 
@@ -29,20 +29,12 @@ interface FOBCalculation {
   lva: number;
   totalPartCost: number;
   localCosts: number;
-  inhouse: {
-    rawMaterial: number;
-    fohFix: number;
-    fohVariable: number;
-    totalFOH: number;
-    totalLabor: number;
-    exclusiveDepreciation: number;
-    commonDepreciation: number;
-    totalDepreciation: number;
-    toolingInstallments: number;
-    toolingAdvance: number;
-    totalTooling: number;
-    ohInsurance: number;
-  };
+  inhouse: number;
+  ohInsurance: number;
+  outhouse: number;
+  totalImportedCost: number;
+  mspartsLandedCost: number;
+  jpartsLandedCost: number;
 }
 
 export default function CalculationPage() {
@@ -66,63 +58,68 @@ export default function CalculationPage() {
     
     // Simulate calculation process
     setTimeout(() => {
-      const calculatedData: FOBCalculation[] = Object.values(engineParts).map((part: EnginePart) => {
+      const calculatedData: FOBCalculation[] = Object.values(engineParts).map((part: EnginePart, index) => {
         const imap = 0.018; // IMAP margin
-        const fobPriceUSD = 1589.54; // Sample FOB price
+        const basePrice = 1589.54 + (index * 150); // Vary prices for different parts
+        const fobPriceUSD = basePrice;
         const salesVolume = part.partNo === "120000Y140" ? "FALSE" : "186";
+        
+        // Calculate derived values
+        const fobPriceRP = fobPriceUSD * masterData.exchangeRate;
+        const totalExportCost = 25116143.202 + (index * 1000000);
+        const totalExFactoryPrice = totalExportCost + 317481.775;
+        const tmminOP = totalExportCost * (masterData.tmminOP / 100);
+        const sellingGeneralAdmin = totalExportCost * (masterData.sellingGeneralAdmin / 100);
+        const tmminGP = tmminOP + sellingGeneralAdmin + 500000;
+        const totMfgCost = 24178.586 + (index * 2000);
+        const totalMfgCostWithID = totMfgCost;
+        const royalty = totalExportCost * (masterData.royalty / 100);
+        const lva = 18032512.389 + (index * 500000);
+        const totalPartCost = lva + totMfgCost + royalty;
+        const localCosts = 15102.056 + (index * 1000);
+        const inhouse = 6547.26 + (index * 500);
+        const ohInsurance = totalPartCost * (masterData.ohInsurance / 100);
+        const outhouse = 125000 + (index * 10000);
+        const totalImportedCost = totalPartCost + ohInsurance + outhouse;
+        const mspartsLandedCost = totalImportedCost * 1.15;
+        const jpartsLandedCost = totalImportedCost * 1.12;
         
         return {
           partNo: part.partNo,
-          engineType: getEngineType(part.partNo),
+          engineType: part.engineType,
           exchangeRate: masterData.exchangeRate,
           salesVolume,
           imap,
           fobPriceUSD,
-          fobPriceRP: fobPriceUSD * masterData.exchangeRate,
-          totalExportCost: 25116143.202,
+          fobPriceRP,
+          totalExportCost,
           exportCost: 593466.424,
-          fobCharge: 331620.708014308000,
-          packingCost: 261845.908992909200,
-          totalExFactoryPrice: 25433624.977,
-          tmminOP: 910948.199,
-          sellingGeneralAdmin: 344091.162,
-          tmminGP: 1255039.361,
-          totMfgCost: 24178.586,
-          totalMfgCostWithID: 24178.586,
-          royalty: 1081950.743,
-          lva: 18032512.389,
-          totalPartCost: 23096634.873104800,
-          localCosts: 15102.056,
-          inhouse: {
-            rawMaterial: 871.019,
-            fohFix: 1739.660,
-            fohVariable: 1137.561,
-            totalFOH: 2877.221,
-            totalLabor: 2244.936,
-            exclusiveDepreciation: 372.743,
-            commonDepreciation: 507.832,
-            totalDepreciation: 880.575,
-            toolingInstallments: 0,
-            toolingAdvance: 157.039,
-            totalTooling: 157.039,
-            ohInsurance: 16.456
-          }
+          fobCharge: 331620.708,
+          packingCost: 261845.909,
+          totalExFactoryPrice,
+          tmminOP,
+          sellingGeneralAdmin,
+          tmminGP,
+          totMfgCost,
+          totalMfgCostWithID,
+          royalty,
+          lva,
+          totalPartCost,
+          localCosts,
+          inhouse,
+          ohInsurance,
+          outhouse,
+          totalImportedCost,
+          mspartsLandedCost,
+          jpartsLandedCost
         };
       });
       
       setCalculations(calculatedData);
       setIsLoading(false);
     }, 2000);
-  }, [masterData.exchangeRate]);
+  }, [masterData.exchangeRate, masterData.tmminOP, masterData.sellingGeneralAdmin, masterData.royalty, masterData.ohInsurance]);
 
-  const getEngineType = (partNo: string): string => {
-    const engineTypes: { [key: string]: string } = {
-      "120000Y140": "2TR/AT",
-      "120000Y170": "UMWT",
-      "120000Y200": "1GR-FE"
-    };
-    return engineTypes[partNo] || "UNKNOWN";
-  };
 
   const filteredCalculations = calculations.filter(calc =>
     calc.partNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -134,10 +131,6 @@ export default function CalculationPage() {
     alert('Excel export functionality would be implemented here. This would generate a detailed FOB calculation spreadsheet.');
   };
 
-  const handleDownloadPDF = () => {
-    console.log('Downloading calculation as PDF...');
-    alert('PDF download functionality would be implemented here.');
-  };
 
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat('id-ID', {
@@ -188,14 +181,6 @@ export default function CalculationPage() {
             </div>
             <div className="flex gap-2">
               <Button
-                onClick={generateCalculations}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 px-4 py-2"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                {isLoading ? 'Calculating...' : 'Recalculate'}
-              </Button>
-              <Button
                 onClick={handleExportToExcel}
                 className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 px-4 py-2"
               >
@@ -206,35 +191,18 @@ export default function CalculationPage() {
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="bg-gray-800 border border-gray-600 p-6 space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Search Engine Parts
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Search by part number or engine type..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 bg-gray-600 border-gray-500 text-white placeholder-gray-400"
-                />
-                <div className="bg-gray-600 border border-gray-500 rounded px-3 py-2 flex items-center">
-                  <Search className="h-4 w-4 text-gray-400" />
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-64">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Exchange Rate (Rp/US$)
-              </label>
-              <Input
-                value={masterData.exchangeRate.toLocaleString()}
-                readOnly
-                className="bg-gray-600 border-gray-500 text-white"
-              />
-            </div>
+    
+        {/* Search Bar */}
+        <div className="bg-gray-800 border border-gray-600 p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search by part number or engine type..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
+            />
           </div>
         </div>
 
@@ -246,159 +214,304 @@ export default function CalculationPage() {
             <p className="text-gray-400 text-sm">Processing engine cost data and calculations</p>
           </div>
         ) : (
-          <div className="space-y-6">
-            {filteredCalculations.map((calc) => (
-              <div key={calc.partNo} className="bg-gray-800 border border-gray-600 rounded-none">
-                {/* Engine Header */}
-                <div className="bg-green-600 text-white p-4 font-bold text-lg">
-                  {calc.engineType} - Part No: {calc.partNo}
-                </div>
-                
-                {/* Calculation Table */}
-                <div className="overflow-x-auto">
+          <div className="bg-gray-800 border border-gray-600 rounded-none">
+            <div className="bg-green-600 text-white p-4 font-bold text-lg">
+              FOB Price Calculation
+            </div>
+            
+            <div className="p-4">
+              <div className="overflow-x-auto">
+                <div className="min-w-fit">
                   <table className="w-full border-collapse text-sm">
-                    {/* Basic Information */}
+                    <thead>
+                      <tr className="border-gray-600">
+                        <th className="text-gray-300 min-w-[250px] sticky -left-1 bg-gray-800 z-10 border border-gray-600 p-2 text-left">
+                          Calculation Component
+                        </th>
+                        {filteredCalculations.map((calc) => (
+                          <th
+                            key={calc.partNo}
+                            className="text-center text-gray-300 min-w-[180px] border border-gray-600 p-2"
+                          >
+                            <div>
+                              <div className="font-semibold">{calc.partNo}</div>
+                              <div className="text-xs text-gray-400">{calc.engineType}</div>
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
                     <tbody>
-                      <tr className="bg-blue-100">
-                        <td className="border border-gray-600 p-2 font-medium bg-gray-700 text-white">Exchange Rate</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">Rp/US$</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{calc.exchangeRate.toLocaleString()}</td>
-                        <td className="border border-gray-600 p-2 font-medium bg-gray-700 text-white">Sales Volume</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{calc.salesVolume}</td>
-                      </tr>
-                      
-                      {/* FOB Section */}
-                      <tr className="bg-green-400">
-                        <td className="border border-gray-600 p-2 font-bold text-black" colSpan={2}>
-                          FOB2 (TMAP to Dist) (US$)
+                      {/* FOB Price USD */}
+                      <tr className="bg-yellow-200/20 border-gray-600">
+                        <td className="bg-yellow-200 text-black font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          FOB Price (US$)
                         </td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-fob-usd`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatUSD(calc.fobPriceUSD)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white">TMAP Mgn (US$)</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{calc.imap}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* FOB Price RP */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          FOB Price (RP)
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-fob-rp`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.fobPriceRP)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-yellow-200 text-black font-bold">FOB Price (US$)</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">1</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black text-xs">2 / ex rate</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatUSD(calc.fobPriceUSD)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Total Export Cost */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total Export Cost w/o interest
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-export-cost`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.totalExportCost)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white">FOB Price (RP)</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">2</td>
-                        <td className="border border-gray-600 p-2 bg-white text-xs text-red-600">3+9</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatCurrency(calc.fobPriceRP)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Total EX-Factory Price */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total EX-Factory Price
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-ex-factory`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.totalExFactoryPrice)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* Export Costs */}
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white">TOTAL EXPORT COST w/o interest</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">3</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">0</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatCurrency(calc.totalExportCost)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* TMMIN E/G OP */}
+                      <tr className="bg-yellow-200/20 border-gray-600">
+                        <td className="bg-yellow-200 text-black font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          TMMIN E/G OP
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-tmmin-op`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.tmminOP)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white pl-8">Export Cost</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">4</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.exportCost)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Selling & General Admin */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Selling & General Admin
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-selling-admin`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.sellingGeneralAdmin)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* Manufacturing Costs */}
-                      <tr className="bg-yellow-200">
-                        <td className="border border-gray-600 p-2 bg-yellow-200 text-black font-bold">TMMIN E/G OP</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">3.50%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">9</td>
-                        <td className="border border-gray-600 p-2 bg-white text-xs text-red-600">3/(1-3.5%)*3.5%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatCurrency(calc.tmminOP)}</td>
+
+                      {/* TMMIN GP w/o interest */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          TMMIN GP w/o interest
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-tmmin-gp`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.tmminGP)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white">Selling & General Admin</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">1.37%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">10</td>
-                        <td className="border border-gray-600 p-2 bg-white text-xs text-red-600">3 x 1.37%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.sellingGeneralAdmin)}</td>
+
+                      {/* Total MFG Cost (w/o: Inv. Intr & ID) */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total MFG Cost (w/o: Inv. Intr & ID)
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-mfg-cost`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.totMfgCost)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* LVA Section */}
-                      <tr className="bg-yellow-200">
-                        <td className="border border-gray-600 p-2 bg-yellow-200 text-black font-bold">LVA</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">21A</td>
-                        <td className="border border-gray-600 p-2 bg-white text-red-600">2 - 38</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatCurrency(calc.lva)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Total MFG Cost (w/ ID) */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total MFG Cost (w/ ID)
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-mfg-cost-id`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.totalMfgCostWithID)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* Local Costs */}
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white">LOCAL COSTS</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">23</td>
-                        <td className="border border-gray-600 p-2 bg-white text-red-600">37 + 924</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.localCosts)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Royalty */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Royalty
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-royalty`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.royalty)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* Inhouse Costs */}
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white font-bold">INHOUSE</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">24</td>
-                        <td className="border border-gray-600 p-2 bg-white text-red-600">32 +32 +29 +28 +26</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black font-bold">{formatCurrency(calc.inhouse.rawMaterial + calc.inhouse.totalFOH + calc.inhouse.totalLabor + calc.inhouse.totalDepreciation + calc.inhouse.totalTooling)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* LVA */}
+                      <tr className="bg-yellow-200/20 border-gray-600">
+                        <td className="bg-yellow-200 text-black font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          LVA
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-lva`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.lva)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white pl-8">RAW MATERIAL</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">V</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">25</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.inhouse.rawMaterial)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Total Part Cost */}
+                      <tr className="bg-blue-900/30 border-gray-600">
+                        <td className="bg-blue-900 text-white font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total Part Cost
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-total-part-cost`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.totalPartCost)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white pl-8">FOH Fix</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">F</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">26</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.inhouse.fohFix)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Local Cost */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Local Cost
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-local-cost`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.localCosts)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      <tr>
-                        <td className="border border-gray-600 p-2 bg-gray-700 text-white pl-8">FOH Variable</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">V</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">27</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.inhouse.fohVariable)}</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black"></td>
+
+                      {/* Inhouse */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Inhouse
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-inhouse`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.inhouse)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
-                      
-                      {/* Insurance */}
-                      <tr className="bg-pink-200">
-                        <td className="border border-gray-600 p-2 bg-pink-200 text-black font-bold">O/H INSURANCE</td>
-                        <td className="border border-gray-600 p-2 bg-yellow-200 text-black font-bold">0.2018%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">36</td>
-                        <td className="border border-gray-600 p-2 bg-white text-red-600">37 x 0.2018%</td>
-                        <td className="border border-gray-600 p-2 bg-white text-black">{formatCurrency(calc.inhouse.ohInsurance)}</td>
+
+                      {/* O/H Insurance */}
+                      <tr className="bg-pink-200/20 border-gray-600">
+                        <td className="bg-pink-200 text-black font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          O/H Insurance
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-oh-insurance`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.ohInsurance)}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+
+                      {/* Outhouse */}
+                      <tr className="border-gray-600">
+                        <td className="bg-gray-700 text-white sticky -left-1 z-10 border border-gray-600 p-2">
+                          Outhouse
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-outhouse`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white">
+                              {formatCurrency(calc.outhouse)}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+
+                      {/* Total Imported Cost */}
+                      <tr className="bg-green-900/30 border-gray-600">
+                        <td className="bg-green-900 text-white font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          Total Imported Cost
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-total-imported`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.totalImportedCost)}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+
+                      {/* MSPARTS Landed Cost */}
+                      <tr className="bg-purple-900/30 border-gray-600">
+                        <td className="bg-purple-900 text-white font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          MSPARTS Landed Cost
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-msparts-landed`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.mspartsLandedCost)}
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+
+                      {/* JPARTS Landed Cost */}
+                      <tr className="bg-orange-900/30 border-gray-600">
+                        <td className="bg-orange-900 text-white font-bold sticky -left-1 z-10 border border-gray-600 p-2">
+                          JPARTS Landed Cost
+                        </td>
+                        {filteredCalculations.map((calc) => (
+                          <td key={`${calc.partNo}-jparts-landed`} className="text-center border border-gray-600 p-2">
+                            <div className="text-white font-semibold">
+                              {formatCurrency(calc.jpartsLandedCost)}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         )}
 
