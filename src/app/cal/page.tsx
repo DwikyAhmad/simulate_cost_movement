@@ -3,6 +3,13 @@
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { ArrowLeft, FileSpreadsheet, Search, Calculator } from "lucide-react";
 import { engineParts } from "@/data/sampleData";
 import { EnginePart } from "@/types/cost";
@@ -40,6 +47,7 @@ interface FOBCalculation {
 export default function CalculationPage() {
     const [calculations, setCalculations] = useState<FOBCalculation[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [engineTypeFilter, setEngineTypeFilter] = useState("all");
     const [isLoading, setIsLoading] = useState(false);
 
     // Master data values (these would normally come from the master data page)
@@ -129,16 +137,27 @@ export default function CalculationPage() {
         masterData.ohInsurance,
     ]);
 
-    const filteredCalculations = calculations.filter(
-        (calc) =>
+    const filteredCalculations = calculations.filter((calc) => {
+        const matchesSearch =
             calc.partNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            calc.engineType.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+            calc.engineType.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesEngineType =
+            engineTypeFilter === "all" || calc.engineType === engineTypeFilter;
+        return matchesSearch && matchesEngineType;
+    });
 
-    const handleExportToExcel = () => {
-        console.log("Exporting calculation data to Excel...");
+    const handleExportToExcel = (engineType?: string) => {
+        console.log(
+            `Exporting calculation data to Excel... ${
+                engineType
+                    ? `(${engineType} engines only)`
+                    : "(all filtered data)"
+            }`
+        );
         alert(
-            "Excel export functionality would be implemented here. This would generate a detailed FOB calculation spreadsheet."
+            `Excel export functionality would be implemented here. This would generate a detailed FOB calculation spreadsheet for ${
+                engineType ? engineType + " engines" : "all filtered data"
+            }.`
         );
     };
 
@@ -194,27 +213,57 @@ export default function CalculationPage() {
                         </div>
                         <div className="flex gap-2">
                             <Button
-                                onClick={handleExportToExcel}
-                                className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 px-4 py-2"
+                                onClick={() => handleExportToExcel("NR")}
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 px-4 py-2"
                             >
                                 <FileSpreadsheet className="h-4 w-4 mr-2" />
-                                Export Excel
+                                Export NR
+                            </Button>
+                            <Button
+                                onClick={() => handleExportToExcel("TR")}
+                                className="bg-purple-600 hover:bg-purple-700 text-white rounded-none border-2 border-purple-500 px-4 py-2"
+                            >
+                                <FileSpreadsheet className="h-4 w-4 mr-2" />
+                                Export TR
                             </Button>
                         </div>
                     </div>
                 </div>
 
-                {/* Search Bar */}
+                {/* Search and Filter Bar */}
                 <div className="bg-gray-800 border border-gray-600 p-4">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                        <Input
-                            type="text"
-                            placeholder="Search by part number or engine type..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
-                        />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Input
+                                type="text"
+                                placeholder="Search by part number or engine type..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                value={engineTypeFilter}
+                                onValueChange={setEngineTypeFilter}
+                            >
+                                <SelectTrigger className="bg-gray-700 border-gray-600 text-white rounded-none">
+                                    <SelectValue placeholder="Filter by engine type" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-700 border-gray-600 text-white">
+                                    <SelectItem value="all">
+                                        All Engine Types
+                                    </SelectItem>
+                                    <SelectItem value="NR">
+                                        NR Engines
+                                    </SelectItem>
+                                    <SelectItem value="TR">
+                                        TR Engines
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
                 </div>
 
