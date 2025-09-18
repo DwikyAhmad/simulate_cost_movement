@@ -69,6 +69,7 @@ export default function CorePage() {
     const [selectedDataSource, setSelectedDataSource] =
         useState<DataSource | null>(null);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [showFOBLogModal, setShowFOBLogModal] = useState(false);
 
     const handleFileUpload = async (
         dataSourceId: string,
@@ -136,6 +137,9 @@ export default function CorePage() {
 
 
     const handleTriggerCalculation = () => {
+        // Show alert for calculation start
+        alert("FOB Calculation has been triggered successfully! The calculation process is now running.");
+        
         // Trigger FOB calculation
         // Simulate calculation process
         setTimeout(() => {
@@ -146,7 +150,17 @@ export default function CorePage() {
                         : p
                 )
             );
+            // Show completion alert
+            alert("FOB Calculation has been completed successfully!");
         }, 3000);
+    };
+
+    const handleOpenFOBLog = () => {
+        setShowFOBLogModal(true);
+    };
+
+    const handleCloseFOBLog = () => {
+        setShowFOBLogModal(false);
     };
 
     return (
@@ -309,7 +323,10 @@ export default function CorePage() {
 
                         {/* FOB Calculation */}
                         <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
-                            <div className="bg-orange-700 p-4 rounded-sm">
+                            <div 
+                                className="bg-orange-700 p-4 rounded-sm hover:bg-orange-900 transition-colors cursor-pointer"
+                                onClick={handleOpenFOBLog}
+                            >
                                 <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center">
                                     <div className="text-xl font-bold text-gray-800">
                                         =
@@ -450,6 +467,146 @@ export default function CorePage() {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* FOB Calculation Log Modal */}
+            {showFOBLogModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-800 rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg border border-gray-600">
+                        {/* Modal Header */}
+                        <div className="border-b border-gray-600 p-6 flex items-start justify-between">
+                            <div className="mr-10">
+                                <h2 className="text-xl font-bold text-white">
+                                    FOB Calculation Log
+                                </h2>
+                                <p className="text-gray-300 text-sm mt-1">
+                                    View calculation history and master data versions
+                                </p>
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={handleCloseFOBLog}
+                                className="text-gray-400 hover:text-white hover:bg-gray-700"
+                            >
+                                <X className="h-5 w-5" />
+                            </Button>
+                        </div>
+
+                        {/* Modal Content */}
+                        <div className="p-6">
+                            {/* Calculation History */}
+                            <div className="space-y-4">
+                                {/* Latest Calculation */}
+                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div>
+                                            <div className="text-white font-medium">FOB Calculation #001</div>
+                                            <div className="text-gray-400 text-sm">15 engine parts processed</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-green-400 text-sm font-medium">Completed</div>
+                                            <div className="text-gray-400 text-xs">12/15/2024 15:00</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                        <div>
+                                            <span className="text-gray-400">Exchange Rate:</span>
+                                            <span className="text-white ml-2">16,374</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">TMMIN E/G OP:</span>
+                                            <span className="text-white ml-2">3.5%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">Royalty:</span>
+                                            <span className="text-white ml-2">6%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">O/H Insurance:</span>
+                                            <span className="text-white ml-2">0.2018%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Previous Calculation */}
+                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div>
+                                            <div className="text-white font-medium">FOB Calculation #000</div>
+                                            <div className="text-gray-400 text-sm">12 engine parts processed</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-green-400 text-sm font-medium">Completed</div>
+                                            <div className="text-gray-400 text-xs">12/14/2024 10:30</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                        <div>
+                                            <span className="text-gray-400">Exchange Rate:</span>
+                                            <span className="text-white ml-2">16,200</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">TMMIN E/G OP:</span>
+                                            <span className="text-white ml-2">3.5%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">Royalty:</span>
+                                            <span className="text-white ml-2">6%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">O/H Insurance:</span>
+                                            <span className="text-white ml-2">0.2018%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Older Calculation */}
+                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div>
+                                            <div className="text-white font-medium">FOB Calculation #999</div>
+                                            <div className="text-gray-400 text-sm">10 engine parts processed</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-green-400 text-sm font-medium">Completed</div>
+                                            <div className="text-gray-400 text-xs">12/13/2024 16:45</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                        <div>
+                                            <span className="text-gray-400">Exchange Rate:</span>
+                                            <span className="text-white ml-2">16,100</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">TMMIN E/G OP:</span>
+                                            <span className="text-white ml-2">3.2%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">Royalty:</span>
+                                            <span className="text-white ml-2">5.8%</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-400">O/H Insurance:</span>
+                                            <span className="text-white ml-2">0.1950%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-3 justify-end mt-6">
+                                <Button
+                                    variant="outline"
+                                    onClick={handleCloseFOBLog}
+                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                                >
+                                    Close
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
