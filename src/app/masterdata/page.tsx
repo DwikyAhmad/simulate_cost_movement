@@ -74,42 +74,9 @@ export default function MasterDataPage() {
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01"
     },
-    // Engine Volume
-    {
-      id: "8",
-      category: "Engine Volume",
-      name: "2TR-FE",
-      valueString: "2700",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "9",
-      category: "Engine Volume",
-      name: "1GR-FE",
-      valueString: "4000",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "10",
-      category: "Engine Volume",
-      name: "1KD-FTV",
-      valueString: "3000",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "11",
-      category: "Engine Volume",
-      name: "1UR-FE",
-      valueString: "4600",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
     // Engine Type Suffix
     {
-      id: "12",
+      id: "8",
       category: "Engine Type Suffix",
       name: "Y*** prefix",
       valueString: "NR",
@@ -117,7 +84,7 @@ export default function MasterDataPage() {
       updatedAt: "2024-01-01"
     },
     {
-      id: "13",
+      id: "9",
       category: "Engine Type Suffix",
       name: "1*** prefix",
       valueString: "TR",
@@ -125,7 +92,7 @@ export default function MasterDataPage() {
       updatedAt: "2024-01-01"
     },
     {
-      id: "14",
+      id: "10",
       category: "Engine Type Suffix",
       name: "2*** prefix",
       valueString: "TR",
@@ -133,7 +100,7 @@ export default function MasterDataPage() {
       updatedAt: "2024-01-01"
     },
     {
-      id: "15",
+      id: "11",
       category: "Engine Type Suffix",
       name: "0*** prefix",
       valueString: "NR",
@@ -251,7 +218,6 @@ export default function MasterDataPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-gray-600 border-gray-500 text-white">
                     <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                    <SelectItem value="Engine Volume">Engine Volume</SelectItem>
                     <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                   </SelectContent>
                 </Select>
@@ -315,7 +281,6 @@ export default function MasterDataPage() {
                 <SelectContent className="bg-gray-600 border-gray-500 text-white">
                   <SelectItem value="all">All Categories</SelectItem>
                   <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                  <SelectItem value="Engine Volume">Engine Volume</SelectItem>
                   <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                 </SelectContent>
               </Select>
@@ -350,14 +315,12 @@ export default function MasterDataPage() {
                           </SelectTrigger>
                           <SelectContent className="bg-gray-600 border-gray-500 text-white">
                             <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                            <SelectItem value="Engine Volume">Engine Volume</SelectItem>
                             <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                           </SelectContent>
                         </Select>
                       ) : (
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
                           item.category === 'Calculation Parameter' ? 'bg-blue-900 text-blue-200' :
-                          item.category === 'Engine Volume' ? 'bg-green-900 text-green-200' :
                           'bg-purple-900 text-purple-200'
                         }`}>
                           {item.category}
