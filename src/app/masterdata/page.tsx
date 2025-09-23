@@ -128,19 +128,77 @@ export default function MasterDataPage() {
   });
 
   const handleAddNew = () => {
-    if (newItem.category && newItem.name && newItem.valueString) {
-      const item: MasterDataItem = {
-        id: Date.now().toString(),
-        category: newItem.category,
-        name: newItem.name,
-        valueString: newItem.valueString,
-        createdAt: new Date().toISOString().split('T')[0],
-        updatedAt: new Date().toISOString().split('T')[0]
-      };
-      setMasterData([...masterData, item]);
-      setNewItem({ category: '', name: '', valueString: '' });
-      setIsAddingNew(false);
+    // Required field validation [Appendix Error Message 4]
+    if (!newItem.category.trim()) {
+      alert('Category is required and cannot be empty');
+      return;
     }
+    if (!newItem.name.trim()) {
+      alert('Name is required and cannot be empty');
+      return;
+    }
+    if (!newItem.valueString.trim()) {
+      alert('Value is required and cannot be empty');
+      return;
+    }
+
+    // Maximum length validation [Appendix Error Message 5]
+    if (newItem.category.length > 50) {
+      alert('Category exceeds maximum length of 50 characters');
+      return;
+    }
+    if (newItem.name.length > 100) {
+      alert('Name exceeds maximum length of 100 characters');
+      return;
+    }
+    if (newItem.valueString.length > 50) {
+      alert('Value exceeds maximum length of 50 characters');
+      return;
+    }
+
+    // Duplicate data validation [Appendix Error Message 6]
+    const isDuplicate = masterData.some(existingItem => 
+      existingItem.category === newItem.category && existingItem.name === newItem.name
+    );
+    if (isDuplicate) {
+      alert('A record with the same category and name already exists');
+      return;
+    }
+
+    // Format validation [Appendix Error Message 7]
+    if (newItem.category === 'Calculation Parameter') {
+      const value = newItem.valueString.trim();
+      const isPercentage = value.endsWith('%');
+      const isNumber = !isPercentage && /^(\d+(\.\d{1,4})?)$/.test(value);
+      const isValidPercentage = isPercentage && /^(\d+(\.\d{1,4})?%)$/.test(value);
+
+      if (!isValidPercentage && !isNumber) {
+        alert('Value must be a valid number or percentage (e.g., 3.5% or 16374)');
+        return;
+      }
+    }
+
+    if (newItem.category === 'Engine Type Suffix') {
+      if (!/^[A-Z]{2}$/.test(newItem.valueString.trim())) {
+        alert('Engine Type Suffix must be exactly 2 uppercase letters (e.g., NR, TR)');
+        return;
+      }
+    }
+
+    // If all validations pass, save the data and display success message [6]
+    const item: MasterDataItem = {
+      id: Date.now().toString(),
+      category: newItem.category,
+      name: newItem.name,
+      valueString: newItem.valueString,
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    
+    setMasterData([...masterData, item]);
+    setNewItem({ category: '', name: '', valueString: '' });
+    setIsAddingNew(false);
+    alert('Data has been successfully saved to staging table');
   };
 
   const handleEdit = (item: MasterDataItem) => {
@@ -149,12 +207,66 @@ export default function MasterDataPage() {
 
   const handleSaveEdit = () => {
     if (editingItem) {
+      // Required field validation [Appendix Error Message 4]
+      if (!editingItem.category.trim()) {
+        alert('Category is required and cannot be empty');
+        return;
+      }
+      if (!editingItem.name.trim()) {
+        alert('Name is required and cannot be empty');
+        return;
+      }
+      if (!editingItem.valueString.trim()) {
+        alert('Value is required and cannot be empty');
+        return;
+      }
+
+      // Maximum length validation [Appendix Error Message 5]
+      if (editingItem.category.length > 50) {
+        alert('Category exceeds maximum length of 50 characters');
+        return;
+      }
+      if (editingItem.name.length > 100) {
+        alert('Name exceeds maximum length of 100 characters');
+        return;
+      }
+      if (editingItem.valueString.length > 50) {
+        alert('Value exceeds maximum length of 50 characters');
+        return;
+      }
+
+      // Duplicate data validation [Appendix Error Message 6]
+      const isDuplicate = masterData.some(existingItem => 
+        existingItem.id !== editingItem.id && 
+        existingItem.category === editingItem.category && 
+        existingItem.name === editingItem.name
+      );
+      if (isDuplicate) {
+        alert('A record with the same category and name already exists');
+        return;
+      }
+
+      // Format validation [Appendix Error Message 7]
+      if (editingItem.category === 'Calculation Parameter') {
+        const value = editingItem.valueString.trim();
+        const isPercentage = value.endsWith('%');
+        const isNumber = !isPercentage && /^(\d+(\.\d{1,4})?)$/.test(value);
+        const isValidPercentage = isPercentage && /^(\d+(\.\d{1,4})?%)$/.test(value);
+
+        if (!isValidPercentage && !isNumber) {
+          alert('Value must be a valid number or percentage (e.g., 3.5% or 16374)');
+          return;
+        }
+      }
+
+      // If all validations pass, save the data and display success message
       setMasterData(masterData.map(item =>
         item.id === editingItem.id
           ? { ...editingItem, updatedAt: new Date().toISOString().split('T')[0] }
           : item
       ));
       setEditingItem(null);
+      alert('Data has been successfully updated in staging table');
     }
   };
 
@@ -167,6 +279,7 @@ export default function MasterDataPage() {
   const handleCancelEdit = () => {
     setEditingItem(null);
   };
+
 
   return (
     <div className="min-h-screen bg-gray-900 p-3 md:p-6">
@@ -234,15 +347,18 @@ export default function MasterDataPage() {
                   className="bg-gray-600 border-gray-500 text-white placeholder-gray-400"
                 />
               </div>
-              <div className="flex gap-2">
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleAddNew}
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 px-4 py-2"
+                  >
+                    Add
+                  </Button>
                 <Button
-                  onClick={handleAddNew}
-                  className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 px-4 py-2"
-                >
-                  Add
-                </Button>
-                <Button
-                  onClick={() => setIsAddingNew(false)}
+                  onClick={() => {
+                    setIsAddingNew(false);
+                    setNewItem({ category: '', name: '', valueString: '' });
+                  }}
                   variant="outline"
                   className="border-gray-500 text-black hover:bg-gray-600 rounded-none border-2 px-4 py-2"
                 >

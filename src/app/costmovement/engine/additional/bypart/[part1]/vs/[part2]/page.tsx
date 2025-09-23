@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import {
@@ -20,7 +20,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, Minus, RefreshCw } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { TrendingUp, TrendingDown, Minus, RefreshCw, Calendar } from "lucide-react";
 import { engineParts } from "@/data/sampleData";
 import { formatCurrency } from "@/lib/utils";
 import { CostComponent } from "@/types/cost";
@@ -43,6 +44,21 @@ export default function ByPartComparisonResults({
     // Decode the part numbers
     const part1 = decodeURIComponent(resolvedParams.part1);
     const part2 = decodeURIComponent(resolvedParams.part2);
+
+    // Generate period options (years 2023-2026, Feb and Aug for each)
+    const generatePeriodOptions = () => {
+        const periods = [];
+        for (let year = 2023; year <= 2026; year++) {
+            periods.push(`${year}-Feb`, `${year}-Aug`);
+        }
+        return periods;
+    };
+
+    const availablePeriods = generatePeriodOptions();
+    
+    // Period selection state
+    const [selectedPeriod1, setSelectedPeriod1] = useState('2024-Feb');
+    const [selectedPeriod2, setSelectedPeriod2] = useState('2024-Aug');
 
     const handleBackToSelection = () => {
         router.push("/costmovement/engine/additional/bypart");
@@ -143,6 +159,7 @@ export default function ByPartComparisonResults({
         );
     };
 
+    // ComparisonRow component moved inside to access selectedPeriod state
     const ComparisonRow = ({
         componentName,
         component1,
@@ -242,6 +259,59 @@ export default function ByPartComparisonResults({
                     </Button>
                 </div>
 
+                {/* Period Selection Controls */}
+                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <CardHeader className="pb-4">
+                        <div className="flex items-center gap-2">
+                            <Calendar className="h-5 w-5 text-gray-300" />
+                            <CardTitle className="text-white text-lg">
+                                Period Selection
+                            </CardTitle>
+                        </div>
+                        <CardDescription className="text-gray-300">
+                            Select submission periods for comparison (2x per year: February & August)
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-blue-300">
+                                    Part 1 Period ({part1})
+                                </label>
+                                <Select value={selectedPeriod1} onValueChange={setSelectedPeriod1}>
+                                    <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                                        <SelectValue placeholder="Select period for Part 1" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                                        {availablePeriods.map((period) => (
+                                            <SelectItem key={period} value={period}>
+                                                {period}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-purple-300">
+                                    Part 2 Period ({part2})
+                                </label>
+                                <Select value={selectedPeriod2} onValueChange={setSelectedPeriod2}>
+                                    <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                                        <SelectValue placeholder="Select period for Part 2" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                                        {availablePeriods.map((period) => (
+                                            <SelectItem key={period} value={period}>
+                                                {period}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {/* Detailed Comparison Table */}
                 <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
                     <CardHeader>
@@ -249,8 +319,7 @@ export default function ByPartComparisonResults({
                             Detailed Cost Component Comparison
                         </CardTitle>
                         <CardDescription className="text-gray-300">
-                            Side-by-side comparison showing relative differences
-                            between parts
+                            Side-by-side comparison showing relative differences between parts across selected periods
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -262,10 +331,20 @@ export default function ByPartComparisonResults({
                                             Cost Component
                                         </TableHead>
                                         <TableHead className="text-center text-blue-300">
-                                            {part1}
+                                            <div className="space-y-1">
+                                                <div>{part1}</div>
+                                                <div className="text-xs font-normal text-gray-300">
+                                                    {selectedPeriod1}
+                                                </div>
+                                            </div>
                                         </TableHead>
                                         <TableHead className="text-center text-purple-300">
-                                            {part2}
+                                            <div className="space-y-1">
+                                                <div>{part2}</div>
+                                                <div className="text-xs font-normal text-gray-300">
+                                                    {selectedPeriod2}
+                                                </div>
+                                            </div>
                                         </TableHead>
                                         <TableHead className="text-center text-gray-300">
                                             Difference (Part 1 - Part 2)
