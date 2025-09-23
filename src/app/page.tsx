@@ -13,6 +13,7 @@ import {
     Activity,
     FileText,
     Table,
+    BarChart3,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -356,6 +357,16 @@ export default function CorePage() {
                                 </Button>
 
                                 
+                                <Button 
+                                    variant="outline" 
+                                    size="sm"
+                                    onClick={() => router.push('/costmovement/fob')}
+                                    className="border-orange-500 bg-orange-700 text-white hover:bg-orange-600 rounded-sm"
+                                >
+                                    <BarChart3 className="h-4 w-4 mr-2" />
+                                    FOB Cost Movement Analysis
+                                </Button>
+
                                 <Button 
                                     variant="outline" 
                                     size="sm"
