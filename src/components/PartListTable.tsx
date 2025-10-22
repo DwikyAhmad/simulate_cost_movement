@@ -131,35 +131,35 @@ export default function PartListTable() {
     };
 
     return (
-        <div className="bg-gray-800 rounded-none border-2 border-gray-600 shadow">
+        <div className="bg-white rounded-none border-2 border-gray-300 shadow">
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="bg-blue-200">
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                        <tr className="bg-gray-200">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Part Name{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Source{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Supplier Code{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Supplier Plant Code{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Supplier Name{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Dock/IH Routing{" "}
                             </th>
-                            <th className="border border-gray-600 p-2 text-left font-medium text-gray-800 text-xs">
+                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
                                 Total QTY{" "}
                             </th>
                             {/* Engine Assy Header */}
                             <th
-                                className="border border-gray-600 p-2 text-center font-medium text-gray-800 text-xs bg-green-400"
+                                className="border border-gray-300 p-2 text-center font-medium text-black text-xs bg-gray-100"
                                 colSpan={engineAssyCodes.length}
                             >
                                 <div className="text-center">
@@ -171,20 +171,20 @@ export default function PartListTable() {
                             </th>
                         </tr>
                         {/* Engine Assy Sub-headers - only for engine assy columns */}
-                        <tr className="bg-green-400">
+                        <tr className="bg-gray-100">
                             {/* Empty cells for the main columns */}
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
-                            <th className="border border-gray-600 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
+                            <th className="border border-gray-300 p-1"></th>
                             {/* Engine Assy Sub-headers */}
                             {engineAssyCodes.map((code) => (
                                 <th
                                     key={code}
-                                    className="border border-gray-600 p-1 text-center font-medium text-gray-800 text-xs align-bottom"
+                                    className="border border-gray-300 p-1 text-center font-medium text-black text-xs align-bottom"
                                 >
                                     <div
                                         className="writing-mode-vertical transform rotate-180"
@@ -201,33 +201,33 @@ export default function PartListTable() {
                     </thead>
                     <tbody>
                         {parts.map((part) => (
-                            <tr key={part.id} className="hover:bg-gray-700">
-                                <td className="border border-gray-600 p-2 text-white text-xs">
+                            <tr key={part.id} className="hover:bg-gray-50">
+                                <td className="border border-gray-300 p-2 text-black text-xs">
                                     {part.partName}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs">
+                                <td className="border border-gray-300 p-2 text-black text-xs">
                                     {part.source || "-"}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs font-mono">
+                                <td className="border border-gray-300 p-2 text-black text-xs font-mono">
                                     {part.supplierCode}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs">
+                                <td className="border border-gray-300 p-2 text-black text-xs">
                                     {part.supplierPlantCode}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs">
+                                <td className="border border-gray-300 p-2 text-black text-xs">
                                     {part.supplierName}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs">
+                                <td className="border border-gray-300 p-2 text-black text-xs">
                                     {part.dockIhRouting}
                                 </td>
-                                <td className="border border-gray-600 p-2 text-white text-xs font-bold">
+                                <td className="border border-gray-300 p-2 text-black text-xs font-bold">
                                     {part.totalQty}
                                 </td>
                                 {/* Engine Assy values */}
                                 {engineAssyCodes.map((code) => (
                                     <td
                                         key={code}
-                                        className="border border-gray-600 p-1 text-center text-white text-xs"
+                                        className="border border-gray-300 p-1 text-center text-black text-xs"
                                     >
                                         {part.engineAssy[code]}
                                     </td>
@@ -238,14 +238,14 @@ export default function PartListTable() {
                 </table>
             </div>
 
-            <div className="p-4 bg-gray-700 border-t border-gray-600">
+            <div className="p-4 bg-gray-50 border-t border-gray-300">
                 <div className="flex flex-col space-y-4 items-end">
 
                     <div className="flex gap-2">
                         <Button
                             onClick={() => handleRequestJSP("1")}
                             size="sm"
-                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md border-2 border-blue-500 text-xs w-fit self-end cursor-pointer"
+                            className="bg-black hover:bg-gray-800 text-white rounded-md border-2 border-gray-300 text-xs w-fit self-end cursor-pointer"
                         >
                             <FileDown className="h-4 w-4" />
                             Export to Excel
