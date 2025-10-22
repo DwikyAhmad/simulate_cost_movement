@@ -42,12 +42,12 @@ export default function CorePage() {
         },
         {
             id: "lsp-ih",
-            name: "LSP & IH Cost",
+            name: "Inhouse Cost",
             lastUpdated: "12/15/2024 13:45",
         },
         {
             id: "packing-handling",
-            name: "Packing & Handling Cost",
+            name: "Packing Cost",
             lastUpdated: "12/15/2024 12:20",
         },
     ]);
@@ -165,15 +165,15 @@ export default function CorePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 flex flex-col">
+        <div className="min-h-screen bg-white flex flex-col">
             {/* Header */}
-            <div className="bg-gray-800 border-b border-gray-600 shadow-sm">
+            <div className="bg-white border-b border-gray-300 shadow-sm">
                 <div className="px-6 py-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-white">
+                        <h1 className="text-2xl font-bold text-black">
                             PBMD Engine Calculation System
                         </h1>
-                        <p className="text-gray-300 mt-1 text-sm">
+                        <p className="text-gray-600 mt-1 text-sm">
                             Manage data sources, monitor cost movement and automate FOB price calculations
                         </p>
                     </div>
@@ -181,13 +181,13 @@ export default function CorePage() {
             </div>
 
             {/* Navigation Section */}
-            <div className="bg-gray-800 border-b border-gray-600 px-6 py-3">
+            <div className="bg-gray-50 border-b border-gray-300 px-6 py-3">
                 <div className="flex gap-3">
                     <Button
                         variant="outline"
                         size="sm"
                         onClick={() => (window.location.href = "/requestdata")}
-                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                        className="border-gray-300 bg-white text-black hover:bg-gray-100"
                     >
                         <Link href="/requestdata" className="flex items-center gap-2">
                             <FileText className="h-4 w-4" />
@@ -197,7 +197,7 @@ export default function CorePage() {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                        className="border-gray-300 bg-white text-black hover:bg-gray-100"
                     >
                         <Link href="/masterdata" className="flex items-center gap-2">
                             <Table className="h-4 w-4" />
@@ -218,28 +218,28 @@ export default function CorePage() {
                             {dataSources.map((dataSource) => (
                                 <div
                                     key={dataSource.id}
-                                    className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-4 border border-gray-600 shadow-sm hover:shadow-md transition-shadow w-max"
+                                    className="flex flex-col items-center space-y-4 bg-white rounded-sm p-4 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-max"
                                 >
                                     {/* Database Icon */}
                                     <DatabaseLogModal dataSourceName={dataSource.name}>
-                                        <div className="bg-purple-700 p-4 rounded-sm hover:bg-purple-900 transition-colors cursor-pointer">
+                                        <div className="bg-gray-200 p-4 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300">
                                             <Image
                                                 src="/database.svg"
                                                 alt="Database"
                                                 width={200}
                                                 height={200}
-                                                className="w-12 h-12 filter brightness-0 invert"
+                                                className="w-12 h-12 filter brightness-0"
                                             />
                                         </div>
                                     </DatabaseLogModal>
 
                                     {/* Data Source Name */}
-                                    <h3 className="text-sm font-semibold text-center text-white">
+                                    <h3 className="text-sm font-semibold text-center text-black">
                                         {dataSource.name}
                                     </h3>
 
                                     {/* Last Updated */}
-                                    <div className="flex items-center space-x-2 text-xs text-gray-300">
+                                    <div className="flex items-center space-x-2 text-xs text-gray-600">
                                         <Calendar className="h-3 w-3" />
                                         <span>
                                             Last updated: {dataSource.lastUpdated}
@@ -252,7 +252,7 @@ export default function CorePage() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="w-full rounded-sm text-sm border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                                                className="w-full rounded-sm text-sm border-gray-300 bg-white text-black hover:bg-gray-100"
                                             >
                                                 <Download className="h-3 w-3 mr-2" />
                                                 Download Data
@@ -261,7 +261,7 @@ export default function CorePage() {
 
                                         <Button
                                             size="sm"
-                                            className="w-full rounded-sm text-sm bg-blue-600 hover:bg-blue-700 text-white"
+                                            className="w-full rounded-sm text-sm bg-black hover:bg-gray-800 text-white"
                                             onClick={() =>
                                                 handleOpenUploadModal(dataSource)
                                             }
@@ -279,28 +279,28 @@ export default function CorePage() {
 
                         {/* Flow Arrow */}
                         <div className="flex justify-center">
-                            <div className="bg-gray-600 p-2 rounded-sm">
-                                <ArrowRight className="h-5 w-5 text-white" />
+                            <div className="bg-gray-300 p-2 rounded-sm border border-gray-400">
+                                <ArrowRight className="h-5 w-5 text-black" />
                             </div>
                         </div>
 
                         {/* Cost Movement Process */}
-                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-col items-center space-y-4 bg-white rounded-sm p-6 border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
                             {/* Process Icon */}
-                            <div className="bg-green-700 p-4 rounded-sm">
+                            <div className="bg-gray-200 p-4 rounded-sm border border-gray-300">
                                 <div className="flex space-x-1 items-end">
-                                    <div className="w-2 h-6 bg-white rounded-sm"></div>
-                                    <div className="w-2 h-8 bg-white rounded-sm"></div>
-                                    <div className="w-2 h-4 bg-white rounded-sm"></div>
-                                    <div className="w-2 h-7 bg-white rounded-sm"></div>
+                                    <div className="w-2 h-6 bg-black rounded-sm"></div>
+                                    <div className="w-2 h-8 bg-black rounded-sm"></div>
+                                    <div className="w-2 h-4 bg-black rounded-sm"></div>
+                                    <div className="w-2 h-7 bg-black rounded-sm"></div>
                                 </div>
                             </div>
 
-                            <h3 className="text-lg font-semibold text-white">
+                            <h3 className="text-lg font-semibold text-black">
                                 Cost Movement
                             </h3>
 
-                            <div className="flex items-center space-x-2 text-xs text-gray-300">
+                            <div className="flex items-center space-x-2 text-xs text-gray-600">
                                 <Calendar className="h-3 w-3" />
                                 <span>Last updated: {processes[0].lastUpdated}</span>
                             </div>
@@ -308,7 +308,7 @@ export default function CorePage() {
                             <Button
                                 onClick={handleCostMovementDownload}
                                 size="sm"
-                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-sm"
+                                className="bg-black hover:bg-gray-800 text-white rounded-sm"
                             >
                                 <Activity className="h-4 w-4 mr-2" />
                                 Analyze Cost Movement
@@ -317,29 +317,29 @@ export default function CorePage() {
 
                         {/* Flow Arrow to FOB */}
                         <div className="flex justify-center">
-                            <div className="bg-gray-600 p-2 rounded-sm">
-                                <ArrowRight className="h-5 w-5 text-white" />
+                            <div className="bg-gray-300 p-2 rounded-sm border border-gray-400">
+                                <ArrowRight className="h-5 w-5 text-black" />
                             </div>
                         </div>
 
                         {/* FOB Calculation */}
-                        <div className="flex flex-col items-center space-y-4 bg-gray-800 rounded-sm p-6 border border-gray-600 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-col items-center space-y-4 bg-white rounded-sm p-6 border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
                             <div 
-                                className="bg-orange-700 p-4 rounded-sm hover:bg-orange-900 transition-colors cursor-pointer"
+                                className="bg-gray-200 p-4 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300"
                                 onClick={handleOpenFOBLog}
                             >
-                                <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center">
-                                    <div className="text-xl font-bold text-gray-800">
+                                <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center border border-gray-400">
+                                    <div className="text-xl font-bold text-black">
                                         =
                                     </div>
                                 </div>
                             </div>
 
-                            <h3 className="text-lg font-semibold text-white">
+                            <h3 className="text-lg font-semibold text-black">
                                 FOB Calculation
                             </h3>
 
-                            <div className="flex items-center space-x-2 text-xs text-gray-300">
+                            <div className="flex items-center space-x-2 text-xs text-gray-600">
                                 <Calendar className="h-3 w-3" />
                                 <span>
                                     Last updated: {processes[1].lastUpdated}
@@ -350,7 +350,7 @@ export default function CorePage() {
                                 <Button
                                     onClick={handleTriggerCalculation}
                                     size="sm"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-sm"
+                                    className="bg-black hover:bg-gray-800 text-white rounded-sm"
                                 >
                                     <Play className="h-4 w-4 mr-2" />
                                     Start Calculation
@@ -361,7 +361,7 @@ export default function CorePage() {
                                     variant="outline" 
                                     size="sm"
                                     onClick={() => router.push('/costmovement/fob')}
-                                    className="border-orange-500 bg-orange-700 text-white hover:bg-orange-600 rounded-sm"
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm"
                                 >
                                     <BarChart3 className="h-4 w-4 mr-2" />
                                     FOB Cost Movement Analysis
@@ -371,7 +371,7 @@ export default function CorePage() {
                                     variant="outline" 
                                     size="sm"
                                     onClick={() => router.push('/cal')}
-                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600 rounded-sm"
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm"
                                 >
                                     <Download className="h-4 w-4 mr-2" />
                                     Download Pricing Data
@@ -385,15 +385,15 @@ export default function CorePage() {
 
             {/* Upload Modal */}
             {showUploadModal && selectedDataSource && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-800 rounded-sm w-full max-w-md max-h-[90vh] overflow-y-auto shadow-lg border border-gray-600">
+                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-sm w-full max-w-md max-h-[90vh] overflow-y-auto shadow-lg border border-gray-300">
                         {/* Modal Header */}
-                        <div className="border-b border-gray-600 p-6 flex items-start justify-between">
+                        <div className="border-b border-gray-300 p-6 flex items-start justify-between">
                             <div className="mr-10">
-                                <h2 className="text-xl font-bold text-white">
+                                <h2 className="text-xl font-bold text-black">
                                     Upload Data - {selectedDataSource.name}
                                 </h2>
-                                <p className="text-gray-300 text-sm mt-1">
+                                <p className="text-gray-600 text-sm mt-1">
                                     Download template and upload cost data for processing
                                 </p>
                             </div>
@@ -401,7 +401,7 @@ export default function CorePage() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={handleCloseUploadModal}
-                                className="text-gray-400 hover:text-white hover:bg-gray-700"
+                                className="text-gray-600 hover:text-black hover:bg-gray-100"
                             >
                                 <X className="h-5 w-5" />
                             </Button>
@@ -418,7 +418,7 @@ export default function CorePage() {
                                         )
                                     }
                                     variant="outline"
-                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100"
                                 >
                                     <Download className="h-4 w-4 mr-2" />
                                     Download Template
@@ -442,8 +442,8 @@ export default function CorePage() {
                                     <Button
                                         className={`w-full ${
                                             uploading === selectedDataSource.id
-                                                ? "bg-gray-600 cursor-not-allowed"
-                                                : "bg-blue-600 hover:bg-blue-700"
+                                                ? "bg-gray-400 cursor-not-allowed"
+                                                : "bg-black hover:bg-gray-800"
                                         }`}
                                         disabled={
                                             uploading === selectedDataSource.id
@@ -459,18 +459,18 @@ export default function CorePage() {
 
                             {/* Upload Progress */}
                             {uploading === selectedDataSource.id && (
-                                <div className="bg-gray-700 border border-gray-600 rounded-sm p-4">
+                                <div className="bg-gray-100 border border-gray-300 rounded-sm p-4">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-white text-sm font-medium">
+                                        <span className="text-black text-sm font-medium">
                                             Upload Progress
                                         </span>
-                                        <span className="text-white text-sm font-bold">
+                                        <span className="text-black text-sm font-bold">
                                             {uploadProgress}%
                                         </span>
                                     </div>
-                                    <div className="w-full bg-gray-600 rounded-sm h-2">
+                                    <div className="w-full bg-gray-300 rounded-sm h-2">
                                         <div
-                                            className="bg-blue-600 h-2 rounded-sm transition-all duration-300"
+                                            className="bg-black h-2 rounded-sm transition-all duration-300"
                                             style={{
                                                 width: `${uploadProgress}%`,
                                             }}
@@ -485,15 +485,15 @@ export default function CorePage() {
 
             {/* FOB Calculation Log Modal */}
             {showFOBLogModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-gray-800 rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg border border-gray-600">
+                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg border border-gray-300">
                         {/* Modal Header */}
-                        <div className="border-b border-gray-600 p-6 flex items-start justify-between">
+                        <div className="border-b border-gray-300 p-6 flex items-start justify-between">
                             <div className="mr-10">
-                                <h2 className="text-xl font-bold text-white">
+                                <h2 className="text-xl font-bold text-black">
                                     FOB Calculation Log
                                 </h2>
-                                <p className="text-gray-300 text-sm mt-1">
+                                <p className="text-gray-600 text-sm mt-1">
                                     View calculation history and master data versions
                                 </p>
                             </div>
@@ -501,7 +501,7 @@ export default function CorePage() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={handleCloseFOBLog}
-                                className="text-gray-400 hover:text-white hover:bg-gray-700"
+                                className="text-gray-600 hover:text-black hover:bg-gray-100"
                             >
                                 <X className="h-5 w-5" />
                             </Button>
@@ -512,97 +512,97 @@ export default function CorePage() {
                             {/* Calculation History */}
                             <div className="space-y-4">
                                 {/* Latest Calculation */}
-                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-white font-medium">FOB Calculation #001</div>
-                                            <div className="text-gray-400 text-sm">15 engine parts processed</div>
+                                            <div className="text-black font-medium">FOB Calculation #001</div>
+                                            <div className="text-gray-600 text-sm">15 engine parts processed</div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-green-400 text-sm font-medium">Completed</div>
-                                            <div className="text-gray-400 text-xs">12/15/2024 15:00</div>
+                                            <div className="text-black text-sm font-medium">Completed</div>
+                                            <div className="text-gray-600 text-xs">12/15/2024 15:00</div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-400">Exchange Rate:</span>
-                                            <span className="text-white ml-2">16,374</span>
+                                            <span className="text-gray-600">Exchange Rate:</span>
+                                            <span className="text-black ml-2">16,374</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">TMMIN E/G OP:</span>
-                                            <span className="text-white ml-2">3.5%</span>
+                                            <span className="text-gray-600">TMMIN E/G OP:</span>
+                                            <span className="text-black ml-2">3.5%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">Royalty:</span>
-                                            <span className="text-white ml-2">6%</span>
+                                            <span className="text-gray-600">Royalty:</span>
+                                            <span className="text-black ml-2">6%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">O/H Insurance:</span>
-                                            <span className="text-white ml-2">0.2018%</span>
+                                            <span className="text-gray-600">O/H Insurance:</span>
+                                            <span className="text-black ml-2">0.2018%</span>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 {/* Previous Calculation */}
-                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-white font-medium">FOB Calculation #000</div>
-                                            <div className="text-gray-400 text-sm">12 engine parts processed</div>
+                                            <div className="text-black font-medium">FOB Calculation #000</div>
+                                            <div className="text-gray-600 text-sm">12 engine parts processed</div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-green-400 text-sm font-medium">Completed</div>
-                                            <div className="text-gray-400 text-xs">12/14/2024 10:30</div>
+                                            <div className="text-black text-sm font-medium">Completed</div>
+                                            <div className="text-gray-600 text-xs">12/14/2024 10:30</div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-400">Exchange Rate:</span>
-                                            <span className="text-white ml-2">16,200</span>
+                                            <span className="text-gray-600">Exchange Rate:</span>
+                                            <span className="text-black ml-2">16,200</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">TMMIN E/G OP:</span>
-                                            <span className="text-white ml-2">3.5%</span>
+                                            <span className="text-gray-600">TMMIN E/G OP:</span>
+                                            <span className="text-black ml-2">3.5%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">Royalty:</span>
-                                            <span className="text-white ml-2">6%</span>
+                                            <span className="text-gray-600">Royalty:</span>
+                                            <span className="text-black ml-2">6%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">O/H Insurance:</span>
-                                            <span className="text-white ml-2">0.2018%</span>
+                                            <span className="text-gray-600">O/H Insurance:</span>
+                                            <span className="text-black ml-2">0.2018%</span>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 {/* Older Calculation */}
-                                <div className="bg-gray-700 border border-gray-500 rounded-lg p-4">
+                                <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-white font-medium">FOB Calculation #999</div>
-                                            <div className="text-gray-400 text-sm">10 engine parts processed</div>
+                                            <div className="text-black font-medium">FOB Calculation #999</div>
+                                            <div className="text-gray-600 text-sm">10 engine parts processed</div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-green-400 text-sm font-medium">Completed</div>
-                                            <div className="text-gray-400 text-xs">12/13/2024 16:45</div>
+                                            <div className="text-black text-sm font-medium">Completed</div>
+                                            <div className="text-gray-600 text-xs">12/13/2024 16:45</div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-600 pt-3">
+                                    <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-400">Exchange Rate:</span>
-                                            <span className="text-white ml-2">16,100</span>
+                                            <span className="text-gray-600">Exchange Rate:</span>
+                                            <span className="text-black ml-2">16,100</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">TMMIN E/G OP:</span>
-                                            <span className="text-white ml-2">3.2%</span>
+                                            <span className="text-gray-600">TMMIN E/G OP:</span>
+                                            <span className="text-black ml-2">3.2%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">Royalty:</span>
-                                            <span className="text-white ml-2">5.8%</span>
+                                            <span className="text-gray-600">Royalty:</span>
+                                            <span className="text-black ml-2">5.8%</span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-400">O/H Insurance:</span>
-                                            <span className="text-white ml-2">0.1950%</span>
+                                            <span className="text-gray-600">O/H Insurance:</span>
+                                            <span className="text-black ml-2">0.1950%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -613,7 +613,7 @@ export default function CorePage() {
                                 <Button
                                     variant="outline"
                                     onClick={handleCloseFOBLog}
-                                    className="border-gray-500 bg-gray-700 text-white hover:bg-gray-600"
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100"
                                 >
                                     Close
                                 </Button>
