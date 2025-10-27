@@ -136,11 +136,12 @@ export default function CorePage() {
         router.push("/costmovement/engine");
     };
 
-
     const handleTriggerCalculation = () => {
         // Show alert for calculation start
-        alert("FOB Calculation has been triggered successfully! The calculation process is now running.");
-        
+        alert(
+            "FOB Calculation has been triggered successfully! The calculation process is now running."
+        );
+
         // Trigger FOB calculation
         // Simulate calculation process
         setTimeout(() => {
@@ -174,7 +175,8 @@ export default function CorePage() {
                             PBMD Engine Calculation System
                         </h1>
                         <p className="text-gray-600 mt-1 text-sm">
-                            Manage data sources, monitor cost movement and automate FOB price calculations
+                            Manage data sources, monitor cost movement and
+                            automate FOB price calculations
                         </p>
                     </div>
                 </div>
@@ -189,7 +191,10 @@ export default function CorePage() {
                         onClick={() => (window.location.href = "/requestdata")}
                         className="border-gray-300 bg-white text-black hover:bg-gray-100"
                     >
-                        <Link href="/requestdata" className="flex items-center gap-2">
+                        <Link
+                            href="/requestdata"
+                            className="flex items-center gap-2"
+                        >
                             <FileText className="h-4 w-4" />
                             Request Data
                         </Link>
@@ -199,75 +204,91 @@ export default function CorePage() {
                         size="sm"
                         className="border-gray-300 bg-white text-black hover:bg-gray-100"
                     >
-                        <Link href="/masterdata" className="flex items-center gap-2">
+                        <Link
+                            href="/masterdata"
+                            className="flex items-center gap-2"
+                        >
                             <Table className="h-4 w-4" />
                             Maintain Master Data
                         </Link>
                     </Button>
                 </div>
             </div>
-        
-
 
             {/* Main Content */}
-            <div className="flex-1 px-6 mt-25">
-                <div className="max-w-7xl mx-auto">
-                    <div className="flex gap-4 items-center justify-center">
+            <div className="px-3 py-6 flex items-center justify-center mt-24">
+                <div className="overflow-x-auto">
+                    <div className="flex gap-2 items-stretch justify-center min-w-max px-2">
                         {/* Data Sources Section */}
-                        <div className="flex gap-2 items-center">
+                        <div className="flex gap-2 items-stretch">
                             {dataSources.map((dataSource) => (
                                 <div
                                     key={dataSource.id}
-                                    className="flex flex-col items-center space-y-4 bg-white rounded-sm p-4 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-max"
+                                    className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64"
                                 >
-                                    {/* Database Icon */}
-                                    <DatabaseLogModal dataSourceName={dataSource.name}>
-                                        <div className="bg-gray-200 p-4 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300">
-                                            <Image
-                                                src="/database.svg"
-                                                alt="Database"
-                                                width={200}
-                                                height={200}
-                                                className="w-12 h-12 filter brightness-0"
-                                            />
+                                    <div className="flex flex-col items-center space-y-2">
+                                        {/* Database Icon */}
+                                        <DatabaseLogModal
+                                            dataSourceName={dataSource.name}
+                                        >
+                                            <div className="bg-gray-200 p-2 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300">
+                                                <Image
+                                                    src="/database.svg"
+                                                    alt="Database"
+                                                    width={32}
+                                                    height={32}
+                                                    className="w-8 h-8 filter brightness-0"
+                                                />
+                                            </div>
+                                        </DatabaseLogModal>
+
+                                        {/* Data Source Name */}
+                                        <h3 className="text-md font-semibold text-center text-black leading-tight">
+                                            {dataSource.name}
+                                        </h3>
+
+                                        {/* Last Updated */}
+                                        <div className="flex flex-col items-center text-[12px] text-gray-600">
+                                            <span className="text-[12px] text-gray-600">
+                                                Last Updated:
+                                            </span>
+                                            <div className="flex items-center space-x-1">
+                                                <Calendar className="h-2.5 w-2.5" />
+                                                <span className="text-[12px]">
+                                                    {dataSource.lastUpdated}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </DatabaseLogModal>
-
-                                    {/* Data Source Name */}
-                                    <h3 className="text-sm font-semibold text-center text-black">
-                                        {dataSource.name}
-                                    </h3>
-
-                                    {/* Last Updated */}
-                                    <div className="flex items-center space-x-2 text-xs text-gray-600">
-                                        <Calendar className="h-3 w-3" />
-                                        <span>
-                                            Last updated: {dataSource.lastUpdated}
-                                        </span>
                                     </div>
 
                                     {/* Actions */}
-                                    <div className="flex flex-col space-y-2 w-full max-w-xs">
-                                        <DownloadDataModal dataSourceName={dataSource.name}>
+                                    <div className="flex flex-col space-y-1.5 w-full mt-auto">
+                                        <DownloadDataModal
+                                            dataSourceName={dataSource.name}
+                                        >
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="w-full rounded-sm text-sm border-gray-300 bg-white text-black hover:bg-gray-100"
+                                                className="w-full rounded-sm text-sm h-7 border-gray-300 bg-white text-black hover:bg-gray-100 px-2"
                                             >
-                                                <Download className="h-3 w-3 mr-2" />
-                                                Download Data
+                                                <Download className="h-2.5 w-2.5 mr-1" />
+                                                Download
                                             </Button>
                                         </DownloadDataModal>
 
                                         <Button
                                             size="sm"
-                                            className="w-full rounded-sm text-sm bg-black hover:bg-gray-800 text-white"
+                                            className="w-full rounded-sm text-sm h-7 bg-black hover:bg-gray-800 text-white px-2"
                                             onClick={() =>
-                                                handleOpenUploadModal(dataSource)
+                                                handleOpenUploadModal(
+                                                    dataSource
+                                                )
                                             }
-                                            disabled={uploading === dataSource.id}
+                                            disabled={
+                                                uploading === dataSource.id
+                                            }
                                         >
-                                            <Upload className="h-3 w-3 mr-2" />
+                                            <Upload className="h-2.5 w-2.5 mr-1" />
                                             {uploading === dataSource.id
                                                 ? "Uploading..."
                                                 : "Upload"}
@@ -278,105 +299,119 @@ export default function CorePage() {
                         </div>
 
                         {/* Flow Arrow */}
-                        <div className="flex justify-center">
-                            <div className="bg-gray-300 p-2 rounded-sm border border-gray-400">
-                                <ArrowRight className="h-5 w-5 text-black" />
+                        <div className="flex items-center justify-center">
+                            <div className="bg-gray-300 p-1.5 rounded-sm border border-gray-400">
+                                <ArrowRight className="h-4 w-4 text-black" />
                             </div>
                         </div>
 
                         {/* Cost Movement Process */}
-                        <div className="flex flex-col items-center space-y-4 bg-white rounded-sm p-6 border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
-                            {/* Process Icon */}
-                            <div className="bg-gray-200 p-4 rounded-sm border border-gray-300">
-                                <div className="flex space-x-1 items-end">
-                                    <div className="w-2 h-6 bg-black rounded-sm"></div>
-                                    <div className="w-2 h-8 bg-black rounded-sm"></div>
-                                    <div className="w-2 h-4 bg-black rounded-sm"></div>
-                                    <div className="w-2 h-7 bg-black rounded-sm"></div>
+                        <div className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64">
+                            <div className="flex flex-col items-center space-y-2">
+                                {/* Process Icon */}
+                                <div className="bg-gray-200 p-2 rounded-sm border border-gray-300 h-[50px] w-[50px] flex">
+                                    <div className="flex space-x-0.5 items-end">
+                                        <div className="w-1.5 h-5 bg-black rounded-sm"></div>
+                                        <div className="w-1.5 h-7 bg-black rounded-sm"></div>
+                                        <div className="w-1.5 h-4 bg-black rounded-sm"></div>
+                                        <div className="w-1.5 h-6 bg-black rounded-sm"></div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <h3 className="text-lg font-semibold text-black">
-                                Cost Movement
-                            </h3>
+                                <h3 className="text-md font-semibold text-black text-center leading-tight">
+                                    Cost Movement
+                                </h3>
 
-                            <div className="flex items-center space-x-2 text-xs text-gray-600">
-                                <Calendar className="h-3 w-3" />
-                                <span>Last updated: {processes[0].lastUpdated}</span>
-                            </div>
-
-                            <Button
-                                onClick={handleCostMovementDownload}
-                                size="sm"
-                                className="bg-black hover:bg-gray-800 text-white rounded-sm"
-                            >
-                                <Activity className="h-4 w-4 mr-2" />
-                                Analyze Cost Movement
-                            </Button>
-                        </div>
-
-                        {/* Flow Arrow to FOB */}
-                        <div className="flex justify-center">
-                            <div className="bg-gray-300 p-2 rounded-sm border border-gray-400">
-                                <ArrowRight className="h-5 w-5 text-black" />
-                            </div>
-                        </div>
-
-                        {/* FOB Calculation */}
-                        <div className="flex flex-col items-center space-y-4 bg-white rounded-sm p-6 border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
-                            <div 
-                                className="bg-gray-200 p-4 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300"
-                                onClick={handleOpenFOBLog}
-                            >
-                                <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center border border-gray-400">
-                                    <div className="text-xl font-bold text-black">
-                                        =
+                                <div className="flex flex-col items-center text-[12px] text-gray-600">
+                                    <span className="text-[12px] text-gray-600">Last Updated:</span>
+                                    <div className="flex items-center space-x-1">
+                                        <Calendar className="h-2.5 w-2.5" />
+                                        <span className="text-[12px]">
+                                            {processes[0].lastUpdated}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <h3 className="text-lg font-semibold text-black">
-                                FOB Calculation
-                            </h3>
+                            <div className="w-full mt-auto">
+                                <Button
+                                    onClick={handleCostMovementDownload}
+                                    size="sm"
+                                    className="bg-black hover:bg-gray-800 text-white rounded-sm text-sm h-7 w-full px-2"
+                                >
+                                    <Activity className="h-2.5 w-2.5 mr-1" />
+                                    Analyze
+                                </Button>
+                            </div>
+                        </div>
 
-                            <div className="flex items-center space-x-2 text-xs text-gray-600">
-                                <Calendar className="h-3 w-3" />
-                                <span>
-                                    Last updated: {processes[1].lastUpdated}
-                                </span>
+                        {/* Flow Arrow to FOB */}
+                        <div className="flex items-center justify-center">
+                            <div className="bg-gray-300 p-1.5 rounded-sm border border-gray-400">
+                                <ArrowRight className="h-4 w-4 text-black" />
+                            </div>
+                        </div>
+
+                        {/* FOB Calculation */}
+                        <div className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64">
+                            <div className="flex flex-col items-center space-y-2">
+                                <div
+                                    className="bg-gray-200 p-2 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300"
+                                    onClick={handleOpenFOBLog}
+                                >
+                                    <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center border border-gray-400">
+                                        <div className="text-base font-bold text-black">
+                                            =
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 className="text-md font-semibold text-black text-center leading-tight">
+                                    FOB Calculation
+                                </h3>
+
+                                <div className="flex flex-col items-center text-[12px] text-gray-600">
+                                    <span className="text-[12px] text-gray-600">Last Updated:</span>
+                                    <div className="flex items-center space-x-1">
+                                        <Calendar className="h-2.5 w-2.5" />
+                                        <span className="text-[12px]">
+                                            {processes[1].lastUpdated}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="flex gap-2 flex-col w-full">
+                            <div className="flex gap-1.5 flex-col w-full mt-auto">
                                 <Button
                                     onClick={handleTriggerCalculation}
                                     size="sm"
-                                    className="bg-black hover:bg-gray-800 text-white rounded-sm"
+                                    className="bg-black hover:bg-gray-800 text-white rounded-sm text-sm h-7 px-2"
                                 >
-                                    <Play className="h-4 w-4 mr-2" />
-                                    Start Calculation
+                                    <Play className="h-2.5 w-2.5 mr-1" />
+                                    Start
                                 </Button>
 
-                                
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     size="sm"
-                                    onClick={() => router.push('/costmovement/fob')}
-                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm"
+                                    onClick={() =>
+                                        router.push("/costmovement/fob")
+                                    }
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm text-sm h-7 px-2"
                                 >
-                                    <BarChart3 className="h-4 w-4 mr-2" />
-                                    FOB Cost Movement Analysis
+                                    <BarChart3 className="h-2.5 w-2.5 mr-1" />
+                                    Analysis
                                 </Button>
 
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     size="sm"
-                                    onClick={() => router.push('/cal')}
-                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm"
+                                    onClick={() => router.push("/cal")}
+                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm text-sm h-7 px-2"
                                 >
-                                    <Download className="h-4 w-4 mr-2" />
-                                    Download Pricing Data
+                                    <Download className="h-2.5 w-2.5 mr-1" />
+                                    Download
                                 </Button>
-
                             </div>
                         </div>
                     </div>
@@ -394,7 +429,8 @@ export default function CorePage() {
                                     Upload Data - {selectedDataSource.name}
                                 </h2>
                                 <p className="text-gray-600 text-sm mt-1">
-                                    Download template and upload cost data for processing
+                                    Download template and upload cost data for
+                                    processing
                                 </p>
                             </div>
                             <Button
@@ -494,7 +530,8 @@ export default function CorePage() {
                                     FOB Calculation Log
                                 </h2>
                                 <p className="text-gray-600 text-sm mt-1">
-                                    View calculation history and master data versions
+                                    View calculation history and master data
+                                    versions
                                 </p>
                             </div>
                             <Button
@@ -515,94 +552,166 @@ export default function CorePage() {
                                 <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-black font-medium">FOB Calculation #001</div>
-                                            <div className="text-gray-600 text-sm">15 engine parts processed</div>
+                                            <div className="text-black font-medium">
+                                                FOB Calculation #001
+                                            </div>
+                                            <div className="text-gray-600 text-sm">
+                                                15 engine parts processed
+                                            </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-black text-sm font-medium">Completed</div>
-                                            <div className="text-gray-600 text-xs">12/15/2024 15:00</div>
+                                            <div className="text-black text-sm font-medium">
+                                                Completed
+                                            </div>
+                                            <div className="text-gray-600 text-xs">
+                                                12/15/2024 15:00
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-600">Exchange Rate:</span>
-                                            <span className="text-black ml-2">16,374</span>
+                                            <span className="text-gray-600">
+                                                Exchange Rate:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                16,374
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">TMMIN E/G OP:</span>
-                                            <span className="text-black ml-2">3.5%</span>
+                                            <span className="text-gray-600">
+                                                TMMIN E/G OP:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                3.5%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">Royalty:</span>
-                                            <span className="text-black ml-2">6%</span>
+                                            <span className="text-gray-600">
+                                                Royalty:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                6%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">O/H Insurance:</span>
-                                            <span className="text-black ml-2">0.2018%</span>
+                                            <span className="text-gray-600">
+                                                O/H Insurance:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                0.2018%
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {/* Previous Calculation */}
                                 <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-black font-medium">FOB Calculation #000</div>
-                                            <div className="text-gray-600 text-sm">12 engine parts processed</div>
+                                            <div className="text-black font-medium">
+                                                FOB Calculation #000
+                                            </div>
+                                            <div className="text-gray-600 text-sm">
+                                                12 engine parts processed
+                                            </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-black text-sm font-medium">Completed</div>
-                                            <div className="text-gray-600 text-xs">12/14/2024 10:30</div>
+                                            <div className="text-black text-sm font-medium">
+                                                Completed
+                                            </div>
+                                            <div className="text-gray-600 text-xs">
+                                                12/14/2024 10:30
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-600">Exchange Rate:</span>
-                                            <span className="text-black ml-2">16,200</span>
+                                            <span className="text-gray-600">
+                                                Exchange Rate:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                16,200
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">TMMIN E/G OP:</span>
-                                            <span className="text-black ml-2">3.5%</span>
+                                            <span className="text-gray-600">
+                                                TMMIN E/G OP:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                3.5%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">Royalty:</span>
-                                            <span className="text-black ml-2">6%</span>
+                                            <span className="text-gray-600">
+                                                Royalty:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                6%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">O/H Insurance:</span>
-                                            <span className="text-black ml-2">0.2018%</span>
+                                            <span className="text-gray-600">
+                                                O/H Insurance:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                0.2018%
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {/* Older Calculation */}
                                 <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <div className="text-black font-medium">FOB Calculation #999</div>
-                                            <div className="text-gray-600 text-sm">10 engine parts processed</div>
+                                            <div className="text-black font-medium">
+                                                FOB Calculation #999
+                                            </div>
+                                            <div className="text-gray-600 text-sm">
+                                                10 engine parts processed
+                                            </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-black text-sm font-medium">Completed</div>
-                                            <div className="text-gray-600 text-xs">12/13/2024 16:45</div>
+                                            <div className="text-black text-sm font-medium">
+                                                Completed
+                                            </div>
+                                            <div className="text-gray-600 text-xs">
+                                                12/13/2024 16:45
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3 text-sm border-t border-gray-300 pt-3">
                                         <div>
-                                            <span className="text-gray-600">Exchange Rate:</span>
-                                            <span className="text-black ml-2">16,100</span>
+                                            <span className="text-gray-600">
+                                                Exchange Rate:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                16,100
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">TMMIN E/G OP:</span>
-                                            <span className="text-black ml-2">3.2%</span>
+                                            <span className="text-gray-600">
+                                                TMMIN E/G OP:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                3.2%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">Royalty:</span>
-                                            <span className="text-black ml-2">5.8%</span>
+                                            <span className="text-gray-600">
+                                                Royalty:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                5.8%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span className="text-gray-600">O/H Insurance:</span>
-                                            <span className="text-black ml-2">0.1950%</span>
+                                            <span className="text-gray-600">
+                                                O/H Insurance:
+                                            </span>
+                                            <span className="text-black ml-2">
+                                                0.1950%
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

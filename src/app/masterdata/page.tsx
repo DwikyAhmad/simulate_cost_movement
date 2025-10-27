@@ -109,6 +109,7 @@ export default function MasterDataPage() {
     }
   ]);
 
+  const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [editingItem, setEditingItem] = useState<MasterDataItem | null>(null);
@@ -126,6 +127,10 @@ export default function MasterDataPage() {
     const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
+  };
 
   const handleAddNew = () => {
     // Required field validation [Appendix Error Message 4]
@@ -282,24 +287,24 @@ export default function MasterDataPage() {
 
 
   return (
-    <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+    <div className="min-h-screen bg-gray-50 p-3 md:p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="bg-gray-800 border-b border-gray-600 p-4 md:p-6">
+        <div className="bg-white shadow-sm border-b-2 border-gray-200 p-4 md:p-6 rounded-lg">
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center md:gap-4">
               <Button 
                 onClick={() => window.location.href = '/'}
                 variant="outline" 
-                className="flex items-center gap-2 rounded-none border-2 border-gray-500 bg-gray-700 text-white hover:bg-gray-600 w-fit"
+                className="flex items-center gap-2 rounded-lg border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 transition-all w-fit"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">Back to Home</span>
                 <span className="sm:hidden">Home</span>
               </Button>
               <div>
-                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">Master Data</h1>
-                <p className="text-gray-300 mt-1 text-sm md:text-base">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">Master Data</h1>
+                <p className="text-gray-600 mt-1 text-sm md:text-base">
                   Manage master data for cost calculations and analysis
                 </p>
               </div>
@@ -308,28 +313,28 @@ export default function MasterDataPage() {
         </div>
 
         {/* Controls */}
-        <div className="bg-gray-800 border border-gray-600 p-6 space-y-4">
+        <div className="bg-white shadow-sm border border-gray-200 p-6 space-y-4 rounded-lg">
           {/* New Button */}
           <div>
             <Button
               onClick={() => setIsAddingNew(!isAddingNew)}
-              className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 px-6 py-2"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm transition-all px-6 py-2"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4 mr-2" />
               New
             </Button>
           </div>
 
           {/* New Item Form */}
           {isAddingNew && (
-            <div className="bg-gray-700 border border-gray-500 p-4 rounded-lg space-y-3">
-              <h3 className="text-white font-medium">Add New Master Data</h3>
+            <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-lg space-y-3">
+              <h3 className="text-gray-900 font-semibold text-lg">Add New Master Data</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <Select value={newItem.category} onValueChange={(value) => setNewItem({ ...newItem, category: value })}>
-                  <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                  <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-lg hover:border-blue-400 transition-all">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                  <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                     <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
                     <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                   </SelectContent>
@@ -338,19 +343,19 @@ export default function MasterDataPage() {
                   placeholder="Name"
                   value={newItem.name}
                   onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                  className="bg-gray-600 border-gray-500 text-white placeholder-gray-400"
+                  className="bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
                 />
                 <Input
                   placeholder="Value"
                   value={newItem.valueString}
                   onChange={(e) => setNewItem({ ...newItem, valueString: e.target.value })}
-                  className="bg-gray-600 border-gray-500 text-white placeholder-gray-400"
+                  className="bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
                 />
               </div>
                 <div className="flex gap-2">
                   <Button
                     onClick={handleAddNew}
-                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-none border-2 border-blue-500 px-4 py-2"
+                    className="bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-sm transition-all px-4 py-2"
                   >
                     Add
                   </Button>
@@ -360,7 +365,7 @@ export default function MasterDataPage() {
                     setNewItem({ category: '', name: '', valueString: '' });
                   }}
                   variant="outline"
-                  className="border-gray-500 text-black hover:bg-gray-600 rounded-none border-2 px-4 py-2"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-100 rounded-lg transition-all px-4 py-2"
                 >
                   Cancel
                 </Button>
@@ -371,30 +376,34 @@ export default function MasterDataPage() {
           {/* Search and Filter */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Search by name or value
               </label>
               <div className="flex gap-2">
                 <Input
                   placeholder="Search master data..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 bg-gray-600 border-gray-500 text-white placeholder-gray-400"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  className="flex-1 bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
                 />
-                <div className="bg-gray-600 border border-gray-500 rounded px-3 py-2 flex items-center">
-                  <Search className="h-4 w-4 text-gray-400" />
-                </div>
+                <Button
+                  onClick={handleSearch}
+                  className="bg-blue-600 border-2 border-blue-600 rounded-lg px-3 py-2 flex items-center hover:bg-blue-700 transition-all"
+                >
+                  <Search className="h-4 w-4 text-white" />
+                </Button>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Filter by category
               </label>
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-lg hover:border-blue-400 transition-all">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                   <SelectItem value="all">All Categories</SelectItem>
                   <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
                   <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
@@ -405,75 +414,90 @@ export default function MasterDataPage() {
         </div>
 
         {/* Data Table */}
-        <div className="bg-gray-800 border border-gray-600 rounded-none">
+        <div className="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-700">
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">ID</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">Category</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">Name</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">ValueString</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">createdAt</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">updatedAt</th>
-                  <th className="border border-gray-600 p-3 text-left font-medium text-gray-200 text-sm">Action</th>
+                <tr className="bg-gradient-to-r from-blue-600 to-blue-700">
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">ID</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">Category</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">Name</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">ValueString</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">createdAt</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">updatedAt</th>
+                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-700">
-                    <td className="border border-gray-600 p-3 text-white text-sm">{item.id}</td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">
+                {filteredData.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center">
+                      <div className="flex flex-col items-center justify-center space-y-3">
+                        <div className="bg-gray-100 rounded-full p-4">
+                          <Search className="h-8 w-8 text-gray-400" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">No Data Found</h3>
+                        <p className="text-gray-600 text-sm">
+                          No master data matches your search criteria.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredData.map((item, index) => (
+                    <tr key={item.id} className={`hover:bg-blue-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm font-medium">{item.id}</td>
+                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
                       {editingItem?.id === item.id ? (
                         <Select value={editingItem.category} onValueChange={(value) => setEditingItem({ ...editingItem, category: value })}>
-                          <SelectTrigger className="bg-gray-600 border-gray-500 text-white text-sm h-8 rounded-none">
+                          <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 text-sm h-8 rounded-lg">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                          <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                             <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
                             <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                           </SelectContent>
                         </Select>
                       ) : (
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          item.category === 'Calculation Parameter' ? 'bg-blue-900 text-blue-200' :
-                          'bg-purple-900 text-purple-200'
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          item.category === 'Calculation Parameter' ? 'bg-blue-100 text-blue-700 border border-blue-300' :
+                          'bg-purple-100 text-purple-700 border border-purple-300'
                         }`}>
                           {item.category}
                         </span>
                       )}
                     </td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">
+                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
                       {editingItem?.id === item.id ? (
                         <Input
                           value={editingItem.name}
                           onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                          className="bg-gray-600 border-gray-500 text-white text-sm h-8"
+                          className="bg-white border-2 border-gray-300 text-gray-900 text-sm h-8 rounded-lg"
                         />
                       ) : (
                         item.name
                       )}
                     </td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">
+                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
                       {editingItem?.id === item.id ? (
                         <Input
                           value={editingItem.valueString}
                           onChange={(e) => setEditingItem({ ...editingItem, valueString: e.target.value })}
-                          className="bg-gray-600 border-gray-500 text-white text-sm h-8"
+                          className="bg-white border-2 border-gray-300 text-gray-900 text-sm h-8 rounded-lg"
                         />
                       ) : (
-                        item.valueString
+                        <span className="font-medium text-gray-900">{item.valueString}</span>
                       )}
                     </td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">{item.createdAt}</td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">{item.updatedAt}</td>
-                    <td className="border border-gray-600 p-3 text-white text-sm">
+                    <td className="border-b border-gray-200 p-3 text-gray-600 text-sm">{item.createdAt}</td>
+                    <td className="border-b border-gray-200 p-3 text-gray-600 text-sm">{item.updatedAt}</td>
+                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
                       {editingItem?.id === item.id ? (
                         <div className="flex gap-2">
                           <Button
                             onClick={handleSaveEdit}
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white rounded-none border-2 border-green-500 px-3 py-1 h-8 cursor-pointer"
+                            className="bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-sm transition-all px-3 py-1 h-8"
                           >
                             Save
                           </Button>
@@ -481,7 +505,7 @@ export default function MasterDataPage() {
                             onClick={handleCancelEdit}
                             size="sm"
                             variant="outline"
-                            className="border-gray-500 text-black hover:bg-gray-600 rounded-none border-2 px-3 py-1 h-8 cursor-pointer"
+                            className="border-2 border-gray-300 text-gray-700 hover:bg-gray-100 rounded-lg transition-all px-3 py-1 h-8"
                           >
                             Cancel
                           </Button>
@@ -492,7 +516,7 @@ export default function MasterDataPage() {
                             onClick={() => handleEdit(item)}
                             size="sm"
                             variant="outline"
-                            className="border-gray-500 text-black hover:bg-gray-600 rounded-none border-2 px-3 py-1 h-8 cursor-pointer"
+                            className="border-2 border-blue-400 text-blue-600 hover:bg-blue-50 rounded-lg transition-all px-3 py-1 h-8"
                           >
                             <Edit className="h-3 w-3 mr-1" />
                             Edit
@@ -501,7 +525,7 @@ export default function MasterDataPage() {
                             onClick={() => handleDelete(item.id)}
                             size="sm"
                             variant="outline"
-                            className="border-red-500 text-red-400 hover:bg-red-900 rounded-none border-2 px-3 py-1 h-8"
+                            className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-lg transition-all px-3 py-1 h-8"
                           >
                             <Trash2 className="h-3 w-3 mr-1" />
                             Delete
@@ -510,7 +534,8 @@ export default function MasterDataPage() {
                       )}
                     </td>
                   </tr>
-                ))}
+                  ))
+                )}
               </tbody>
             </table>
           </div>
