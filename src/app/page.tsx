@@ -166,12 +166,12 @@ export default function CorePage() {
     };
 
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
             {/* Header */}
-            <div className="bg-white border-b border-gray-300 shadow-sm">
+            <div className="bg-white border-b-2 border-blue-100 shadow-sm">
                 <div className="px-6 py-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-black">
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
                             PBMD Engine Calculation System
                         </h1>
                         <p className="text-gray-600 mt-1 text-sm">
@@ -183,13 +183,13 @@ export default function CorePage() {
             </div>
 
             {/* Navigation Section */}
-            <div className="bg-gray-50 border-b border-gray-300 px-6 py-3">
+            <div className="bg-white border-b border-blue-100 px-6 py-3">
                 <div className="flex gap-3">
                     <Button
                         variant="outline"
                         size="sm"
                         onClick={() => (window.location.href = "/requestdata")}
-                        className="border-gray-300 bg-white text-black hover:bg-gray-100"
+                        className="border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 transition-colors"
                     >
                         <Link
                             href="/requestdata"
@@ -202,7 +202,7 @@ export default function CorePage() {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="border-gray-300 bg-white text-black hover:bg-gray-100"
+                        className="border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 transition-colors"
                     >
                         <Link
                             href="/masterdata"
@@ -224,20 +224,20 @@ export default function CorePage() {
                             {dataSources.map((dataSource) => (
                                 <div
                                     key={dataSource.id}
-                                    className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64"
+                                    className="flex flex-col items-center justify-between bg-white rounded-lg p-3 border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all w-44 h-64"
                                 >
                                     <div className="flex flex-col items-center space-y-2">
                                         {/* Database Icon */}
                                         <DatabaseLogModal
                                             dataSourceName={dataSource.name}
                                         >
-                                            <div className="bg-gray-200 p-2 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300">
+                                            <div className="bg-blue-50 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer border border-blue-200">
                                                 <Image
                                                     src="/database.svg"
                                                     alt="Database"
                                                     width={32}
                                                     height={32}
-                                                    className="w-8 h-8 filter brightness-0"
+                                                    className="w-8 h-8"
                                                 />
                                             </div>
                                         </DatabaseLogModal>
@@ -269,7 +269,7 @@ export default function CorePage() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="w-full rounded-sm text-sm h-7 border-gray-300 bg-white text-black hover:bg-gray-100 px-2"
+                                                className="w-full rounded-lg text-sm h-7 border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 px-2"
                                             >
                                                 <Download className="h-2.5 w-2.5 mr-1" />
                                                 Download
@@ -278,7 +278,7 @@ export default function CorePage() {
 
                                         <Button
                                             size="sm"
-                                            className="w-full rounded-sm text-sm h-7 bg-black hover:bg-gray-800 text-white px-2"
+                                            className="w-full rounded-lg text-sm h-7 bg-blue-600 hover:bg-blue-700 text-white px-2 shadow-sm"
                                             onClick={() =>
                                                 handleOpenUploadModal(
                                                     dataSource
@@ -306,15 +306,15 @@ export default function CorePage() {
                         </div>
 
                         {/* Cost Movement Process */}
-                        <div className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64">
+                        <div className="flex flex-col items-center justify-between bg-white rounded-lg p-3 border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all w-44 h-64">
                             <div className="flex flex-col items-center space-y-2">
                                 {/* Process Icon */}
-                                <div className="bg-gray-200 p-2 rounded-sm border border-gray-300 h-[50px] w-[50px] flex">
+                                <div className="bg-blue-50 p-2 rounded-lg border border-blue-200 h-[50px] w-[50px] flex">
                                     <div className="flex space-x-0.5 items-end">
-                                        <div className="w-1.5 h-5 bg-black rounded-sm"></div>
-                                        <div className="w-1.5 h-7 bg-black rounded-sm"></div>
-                                        <div className="w-1.5 h-4 bg-black rounded-sm"></div>
-                                        <div className="w-1.5 h-6 bg-black rounded-sm"></div>
+                                        <div className="w-1.5 h-5 bg-blue-600 rounded-sm"></div>
+                                        <div className="w-1.5 h-7 bg-blue-600 rounded-sm"></div>
+                                        <div className="w-1.5 h-4 bg-blue-600 rounded-sm"></div>
+                                        <div className="w-1.5 h-6 bg-blue-600 rounded-sm"></div>
                                     </div>
                                 </div>
 
@@ -337,7 +337,7 @@ export default function CorePage() {
                                 <Button
                                     onClick={handleCostMovementDownload}
                                     size="sm"
-                                    className="bg-black hover:bg-gray-800 text-white rounded-sm text-sm h-7 w-full px-2"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm h-7 w-full px-2 shadow-sm"
                                 >
                                     <Activity className="h-2.5 w-2.5 mr-1" />
                                     Analyze
@@ -353,14 +353,14 @@ export default function CorePage() {
                         </div>
 
                         {/* FOB Calculation */}
-                        <div className="flex flex-col items-center justify-between bg-white rounded-sm p-3 border border-gray-300 shadow-sm hover:shadow-md transition-shadow w-44 h-64">
+                        <div className="flex flex-col items-center justify-between bg-white rounded-lg p-3 border-2 border-blue-100 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all w-44 h-64">
                             <div className="flex flex-col items-center space-y-2">
                                 <div
-                                    className="bg-gray-200 p-2 rounded-sm hover:bg-gray-300 transition-colors cursor-pointer border border-gray-300"
+                                    className="bg-blue-50 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer border border-blue-200"
                                     onClick={handleOpenFOBLog}
                                 >
-                                    <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center border border-gray-400">
-                                        <div className="text-base font-bold text-black">
+                                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-blue-300">
+                                        <div className="text-base font-bold text-blue-600">
                                             =
                                         </div>
                                     </div>
@@ -385,7 +385,7 @@ export default function CorePage() {
                                 <Button
                                     onClick={handleTriggerCalculation}
                                     size="sm"
-                                    className="bg-black hover:bg-gray-800 text-white rounded-sm text-sm h-7 px-2"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm h-7 px-2 shadow-sm"
                                 >
                                     <Play className="h-2.5 w-2.5 mr-1" />
                                     Start
@@ -397,7 +397,7 @@ export default function CorePage() {
                                     onClick={() =>
                                         router.push("/costmovement/fob")
                                     }
-                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm text-sm h-7 px-2"
+                                    className="border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 rounded-lg text-sm h-7 px-2"
                                 >
                                     <BarChart3 className="h-2.5 w-2.5 mr-1" />
                                     Analysis
@@ -407,7 +407,7 @@ export default function CorePage() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => router.push("/cal")}
-                                    className="border-gray-300 bg-white text-black hover:bg-gray-100 rounded-sm text-sm h-7 px-2"
+                                    className="border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 rounded-lg text-sm h-7 px-2"
                                 >
                                     <Download className="h-2.5 w-2.5 mr-1" />
                                     Download
