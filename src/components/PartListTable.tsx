@@ -4,253 +4,412 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
 
-// Simple part data structure for the table matching the image
+// Part data structure matching the Excel design
 interface PartData {
-    id: string;
+    no: number;
+    partNo: string;
+    suffix: string;
     partName: string;
     source: string;
     supplierCode: string;
     supplierPlantCode: string;
     supplierName: string;
     dockIhRouting: string;
-    totalQty: number;
-    engineAssy: { [key: string]: number };
+    engineAssy: { [key: string]: number | string };
+    mspAug25: number | string;
+    jspAug25: number | string;
+    fob: number | string;
+    freight: number | string;
+    insurance: number | string;
+    cifCf: number | string;
+    mspCifCf: number | string;
+    jspCf: number | string;
+    remarks: string;
 }
 
-// Engine assembly codes from the image
+// Engine assembly codes from the Excel image
 const engineAssyCodes = [
-    "17000-0C480",
-    "12000-0C560",
-    "12000-0C640",
-    "17000-0C280",
-    "17000-0C450",
-    "12000-0C370",
-    "12000-0C470",
-    "12000-0C580",
-    "12000-0C380",
-    "17000-0C290",
-    "17000-0C510",
-    "12000-0C620",
-    "17000-0C320",
-    "12000-0C510",
-    "17000-0C350",
-    "17000-0C490",
-    "17000-0C540",
-    "11101-0C101",
+    { number: "10", code: "12000-BEZ50", destination: "ICE" },
+    { number: "11", code: "16000-BZ030", destination: "ICE" },
+    { number: "12", code: "16000-BYJ60", destination: "ICE" },
+    { number: "13", code: "16000-BZ740", destination: "ICE" },
+    { number: "14", code: "16000-BDQ50", destination: "ICE" },
 ];
 
 // Sample data - in real app this would come from API
 const sampleParts: PartData[] = [
     {
-        id: "1",
-        partName: "GASKET, CYLINDER HEAD",
-        source: "",
+        no: 1,
+        partNo: "11101-0Y050",
+        suffix: "00",
+        partName: "HEAD SUB-ASSY, CYLINDER",
+        source: "3",
+        supplierCode: "807J",
+        supplierPlantCode: "6",
+        supplierName: "TMMIN KARAWANG PLANT 3 ENGINE",
+        dockIhRouting: "6A",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 1, "16000-BDQ50": 1 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
+    },
+    {
+        no: 2,
+        partNo: "11101-0Y120",
+        suffix: "00",
+        partName: "HEAD SUB-ASSY, CYLINDER",
+        source: "3",
+        supplierCode: "807J",
+        supplierPlantCode: "6",
+        supplierName: "TMMIN KARAWANG PLANT 3 ENGINE",
+        dockIhRouting: "6A",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 0, "16000-BDQ50": 0 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
+    },
+    {
+        no: 3,
+        partNo: "11101-0Y190",
+        suffix: "00",
+        partName: "HEAD SUB-ASSY, CYLINDER",
+        source: "3",
+        supplierCode: "807J",
+        supplierPlantCode: "6",
+        supplierName: "TMMIN KARAWANG PLANT 3 ENGINE",
+        dockIhRouting: "6A",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 1, "16000-BDQ50": 1 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
+    },
+    {
+        no: 4,
+        partNo: "11101-BZ250",
+        suffix: "00",
+        partName: "HEAD SUB-ASSY, CYLINDER",
+        source: "3",
+        supplierCode: "807J",
+        supplierPlantCode: "6",
+        supplierName: "TMMIN KARAWANG PLANT 3 ENGINE",
+        dockIhRouting: "6A",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 1, "16000-BDQ50": 1 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
+    },
+    {
+        no: 5,
+        partNo: "11135-47030",
+        suffix: "00",
+        partName: "SEAT, EXHAUST VALVE",
+        source: "2",
         supplierCode: "TMC1",
         supplierPlantCode: "1",
         supplierName: "TOYOTA MOTOR CORPORATION - JAPAN",
-        dockIhRouting: "18",
-        totalQty: 4,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
+        dockIhRouting: "6H",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 1, "16000-BDQ50": 1 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
     },
     {
-        id: "2",
-        partName: "SEAT, INTAKE VALVE",
-        source: "",
-        supplierCode: "722M",
-        supplierPlantCode: "1",
-        supplierName: "SIAM THAILAND MOTOR",
-        dockIhRouting: "18",
-        totalQty: 16,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
-    },
-    {
-        id: "3",
-        partName: "VALVE, EXHAUST",
-        source: "",
-        supplierCode: "TMC1",
-        supplierPlantCode: "1",
-        supplierName: "TOYOTA MOTOR CORPORATION - JAPAN",
-        dockIhRouting: "18",
-        totalQty: 8,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
-    },
-    {
-        id: "4",
-        partName: "PISTON ASSEMBLY",
-        source: "",
-        supplierCode: "TMC1",
-        supplierPlantCode: "1",
-        supplierName: "TOYOTA MOTOR CORPORATION - JAPAN",
-        dockIhRouting: "18",
-        totalQty: 12,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
-    },
-    {
-        id: "5",
-        partName: "CAMSHAFT",
-        source: "",
-        supplierCode: "TMC1",
-        supplierPlantCode: "1",
-        supplierName: "TOYOTA MOTOR CORPORATION - JAPAN",
-        dockIhRouting: "18",
-        totalQty: 6,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
-    },
-    {
-        id: "6",
-        partName: "CRANKSHAFT",
-        source: "",
-        supplierCode: "TMC1",
-        supplierPlantCode: "1",
-        supplierName: "TOYOTA MOTOR CORPORATION - JAPAN",
-        dockIhRouting: "18",
-        totalQty: 4,
-        engineAssy: Object.fromEntries(
-            engineAssyCodes.map((code) => [code, 0])
-        ),
+        no: 6,
+        partNo: "11401-0Y060",
+        suffix: "00",
+        partName: "BLOCK SUB-ASSY, CYLINDER",
+        source: "3",
+        supplierCode: "807J",
+        supplierPlantCode: "6",
+        supplierName: "TMMIN KARAWANG PLANT 3 ENGINE",
+        dockIhRouting: "6A",
+        engineAssy: { "12000-BEZ50": 1, "16000-BZ030": 1, "16000-BYJ60": 1, "16000-BZ740": 1, "16000-BDQ50": 1 },
+        mspAug25: "",
+        jspAug25: "",
+        fob: "",
+        freight: "",
+        insurance: "",
+        cifCf: "",
+        mspCifCf: "",
+        jspCf: "",
+        remarks: "",
     },
 ];
 
 export default function PartListTable() {
     const [parts] = useState<PartData[]>(sampleParts);
 
-    const handleRequestJSP = (partId: string) => {
-        // In real app, this would make API call to TMA
-        console.log(`Requesting JSP price for part ${partId}`);
-        alert(`JSP price request sent to TMA for part ${partId}`);
+    const handleExportExcel = () => {
+        // In real app, this would export to Excel
+        console.log("Exporting to Excel...");
+        alert("Export to Excel functionality");
+    };
+
+    const formatValue = (value: number | string): string => {
+        if (value === "" || value === null || value === undefined) return "";
+        if (typeof value === "string") return value;
+        return value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
     };
 
     return (
-        <div className="bg-white rounded-none border-2 border-gray-300 shadow">
+        <div className="bg-white rounded-none border border-gray-400 shadow">
             <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+                <table className="w-full border-collapse text-xs">
                     <thead>
-                        <tr className="bg-gray-200">
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Part Name{" "}
+                        {/* First header row */}
+                        <tr className="bg-gray-300">
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[50px]">
+                                No
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Source{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[120px]">
+                                Part No.
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Supplier Code{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[60px]">
+                                Suffix
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Supplier Plant Code{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[200px]">
+                                Part Name
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Supplier Name{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[70px]">
+                                Source
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Dock/IH Routing{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[100px]">
+                                Supplier Code
                             </th>
-                            <th className="border border-gray-300 p-2 text-left font-medium text-black text-xs">
-                                Total QTY{" "}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[120px]">
+                                Supplier Plant Code
                             </th>
-                            {/* Engine Assy Header */}
-                            <th
-                                className="border border-gray-300 p-2 text-center font-medium text-black text-xs bg-gray-100"
-                                colSpan={engineAssyCodes.length}
-                            >
-                                <div className="text-center">
-                                    <div className="text-xs text-gray-600">
-                                        024J
-                                    </div>
-                                    <div className="font-bold">Engine Assy</div>
-                                </div>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[250px]">
+                                Supplier Name
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[100px]">
+                                Dock/IH Routing
+                            </th>
+                            {/* Engine Assy columns with yellow headers */}
+                            {engineAssyCodes.map((item) => (
+                                <th
+                                    key={item.code}
+                                    className="border border-gray-400 p-1 text-center font-bold text-black bg-yellow-300 min-w-[40px]"
+                                >
+                                    {item.number}
+                                </th>
+                            ))}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[70px]">
+                                REMARKS
+                            </th>
+                            {/* Price columns */}
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black bg-pink-300 min-w-[100px]">
+                                MSP Aug 25
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black bg-cyan-300 min-w-[100px]">
+                                JSP Aug 25
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black bg-yellow-300 min-w-[120px]">
+                                FOB (JSP is C&F ivl)
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[100px]">
+                                FREIGHT
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[120px]">
+                                INSURANCE - TMAP
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black min-w-[100px]">
+                                CIF/C&F
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black bg-yellow-300 min-w-[120px]">
+                                MSP (CIF / C&F)
+                            </th>
+                            <th className="border border-gray-400 p-2 text-center font-semibold text-black bg-yellow-300 min-w-[100px]">
+                                JSP (C&F)
                             </th>
                         </tr>
-                        {/* Engine Assy Sub-headers - only for engine assy columns */}
-                        <tr className="bg-gray-100">
-                            {/* Empty cells for the main columns */}
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            <th className="border border-gray-300 p-1"></th>
-                            {/* Engine Assy Sub-headers */}
-                            {engineAssyCodes.map((code) => (
+                        {/* Second header row - engine assy codes rotated */}
+                        <tr className="bg-gray-200">
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            {/* Engine Assy Sub-headers - rotated codes */}
+                            {engineAssyCodes.map((item) => (
                                 <th
-                                    key={code}
-                                    className="border border-gray-300 p-1 text-center font-medium text-black text-xs align-bottom"
+                                    key={item.code}
+                                    className="border border-gray-400 p-1 text-center font-medium text-black bg-yellow-100 align-bottom"
                                 >
                                     <div
-                                        className="writing-mode-vertical transform rotate-180"
+                                        className="inline-block transform text-xs font-semibold"
                                         style={{
                                             writingMode: "vertical-rl",
-                                            textOrientation: "mixed",
+                                            transform: "rotate(180deg)",
+                                            whiteSpace: "nowrap",
                                         }}
                                     >
-                                        {code}
+                                        {item.code}
                                     </div>
                                 </th>
                             ))}
+                            {/* Empty cells for price columns */}
+
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1 bg-pink-100"></th>
+                            <th className="border border-gray-400 p-1 bg-cyan-100"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
+                        </tr>
+                        {/* Third header row - destinations */}
+                        <tr className="bg-gray-200">
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            {/* Engine Assy Destinations */}
+                            {engineAssyCodes.map((item) => (
+                                <th
+                                    key={`${item.code}-dest`}
+                                    className="border border-gray-400 p-1 text-center font-medium text-black bg-yellow-50 text-xs"
+                                >
+                                    {item.destination}
+                                </th>
+                            ))}
+                            {/* Empty cells for price columns */}
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1 bg-pink-100"></th>
+                            <th className="border border-gray-400 p-1 bg-cyan-100"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
+                            <th className="border border-gray-400 p-1 bg-yellow-100"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {parts.map((part) => (
-                            <tr key={part.id} className="hover:bg-gray-50">
-                                <td className="border border-gray-300 p-2 text-black text-xs">
+                        {parts.map((part, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                                <td className="border border-gray-400 p-2 text-center text-black">
+                                    {part.no}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-black">
+                                    {part.partNo}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-center text-black">
+                                    {part.suffix}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-black">
                                     {part.partName}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs">
-                                    {part.source || "-"}
+                                <td className="border border-gray-400 p-2 text-center text-black">
+                                    {part.source}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs font-mono">
+                                <td className="border border-gray-400 p-2 text-black">
                                     {part.supplierCode}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs">
+                                <td className="border border-gray-400 p-2 text-center text-black">
                                     {part.supplierPlantCode}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs">
+                                <td className="border border-gray-400 p-2 text-black">
                                     {part.supplierName}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs">
+                                <td className="border border-gray-400 p-2 text-center text-black">
                                     {part.dockIhRouting}
                                 </td>
-                                <td className="border border-gray-300 p-2 text-black text-xs font-bold">
-                                    {part.totalQty}
-                                </td>
                                 {/* Engine Assy values */}
-                                {engineAssyCodes.map((code) => (
+                                {engineAssyCodes.map((item) => (
                                     <td
-                                        key={code}
-                                        className="border border-gray-300 p-1 text-center text-black text-xs"
+                                        key={item.code}
+                                        className="border border-gray-400 p-1 text-center text-black"
                                     >
-                                        {part.engineAssy[code]}
+                                        {part.engineAssy[item.code]}
                                     </td>
                                 ))}
+                                <td className="border border-gray-400 p-2 text-center text-black">
+                                    {part.remarks}
+                                </td>
+                                {/* Price values */}
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.mspAug25)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.jspAug25)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.fob)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.freight)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.insurance)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.cifCf)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.mspCifCf)}
+                                </td>
+                                <td className="border border-gray-400 p-2 text-right text-black">
+                                    {formatValue(part.jspCf)}
+                                </td>
+                                
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            <div className="p-4 bg-gray-50 border-t border-gray-300">
-                <div className="flex flex-col space-y-4 items-end">
-
-                    <div className="flex gap-2">
-                        <Button
-                            onClick={() => handleRequestJSP("1")}
-                            size="sm"
-                            className="bg-black hover:bg-gray-800 text-white rounded-md border-2 border-gray-300 text-xs w-fit self-end cursor-pointer"
-                        >
-                            <FileDown className="h-4 w-4" />
-                            Export to Excel
-                        </Button>
-                    </div>
+            <div className="p-4 bg-gray-50 border-t border-gray-400">
+                <div className="flex justify-end">
+                    <Button
+                        onClick={handleExportExcel}
+                        size="sm"
+                        className="bg-black hover:bg-gray-800 text-white rounded-md border border-gray-300 text-xs flex items-center gap-2"
+                    >
+                        <FileDown className="h-4 w-4" />
+                        Export to Excel
+                    </Button>
                 </div>
             </div>
         </div>
