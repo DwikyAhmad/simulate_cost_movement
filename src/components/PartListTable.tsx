@@ -3,6 +3,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 // Part data structure matching the Excel design
 interface PartData {
@@ -168,11 +176,62 @@ const sampleParts: PartData[] = [
 
 export default function PartListTable() {
     const [parts] = useState<PartData[]>(sampleParts);
+    const [showExportDialog, setShowExportDialog] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
+    const [exportComplete, setExportComplete] = useState(false);
+    const [exportFailed, setExportFailed] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    
+    // Production month - can be changed or fetched from props/API
+    const prodMonth = "202509";
 
-    const handleExportExcel = () => {
-        // In real app, this would export to Excel
-        console.log("Exporting to Excel...");
-        alert("Export to Excel functionality");
+    const handleExportClick = () => {
+        setShowExportDialog(true);
+        setIsExporting(false);
+        setExportComplete(false);
+        setExportFailed(false);
+        setErrorMessage("");
+    };
+
+    const handleConfirmExport = async () => {
+        setIsExporting(true);
+        
+        try {
+            // Simulate export process - replace with actual export logic
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate random success/failure for demo
+                    // Remove this randomization in production
+                    const shouldFail = Math.random() < 0.3; // 30% chance to fail
+                    
+                    if (shouldFail) {
+                        reject(new Error("Network timeout: Unable to connect to export service"));
+                    } else {
+                        resolve(true);
+                    }
+                }, 2000);
+            });
+            
+            // In real app, add actual Excel export logic here
+            console.log("Exporting to Excel...");
+            
+            setIsExporting(false);
+            setExportComplete(true);
+        } catch (error) {
+            // Handle export failure
+            console.error("Export failed:", error);
+            setIsExporting(false);
+            setExportFailed(true);
+            setErrorMessage(error instanceof Error ? error.message : "Unknown error occurred");
+        }
+    };
+
+    const handleCloseDialog = () => {
+        setShowExportDialog(false);
+        setIsExporting(false);
+        setExportComplete(false);
+        setExportFailed(false);
+        setErrorMessage("");
     };
 
     const formatValue = (value: number | string): string => {
@@ -403,7 +462,7 @@ export default function PartListTable() {
             <div className="p-4 bg-gray-50 border-t border-gray-400">
                 <div className="flex justify-end">
                     <Button
-                        onClick={handleExportExcel}
+                        onClick={handleExportClick}
                         size="sm"
                         className="bg-black hover:bg-gray-800 text-white rounded-md border border-gray-300 text-xs flex items-center gap-2"
                     >
@@ -412,6 +471,75 @@ export default function PartListTable() {
                     </Button>
                 </div>
             </div>
+
+            {/* Export Confirmation Dialog */}
+            <Dialog open={showExportDialog} onOpenChange={handleCloseDialog}>
+                <DialogContent className="bg-white">
+                    <DialogHeader>
+                        <DialogTitle className="text-black">
+                            {exportComplete 
+                                ? "Export Complete" 
+                                : exportFailed 
+                                ? "Export Failed" 
+                                : isExporting 
+                                ? "Exporting..." 
+                                : "Confirm Export"}
+                        </DialogTitle>
+                    </DialogHeader>
+                    
+                    {exportComplete ? (
+                        <DialogDescription className="text-green-600 font-medium">
+                            Engine Parts List Prod Month {prodMonth} has been successfully exported to Excel!
+                        </DialogDescription>
+                    ) : exportFailed ? (
+                        <div className="space-y-2">
+                            <DialogDescription className="text-red-600 font-medium">
+                                Export Failed: {errorMessage}
+                            </DialogDescription>
+                        </div>
+                    ) : isExporting ? (
+                        <div className="flex items-center gap-3 py-4 text-gray-600">
+                            <div className="w-5 h-5 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                            <span>Please wait while we export the data...</span>
+                        </div>
+                    ) : (
+                        <DialogDescription className="text-gray-600">
+                            Would you like to export Engine Parts List Prod Month{" "}
+                            <span className="font-semibold text-black">{prodMonth}</span>{" "}
+                            to Excel?
+                        </DialogDescription>
+                    )}
+                    
+                    <DialogFooter className="gap-2 sm:gap-0">
+                        {exportComplete || exportFailed ? (
+                            <Button
+                                onClick={handleCloseDialog}
+                                className="bg-black hover:bg-gray-800 text-white rounded-md w-full sm:w-auto"
+                            >
+                                OK
+                            </Button>
+                        ) : isExporting ? null : (
+                            <>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleCloseDialog}
+                                    className="rounded-md border-gray-300"
+                                    disabled={isExporting}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={handleConfirmExport}
+                                    className="bg-black hover:bg-gray-800 text-white rounded-md"
+                                    disabled={isExporting}
+                                >
+                                    Export
+                                </Button>
+                            </>
+                        )}
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

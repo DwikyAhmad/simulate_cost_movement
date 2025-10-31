@@ -2,13 +2,23 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Send, Upload, Users } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { CheckCircle, Send, Upload, Users, Bold, Italic, Underline, List, ListOrdered } from 'lucide-react';
 
 export default function SendEmailForm() {
   const [pbodEmailSent, setPbodEmailSent] = useState(false);
   const [lspEmailSent, setLspEmailSent] = useState(false);
   const [tmaEmailSent, setTmaEmailSent] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [recipients, setRecipients] = useState('lorem@ipsum.com');
+  const [emailBody, setEmailBody] = useState(`Dear TMA Team,
+
+We kindly request the latest MSP & JSP price data for our cost analysis.
+
+Please find the attached part list for your reference.
+
+Best regards,
+PBMD Team`);
 
   const handleSendToPBOD = () => {
     // In real app, this would send email to PBOD & FD
@@ -27,6 +37,8 @@ export default function SendEmailForm() {
   const handleSendToTMA = () => {
     // In real app, this would send email to TMA for MSP & JSP prices
     console.log('Sending email to TMA for MSP & JSP prices');
+    console.log('Recipients:', recipients);
+    console.log('Email body:', emailBody);
     console.log('Attached file:', uploadedFile?.name || 'No file attached');
     setTmaEmailSent(true);
     setTimeout(() => setTmaEmailSent(false), 3000); // Reset after 3 seconds
@@ -39,6 +51,14 @@ export default function SendEmailForm() {
     }
   };
 
+  const applyFormatting = (command: string, value?: string) => {
+    document.execCommand(command, false, value);
+  };
+
+  const handleBodyChange = (e: React.FormEvent<HTMLDivElement>) => {
+    setEmailBody(e.currentTarget.innerText);
+  };
+
   return (
     <div className="space-y-6">
       {/* TMA Section - MSP & JSP Price Request */}
@@ -47,29 +67,82 @@ export default function SendEmailForm() {
         <p className="text-gray-600 text-sm mb-4">Request MSP & JSP prices (template display)</p>
         
         {/* Recipient Information */}
-        <div className="bg-gray-50 border border-gray-300 rounded-lg p-3 mb-4">
+        <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
             <Users className="h-4 w-4 text-black" />
-            <span className="text-sm font-medium text-black">Recipients</span>
+            <label className="text-sm font-medium text-black">Recipients</label>
           </div>
-          <div className="text-sm text-black space-y-1">
-            <div>lorem@ipsum.com</div>
-          </div>
+          <Input
+            type="text"
+            value={recipients}
+            onChange={(e) => setRecipients(e.target.value)}
+            placeholder="Enter email addresses separated by commas"
+            className="w-full border-gray-300 rounded-sm"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Separate multiple email addresses with commas
+          </p>
         </div>
         
-        {/* Email Content Area */}
-        <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-4 min-h-[120px]">
-          <div className="text-black text-sm space-y-2">
-            <div className="text-gray-600">Dear TMA Team,</div>
-            <div className="text-gray-600">...</div>
-            <div className="text-gray-600">- - - . . .</div>
-            <div className="text-gray-600">_ _ _ . . .</div>
-            <div className="text-gray-600">. _ _ _ . . .</div>
-            <div className="text-gray-600">Please provide the latest MSP & JSP price data for our cost analysis.</div>
-            <div className="text-gray-600">...</div>
-            <div className="text-gray-600">Best regards,</div>
-            <div className="text-gray-600">PBMD Team</div>
+        {/* Email Body Editor */}
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm font-medium text-black">Email Body</span>
           </div>
+          
+          {/* Rich Text Editor Toolbar */}
+          <div className="bg-gray-100 border border-gray-300 rounded-t-sm p-2 flex gap-1">
+            <button
+              type="button"
+              onClick={() => applyFormatting('bold')}
+              className="p-2 hover:bg-gray-200 rounded-sm border border-gray-300 bg-white"
+              title="Bold"
+            >
+              <Bold className="h-4 w-4 text-black" />
+            </button>
+            <button
+              type="button"
+              onClick={() => applyFormatting('italic')}
+              className="p-2 hover:bg-gray-200 rounded-sm border border-gray-300 bg-white"
+              title="Italic"
+            >
+              <Italic className="h-4 w-4 text-black" />
+            </button>
+            <button
+              type="button"
+              onClick={() => applyFormatting('underline')}
+              className="p-2 hover:bg-gray-200 rounded-sm border border-gray-300 bg-white"
+              title="Underline"
+            >
+              <Underline className="h-4 w-4 text-black" />
+            </button>
+            <div className="w-px bg-gray-300 mx-1"></div>
+            <button
+              type="button"
+              onClick={() => applyFormatting('insertUnorderedList')}
+              className="p-2 hover:bg-gray-200 rounded-sm border border-gray-300 bg-white"
+              title="Bullet List"
+            >
+              <List className="h-4 w-4 text-black" />
+            </button>
+            <button
+              type="button"
+              onClick={() => applyFormatting('insertOrderedList')}
+              className="p-2 hover:bg-gray-200 rounded-sm border border-gray-300 bg-white"
+              title="Numbered List"
+            >
+              <ListOrdered className="h-4 w-4 text-black" />
+            </button>
+          </div>
+          
+          {/* Rich Text Content Area */}
+          <div
+            contentEditable
+            onInput={handleBodyChange}
+            className="bg-white border border-gray-300 border-t-0 rounded-b-sm p-4 min-h-[200px] text-black text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            dangerouslySetInnerHTML={{ __html: emailBody.replace(/\n/g, '<br>') }}
+            suppressContentEditableWarning
+          />
         </div>
         
         {/* File Upload Section */}
