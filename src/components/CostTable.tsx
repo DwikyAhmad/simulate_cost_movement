@@ -96,13 +96,13 @@ export default function CostTable({ partData }: CostTableProps) {
     const getChangeBadge = (percentage: number) => {
         if (percentage >= 5) {
             return (
-                <Badge variant="destructive" className="ml-2 rounded-none">
+                <Badge variant="destructive" className="ml-2 rounded-md">
                     Warning: +{percentage.toFixed(2)}%
                 </Badge>
             );
         } else if (percentage > 0) {
             return (
-                <Badge variant="secondary" className="ml-2 rounded-none">
+                <Badge variant="secondary" className="ml-2 rounded-md">
                     +{percentage.toFixed(2)}%
                 </Badge>
             );
@@ -110,14 +110,14 @@ export default function CostTable({ partData }: CostTableProps) {
             return (
                 <Badge
                     variant="default"
-                    className="ml-2 bg-green-100 text-green-800 rounded-none"
+                    className="ml-2 bg-green-100 text-green-800 rounded-md"
                 >
                     {percentage.toFixed(2)}%
                 </Badge>
             );
         }
         return (
-            <Badge variant="outline" className="ml-2 text-white rounded-none">
+            <Badge variant="outline" className="ml-2 text-gray-700 rounded-md">
                 0.00%
             </Badge>
         );
@@ -163,7 +163,7 @@ export default function CostTable({ partData }: CostTableProps) {
 
         if (aboveThreshold > 0) {
             return (
-                <Badge className="ml-2 rounded-none">
+                <Badge className="ml-2 rounded-md">
                     {aboveThreshold} of {totalChildren} above threshold
                 </Badge>
             );
@@ -171,7 +171,7 @@ export default function CostTable({ partData }: CostTableProps) {
             return (
                 <Badge
                     variant="outline"
-                    className="ml-2 text-white rounded-none"
+                    className="ml-2 text-gray-700 rounded-md"
                 >
                     All stable
                 </Badge>
@@ -188,10 +188,10 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 {/* Main Level 2 Part Row - spans all columns */}
-                <TableRow className="bg-gray-800 border-gray-700">
+                <TableRow className="bg-gray-50 border-gray-300">
                     <TableCell colSpan={6} className="pl-12 py-2">
-                        <div className="bg-gray-750 border border-gray-600 rounded-sm p-3">
-                            <div className="text-sm font-medium text-gray-200 mb-2">
+                        <div className="bg-white border border-gray-300 rounded-md p-3 shadow-sm">
+                            <div className="text-sm font-medium text-gray-900 mb-2">
                                 {part.partNumber} - {part.partName}
                             </div>
                             
@@ -199,33 +199,33 @@ export default function CostTable({ partData }: CostTableProps) {
                             <div className="overflow-x-auto">
                                 <table className="w-full text-xs">
                                     <thead>
-                                        <tr className="border-b border-gray-600">
-                                            <th className="text-left text-gray-400 py-1 pr-2">Period</th>
-                                            <th className="text-right text-gray-400 py-1 px-2">Quantity</th>
-                                            <th className="text-right text-gray-400 py-1 px-2">Price/Item</th>
-                                            <th className="text-right text-gray-400 py-1 px-2">Total Amount</th>
-                                            <th className="text-right text-gray-400 py-1 pl-2">Difference</th>
+                                        <tr className="border-b border-gray-300">
+                                            <th className="text-left text-gray-600 py-1 pr-2">Period</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Quantity</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Price/Item</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Total Amount</th>
+                                            <th className="text-right text-gray-600 py-1 pl-2">Difference</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-gray-700">
-                                            <td className="text-gray-300 py-1 pr-2">Last Year</td>
-                                            <td className="text-right text-gray-300 py-1 px-2">{part.lastYear.quantity}</td>
-                                            <td className="text-right text-gray-300 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
-                                            <td className="text-right text-gray-300 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
-                                            <td className="text-right text-gray-400 py-1 pl-2">-</td>
+                                        <tr className="border-b border-gray-200">
+                                            <td className="text-gray-700 py-1 pr-2">Last Year</td>
+                                            <td className="text-right text-gray-700 py-1 px-2">{part.lastYear.quantity}</td>
+                                            <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
+                                            <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
+                                            <td className="text-right text-gray-600 py-1 pl-2">-</td>
                                         </tr>
                                         <tr>
-                                            <td className="text-gray-200 py-1 pr-2 font-medium">Current Year</td>
-                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
-                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
-                                            <td className="text-right text-gray-200 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
+                                            <td className="text-gray-900 py-1 pr-2 font-medium">Current Year</td>
+                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
+                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
+                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 pl-2">
                                                 <span className={getDifferenceColor(difference)}>
                                                     {difference >= 0 ? "+" : "-"}{formatCurrency(Math.abs(difference))}
                                                 </span>
                                                 <div className="text-xs mt-1">
-                                                    <span className={`${percentageChange >= 0 ? 'text-red-400' : 'text-green-400'}`}>
+                                                    <span className={`${percentageChange >= 0 ? 'text-red-500' : 'text-green-600'}`}>
                                                         ({percentageChange >= 0 ? "+" : ""}{percentageChange.toFixed(1)}%)
                                                     </span>
                                                 </div>
@@ -257,19 +257,19 @@ export default function CostTable({ partData }: CostTableProps) {
         componentKey?: string;
     }) => {
         const cellClass = isGrandTotal
-            ? "font-bold text-lg text-white"
+            ? "font-bold text-lg text-gray-900"
             : isTotal
-            ? "font-semibold text-white"
-            : "text-gray-100";
+            ? "font-semibold text-gray-900"
+            : "text-gray-900";
 
         const nameClass = isSubItem ? "pl-6" : "";
         const rowClass = isGrandTotal
-            ? "bg-gray-700 border-t-4 border-gray-500"
+            ? "bg-blue-100 border-t-4 border-blue-300"
             : isTotal
-            ? "border-b-2 border-gray-600"
+            ? "border-b-2 border-gray-300"
             : sectionBg
             ? sectionBg
-            : "border-gray-700";
+            : "border-gray-200";
 
         const hasLevel2Parts = component.parts && component.parts.length > 0;
         const isComponentOpen = openComponents[componentKey];
@@ -277,7 +277,7 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 <TableRow
-                    className={`${rowClass} border-gray-600 ${hasLevel2Parts ? 'cursor-pointer' : ''}`}
+                    className={`${rowClass} border-gray-300 ${hasLevel2Parts ? 'cursor-pointer hover:bg-gray-50' : ''}`}
                     onClick={hasLevel2Parts ? () => toggleComponent(componentKey) : undefined}
                 >
                     <TableCell className={`${cellClass} ${nameClass}`}>
@@ -329,7 +329,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                     e.stopPropagation();
                                     showRemark(component.name);
                                 }}
-                                className="rounded-none border-gray-500 text-black"
+                                className="rounded-md border-blue-300 text-gray-900 hover:bg-blue-50"
                             >
                                 <MessageSquare className="h-4 w-4 mr-1" />
                                 Remark
@@ -363,10 +363,10 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 <TableRow
-                    className={`${sectionBg} border-gray-600 cursor-pointer`}
+                    className={`${sectionBg} border-gray-300 cursor-pointer hover:opacity-90`}
                     onClick={() => toggleSection(sectionKey)}
                 >
-                    <TableCell className="font-semibold text-white">
+                    <TableCell className="font-semibold text-gray-900">
                         <div className="flex items-center">
                             {isOpen ? (
                                 <ChevronDown className="h-4 w-4 mr-2" />
@@ -376,10 +376,10 @@ export default function CostTable({ partData }: CostTableProps) {
                             {title}
                         </div>
                     </TableCell>
-                    <TableCell className="text-right font-semibold text-white">
+                    <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.currentYear)}
                     </TableCell>
-                    <TableCell className="text-right font-semibold text-white">
+                    <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.lastYear)}
                     </TableCell>
                     <TableCell className="text-right font-semibold">
@@ -408,12 +408,12 @@ export default function CostTable({ partData }: CostTableProps) {
 
     return (
         <>
-            <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+            <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                 <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-gray-900">
                         Cost Breakdown Analysis
                     </CardTitle>
-                    <CardDescription className="text-gray-300">
+                    <CardDescription className="text-gray-600">
                         Detailed cost comparison showing year-over-year changes
                         for all cost components
                     </CardDescription>
@@ -422,23 +422,23 @@ export default function CostTable({ partData }: CostTableProps) {
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-gray-600">
-                                    <TableHead className="w-[300px] text-gray-300">
+                                <TableRow className="border-gray-300 bg-gray-50">
+                                    <TableHead className="w-[300px] text-gray-700">
                                         Cost Component
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-300">
+                                    <TableHead className="text-right text-gray-700">
                                         Current Year
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-300">
+                                    <TableHead className="text-right text-gray-700">
                                         Last Year
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-300">
+                                    <TableHead className="text-right text-gray-700">
                                         Difference
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-300">
+                                    <TableHead className="text-right text-gray-700">
                                         Change %
                                     </TableHead>
-                                    <TableHead className="text-center text-gray-300">
+                                    <TableHead className="text-center text-gray-700">
                                         Remarks
                                     </TableHead>
                                 </TableRow>
@@ -449,7 +449,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                     sectionKey="nonLVA"
                                     title="NON LVA"
                                     totalComponent={partData.costs.nonLVA.total}
-                                    sectionBg="bg-blue-900/30"
+                                    sectionBg="bg-blue-50"
                                 >
                                     <CostRow
                                         component={partData.costs.nonLVA.jsp}
@@ -468,7 +468,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                     sectionKey="lva"
                                     title="LVA"
                                     totalComponent={partData.costs.lva.total}
-                                    sectionBg="bg-green-900/30"
+                                    sectionBg="bg-green-50"
                                 >
                                     <CostRow
                                         component={partData.costs.lva.localOH}
@@ -487,11 +487,11 @@ export default function CostTable({ partData }: CostTableProps) {
                                 {/* Other Costs */}
                                 <CostRow
                                     component={partData.costs.toolingOuthouse}
-                                    sectionBg="bg-yellow-900/30"
+                                    sectionBg="bg-yellow-50"
                                 />
                                 <CostRow
                                     component={partData.costs.totalPurchaseCost}
-                                    sectionBg="bg-pink-900/30 "
+                                    sectionBg="bg-pink-50"
                                 />
 
                                 {/* Processing Cost Section */}
@@ -501,7 +501,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                     totalComponent={
                                         partData.costs.processingCost.total
                                     }
-                                    sectionBg="bg-purple-900/30"
+                                    sectionBg="bg-purple-50"
                                 >
                                     <CostRow
                                         component={
@@ -551,23 +551,23 @@ export default function CostTable({ partData }: CostTableProps) {
 
             {/* Remark Popup Modal */}
             {selectedRemark && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-gray-800 border-2 border-gray-600 rounded-none p-6 max-w-md w-full mx-4">
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+                    <div className="bg-white border-2 border-gray-300 rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-white font-semibold text-lg">
+                            <h3 className="text-gray-900 font-semibold text-lg">
                                 Remark for {selectedRemark}
                             </h3>
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={closeRemark}
-                                className="rounded-none border-gray-500 text-black p-1"
+                                className="rounded-md border-gray-300 text-gray-700 hover:bg-gray-100 p-1"
                             >
                                 <X className="h-4 w-4" />
                             </Button>
                         </div>
-                        <div className="bg-gray-700 p-4 rounded-none border border-gray-600">
-                            <p className="text-gray-300 text-sm leading-relaxed">
+                        <div className="bg-gray-50 p-4 rounded-md border border-gray-300">
+                            <p className="text-gray-700 text-sm leading-relaxed">
                                 {getRemarkContent(selectedRemark)}
                             </p>
                         </div>
