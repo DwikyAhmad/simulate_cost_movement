@@ -50,6 +50,11 @@ export default function CorePage() {
             name: "Packing Cost",
             lastUpdated: "12/15/2024 12:20",
         },
+        {
+            id: "outhouse",
+            name: "Outhouse Cost",
+            lastUpdated: "12/15/2024 11:00",
+        },
     ]);
 
     const [processes, setProcesses] = useState<Process[]>([
