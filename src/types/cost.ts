@@ -44,6 +44,12 @@ export interface CostBreakdown {
     exclusiveDepre: CostComponent;
     total: CostComponent;
   };
+  packingCost: {
+    material: CostComponent;
+    labor: CostComponent;
+    inland: CostComponent;
+    total: CostComponent;
+  };
   totalCost: CostComponent;
 }
 

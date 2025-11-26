@@ -166,12 +166,14 @@ export default function ByPartComparisonResults({
         component2,
         isTotal = false,
         isGrandTotal = false,
+        isSubItem = false,
     }: {
         componentName: string;
         component1: CostComponent;
         component2: CostComponent;
         isTotal?: boolean;
         isGrandTotal?: boolean;
+        isSubItem?: boolean;
     }) => {
         const diff = calculateRelativeDifference(component1, component2);
 
@@ -189,12 +191,17 @@ export default function ByPartComparisonResults({
 
         return (
             <TableRow
-                className={`${rowClass} hover:bg-gray-750 border-gray-600`}
+                className={`${rowClass} border-gray-600`}
             >
                 <TableCell
                     className={`${cellClass} sticky left-0 bg-gray-800 min-w-[200px]`}
                 >
-                    {componentName}
+                    <div className="flex items-center">
+                        {isSubItem && (
+                            <span className="mr-2 text-gray-400">•</span>
+                        )}
+                        {componentName}
+                    </div>
                 </TableCell>
                 <TableCell className="text-center">
                     <div className="space-y-1">
@@ -388,6 +395,7 @@ export default function ByPartComparisonResults({
                                         component2={
                                             part2Data.costs.lva.rawMaterial
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="LVA Total"
@@ -426,6 +434,7 @@ export default function ByPartComparisonResults({
                                         component2={
                                             part2Data.costs.processingCost.labor
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="FOH Fixed"
@@ -437,6 +446,7 @@ export default function ByPartComparisonResults({
                                             part2Data.costs.processingCost
                                                 .fohFixed
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="FOH Variable"
@@ -448,6 +458,7 @@ export default function ByPartComparisonResults({
                                             part2Data.costs.processingCost
                                                 .fohVar
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="Unfinish Depreciation"
@@ -459,6 +470,7 @@ export default function ByPartComparisonResults({
                                             part2Data.costs.processingCost
                                                 .unfinishDepre
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="Exclusive Depreciation"
@@ -470,6 +482,7 @@ export default function ByPartComparisonResults({
                                             part2Data.costs.processingCost
                                                 .exclusiveDepre
                                         }
+                                        isSubItem
                                     />
                                     <ComparisonRow
                                         componentName="Processing Cost Total"
@@ -478,6 +491,48 @@ export default function ByPartComparisonResults({
                                         }
                                         component2={
                                             part2Data.costs.processingCost.total
+                                        }
+                                        isTotal
+                                    />
+
+                                    {/* Packing Costs */}
+                                    <ComparisonRow
+                                        componentName="Material"
+                                        component1={
+                                            part1Data.costs.packingCost.material
+                                        }
+                                        component2={
+                                            part2Data.costs.packingCost.material
+                                        }
+                                        isSubItem
+                                    />
+                                    <ComparisonRow
+                                        componentName="Labor"
+                                        component1={
+                                            part1Data.costs.packingCost.labor
+                                        }
+                                        component2={
+                                            part2Data.costs.packingCost.labor
+                                        }
+                                        isSubItem
+                                    />
+                                    <ComparisonRow
+                                        componentName="Inland"
+                                        component1={
+                                            part1Data.costs.packingCost.inland
+                                        }
+                                        component2={
+                                            part2Data.costs.packingCost.inland
+                                        }
+                                        isSubItem
+                                    />
+                                    <ComparisonRow
+                                        componentName="Packing Cost Total"
+                                        component1={
+                                            part1Data.costs.packingCost.total
+                                        }
+                                        component2={
+                                            part2Data.costs.packingCost.total
                                         }
                                         isTotal
                                     />

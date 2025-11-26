@@ -17,7 +17,8 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
   const [openSections, setOpenSections] = useState<{[key: string]: boolean}>({
     nonLVA: true,
     lva: true,
-    processingCost: true
+    processingCost: true,
+    packingCost: true
   });
 
   const toggleSection = (section: string) => {
@@ -72,9 +73,14 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
           : "border-gray-700";
 
     return (
-      <TableRow className={`${rowClass} hover:bg-gray-750 border-gray-600`}>
+      <TableRow className={`${rowClass} border-gray-600`}>
         <TableCell className={`${cellClass} ${nameClass} sticky left-0 bg-gray-800 min-w-[200px]`}>
-          {componentName}
+          <div className="flex items-center">
+            {isSubItem && (
+              <span className="mr-2 text-gray-400">•</span>
+            )}
+            {componentName}
+          </div>
         </TableCell>
         {selectedParts.map((partNo) => {
           const component = getComponent(partNo);
@@ -114,7 +120,7 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
     return (
       <>
         <TableRow 
-          className={`${sectionBg} hover:bg-gray-750 border-gray-600 cursor-pointer`}
+          className={`${sectionBg} border-gray-600 cursor-pointer`}
           onClick={() => toggleSection(sectionKey)}
         >
           <TableCell className="font-semibold text-white sticky left-0 bg-gray-800">
@@ -140,6 +146,9 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
                 break;
               case 'processingCost':
                 totalComponent = part.costs.processingCost.total;
+                break;
+              case 'packingCost':
+                totalComponent = part.costs.packingCost.total;
                 break;
               default:
                 return null;
@@ -287,6 +296,29 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
                 <CostComparisonRow 
                   componentName="Exclusive Depreciation"
                   getComponent={(partNo) => engineParts[partNo].costs.processingCost.exclusiveDepre}
+                  isSubItem 
+                />
+              </CollapsibleSection>
+
+              {/* Packing Cost Section */}
+              <CollapsibleSection
+                sectionKey="packingCost"
+                title="Packing Cost"
+                sectionBg="bg-teal-900/30"
+              >
+                <CostComparisonRow 
+                  componentName="Material"
+                  getComponent={(partNo) => engineParts[partNo].costs.packingCost.material}
+                  isSubItem 
+                />
+                <CostComparisonRow 
+                  componentName="Labor"
+                  getComponent={(partNo) => engineParts[partNo].costs.packingCost.labor}
+                  isSubItem 
+                />
+                <CostComparisonRow 
+                  componentName="Inland"
+                  getComponent={(partNo) => engineParts[partNo].costs.packingCost.inland}
                   isSubItem 
                 />
               </CollapsibleSection>

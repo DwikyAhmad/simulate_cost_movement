@@ -64,6 +64,9 @@ export default function EnginePartsList({
             part.costs.processingCost.fohVar,
             part.costs.processingCost.unfinishDepre,
             part.costs.processingCost.exclusiveDepre,
+            part.costs.packingCost.material,
+            part.costs.packingCost.labor,
+            part.costs.packingCost.inland,
             part.costs.totalPurchaseCost,
         ];
 
@@ -493,7 +496,7 @@ export default function EnginePartsList({
                                                                         {getComponentsAboveThreshold(
                                                                             part
                                                                         )}{" "}
-                                                                        of 11
+                                                                        of 14
                                                                         components
                                                                         above
                                                                         threshold

@@ -34,6 +34,7 @@ export default function CostTable({ partData }: CostTableProps) {
         nonLVA: true,
         lva: true,
         processingCost: true,
+        packingCost: true,
     });
 
     const [openComponents, setOpenComponents] = useState<{
@@ -277,7 +278,7 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 <TableRow
-                    className={`${rowClass} border-gray-300 ${hasLevel2Parts ? 'cursor-pointer hover:bg-gray-50' : ''}`}
+                    className={`${rowClass} border-gray-300 ${hasLevel2Parts ? 'cursor-pointer' : ''}`}
                     onClick={hasLevel2Parts ? () => toggleComponent(componentKey) : undefined}
                 >
                     <TableCell className={`${cellClass} ${nameClass}`}>
@@ -290,6 +291,9 @@ export default function CostTable({ partData }: CostTableProps) {
                                         <ChevronRight className="h-4 w-4 mr-2" />
                                     )}
                                 </>
+                            )}
+                            {isSubItem && !hasLevel2Parts && (
+                                <span className="mr-2 text-gray-600">•</span>
                             )}
                             {component.name}
                         </div>
@@ -363,7 +367,7 @@ export default function CostTable({ partData }: CostTableProps) {
         return (
             <>
                 <TableRow
-                    className={`${sectionBg} border-gray-300 cursor-pointer hover:opacity-90`}
+                    className={`${sectionBg} border-gray-300 cursor-pointer`}
                     onClick={() => toggleSection(sectionKey)}
                 >
                     <TableCell className="font-semibold text-gray-900">
@@ -533,6 +537,35 @@ export default function CostTable({ partData }: CostTableProps) {
                                         component={
                                             partData.costs.processingCost
                                                 .exclusiveDepre
+                                        }
+                                        isSubItem
+                                    />
+                                </CollapsibleSection>
+
+                                {/* Packing Cost Section */}
+                                <CollapsibleSection
+                                    sectionKey="packingCost"
+                                    title="Packing Cost"
+                                    totalComponent={
+                                        partData.costs.packingCost.total
+                                    }
+                                    sectionBg="bg-teal-50"
+                                >
+                                    <CostRow
+                                        component={
+                                            partData.costs.packingCost.material
+                                        }
+                                        isSubItem
+                                    />
+                                    <CostRow
+                                        component={
+                                            partData.costs.packingCost.labor
+                                        }
+                                        isSubItem
+                                    />
+                                    <CostRow
+                                        component={
+                                            partData.costs.packingCost.inland
                                         }
                                         isSubItem
                                     />

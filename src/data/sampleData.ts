@@ -198,12 +198,18 @@ export const engineParts: { [key: string]: EnginePart } = {
           percentageChange: 0.85
         }
       },
+      packingCost: {
+        material: { name: "Material", currentYear: 280000, lastYear: 275000, difference: 5000, percentageChange: 1.82 },
+        labor: { name: "Labor", currentYear: 155000, lastYear: 150000, difference: 5000, percentageChange: 3.33 },
+        inland: { name: "Inland", currentYear: 220000, lastYear: 215000, difference: 5000, percentageChange: 2.33 },
+        total: { name: "Packing Cost", currentYear: 655000, lastYear: 640000, difference: 15000, percentageChange: 2.34 }
+      },
       totalCost: {
         name: "Total Cost",
-        currentYear: 16001219,
-        lastYear: 16165000,
-        difference: -163781,
-        percentageChange: -1.01
+        currentYear: 16656219,
+        lastYear: 16805000,
+        difference: -148781,
+        percentageChange: -0.89
       }
     }
   },
@@ -331,7 +337,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 120000, lastYear: 130000, difference: -10000, percentageChange: -7.69 },
         total: { name: "Processing Cost", currentYear: 2890000, lastYear: 2800000, difference: 90000, percentageChange: 3.21 }
       },
-      totalCost: { name: "Total Cost", currentYear: 14104000, lastYear: 13570000, difference: 534000, percentageChange: 3.93 }
+      packingCost: {
+        material: { name: "Material", currentYear: 220000, lastYear: 215000, difference: 5000, percentageChange: 2.33 },
+        labor: { name: "Labor", currentYear: 125000, lastYear: 120000, difference: 5000, percentageChange: 4.17 },
+        inland: { name: "Inland", currentYear: 180000, lastYear: 175000, difference: 5000, percentageChange: 2.86 },
+        total: { name: "Packing Cost", currentYear: 525000, lastYear: 510000, difference: 15000, percentageChange: 2.94 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 14629000, lastYear: 14080000, difference: 549000, percentageChange: 3.90 }
     }
   },
   "120000Y280": {
@@ -458,7 +470,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 85000, lastYear: 90000, difference: -5000, percentageChange: -5.56 },
         total: { name: "Processing Cost", currentYear: 2095000, lastYear: 2060000, difference: 35000, percentageChange: 1.70 }
       },
-      totalCost: { name: "Total Cost", currentYear: 10400000, lastYear: 10180000, difference: 220000, percentageChange: 2.16 }
+      packingCost: {
+        material: { name: "Material", currentYear: 185000, lastYear: 180000, difference: 5000, percentageChange: 2.78 },
+        labor: { name: "Labor", currentYear: 95000, lastYear: 92000, difference: 3000, percentageChange: 3.26 },
+        inland: { name: "Inland", currentYear: 140000, lastYear: 138000, difference: 2000, percentageChange: 1.45 },
+        total: { name: "Packing Cost", currentYear: 420000, lastYear: 410000, difference: 10000, percentageChange: 2.44 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 10820000, lastYear: 10590000, difference: 230000, percentageChange: 2.17 }
     }
   },
   "120000Y340": {
@@ -585,7 +603,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 180000, lastYear: 170000, difference: 10000, percentageChange: 5.88 },
         total: { name: "Processing Cost", currentYear: 4460000, lastYear: 4200000, difference: 260000, percentageChange: 6.19 }
       },
-      totalCost: { name: "Total Cost", currentYear: 22705000, lastYear: 21435000, difference: 1270000, percentageChange: 5.93 }
+      packingCost: {
+        material: { name: "Material", currentYear: 380000, lastYear: 365000, difference: 15000, percentageChange: 4.11 },
+        labor: { name: "Labor", currentYear: 210000, lastYear: 205000, difference: 5000, percentageChange: 2.44 },
+        inland: { name: "Inland", currentYear: 290000, lastYear: 280000, difference: 10000, percentageChange: 3.57 },
+        total: { name: "Packing Cost", currentYear: 880000, lastYear: 850000, difference: 30000, percentageChange: 3.53 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 23585000, lastYear: 22285000, difference: 1300000, percentageChange: 5.83 }
     }
   },
   "160000Y200": {
@@ -712,7 +736,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 130000, lastYear: 150000, difference: -20000, percentageChange: -13.33 },
         total: { name: "Processing Cost", currentYear: 3100000, lastYear: 3000000, difference: 100000, percentageChange: 3.33 }
       },
-      totalCost: { name: "Total Cost", currentYear: 15625000, lastYear: 15730000, difference: -105000, percentageChange: -0.67 }
+      packingCost: {
+        material: { name: "Material", currentYear: 245000, lastYear: 240000, difference: 5000, percentageChange: 2.08 },
+        labor: { name: "Labor", currentYear: 135000, lastYear: 140000, difference: -5000, percentageChange: -3.57 },
+        inland: { name: "Inland", currentYear: 195000, lastYear: 190000, difference: 5000, percentageChange: 2.63 },
+        total: { name: "Packing Cost", currentYear: 575000, lastYear: 570000, difference: 5000, percentageChange: 0.88 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 16200000, lastYear: 16300000, difference: -100000, percentageChange: -0.61 }
     }
   },
   "140000Y450": {
@@ -839,7 +869,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 160000, lastYear: 180000, difference: -20000, percentageChange: -11.11 },
         total: { name: "Processing Cost", currentYear: 3710000, lastYear: 3580000, difference: 130000, percentageChange: 3.63 }
       },
-      totalCost: { name: "Total Cost", currentYear: 18695000, lastYear: 17970000, difference: 725000, percentageChange: 4.03 }
+      packingCost: {
+        material: { name: "Material", currentYear: 295000, lastYear: 285000, difference: 10000, percentageChange: 3.51 },
+        labor: { name: "Labor", currentYear: 165000, lastYear: 160000, difference: 5000, percentageChange: 3.13 },
+        inland: { name: "Inland", currentYear: 225000, lastYear: 220000, difference: 5000, percentageChange: 2.27 },
+        total: { name: "Packing Cost", currentYear: 685000, lastYear: 665000, difference: 20000, percentageChange: 3.01 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 19380000, lastYear: 18635000, difference: 745000, percentageChange: 4.00 }
     }
   },
   "150000Y560": {
@@ -966,7 +1002,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 110000, lastYear: 120000, difference: -10000, percentageChange: -8.33 },
         total: { name: "Processing Cost", currentYear: 2680000, lastYear: 2650000, difference: 30000, percentageChange: 1.13 }
       },
-      totalCost: { name: "Total Cost", currentYear: 14135000, lastYear: 14360000, difference: -225000, percentageChange: -1.57 }
+      packingCost: {
+        material: { name: "Material", currentYear: 235000, lastYear: 230000, difference: 5000, percentageChange: 2.17 },
+        labor: { name: "Labor", currentYear: 130000, lastYear: 128000, difference: 2000, percentageChange: 1.56 },
+        inland: { name: "Inland", currentYear: 175000, lastYear: 172000, difference: 3000, percentageChange: 1.74 },
+        total: { name: "Packing Cost", currentYear: 540000, lastYear: 530000, difference: 10000, percentageChange: 1.89 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 14675000, lastYear: 14890000, difference: -215000, percentageChange: -1.44 }
     }
   },
   "170000Y670": {
@@ -1093,7 +1135,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 95000, lastYear: 100000, difference: -5000, percentageChange: -5.00 },
         total: { name: "Processing Cost", currentYear: 2305000, lastYear: 2310000, difference: -5000, percentageChange: -0.22 }
       },
-      totalCost: { name: "Total Cost", currentYear: 12373000, lastYear: 12572000, difference: -199000, percentageChange: -1.58 }
+      packingCost: {
+        material: { name: "Material", currentYear: 200000, lastYear: 198000, difference: 2000, percentageChange: 1.01 },
+        labor: { name: "Labor", currentYear: 110000, lastYear: 108000, difference: 2000, percentageChange: 1.85 },
+        inland: { name: "Inland", currentYear: 155000, lastYear: 154000, difference: 1000, percentageChange: 0.65 },
+        total: { name: "Packing Cost", currentYear: 465000, lastYear: 460000, difference: 5000, percentageChange: 1.09 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 12838000, lastYear: 13032000, difference: -194000, percentageChange: -1.49 }
     }
   },
   "180000Y780": {
@@ -1220,7 +1268,13 @@ export const engineParts: { [key: string]: EnginePart } = {
         exclusiveDepre: { name: "Exclusive Depreciation", currentYear: 200000, lastYear: 190000, difference: 10000, percentageChange: 5.26 },
         total: { name: "Processing Cost", currentYear: 4680000, lastYear: 4510000, difference: 170000, percentageChange: 3.77 }
       },
-      totalCost: { name: "Total Cost", currentYear: 21935000, lastYear: 20855000, difference: 1080000, percentageChange: 5.18 }
+      packingCost: {
+        material: { name: "Material", currentYear: 350000, lastYear: 340000, difference: 10000, percentageChange: 2.94 },
+        labor: { name: "Labor", currentYear: 195000, lastYear: 190000, difference: 5000, percentageChange: 2.63 },
+        inland: { name: "Inland", currentYear: 270000, lastYear: 265000, difference: 5000, percentageChange: 1.89 },
+        total: { name: "Packing Cost", currentYear: 815000, lastYear: 795000, difference: 20000, percentageChange: 2.52 }
+      },
+      totalCost: { name: "Total Cost", currentYear: 22750000, lastYear: 21650000, difference: 1100000, percentageChange: 5.08 }
     }
   }
 };
