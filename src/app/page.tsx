@@ -217,6 +217,19 @@ export default function CorePage() {
                             Maintain Master Data
                         </Link>
                     </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                    >
+                        <Link
+                            href="/ppr-export"
+                            className="flex items-center gap-2"
+                        >
+                            <BarChart3 className="h-4 w-4" />
+                            PPR Export Engine List
+                        </Link>
+                    </Button>
                 </div>
             </div>
 

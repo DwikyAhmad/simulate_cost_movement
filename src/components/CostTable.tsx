@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import {
     Card,
     CardContent,
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, MessageSquare, X } from "lucide-react";
+import { ChevronDown, ChevronRight, MessageSquare, X, Edit, Save, XCircle } from "lucide-react";
 import { CostComponent } from "@/types/cost";
 import { formatCurrency, getDifferenceColor } from "@/lib/utils";
 
@@ -43,27 +43,65 @@ export default function CostTable({ partData }: CostTableProps) {
 
     const [selectedRemark, setSelectedRemark] = useState<string | null>(null);
 
-    const toggleSection = (section: string) => {
+    const [adjustments, setAdjustments] = useState<{
+        [key: string]: number | null;
+    }>({});
+
+    const [savedAdjustments, setSavedAdjustments] = useState<{
+        [key: string]: number | null;
+    }>({});
+
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    const toggleSection = useCallback((section: string) => {
         setOpenSections((prev) => ({
             ...prev,
             [section]: !prev[section],
         }));
-    };
+    }, []);
 
-    const toggleComponent = (componentKey: string) => {
+    const toggleComponent = useCallback((componentKey: string) => {
         setOpenComponents((prev) => ({
             ...prev,
             [componentKey]: !prev[componentKey],
         }));
-    };
+    }, []);
 
-    const showRemark = (componentName: string) => {
+    const showRemark = useCallback((componentName: string) => {
         setSelectedRemark(componentName);
-    };
+    }, []);
 
-    const closeRemark = () => {
+    const closeRemark = useCallback(() => {
         setSelectedRemark(null);
-    };
+    }, []);
+
+    const handleAdjustmentChange = useCallback((componentKey: string, value: string) => {
+        const numValue = value === "" ? null : parseFloat(value);
+        setAdjustments((prev) => ({
+            ...prev,
+            [componentKey]: numValue,
+        }));
+    }, []);
+
+    const handleEdit = useCallback(() => {
+        setIsEditMode(true);
+        // Load saved adjustments into current adjustments for editing
+        setAdjustments((prev) => ({ ...savedAdjustments }));
+    }, [savedAdjustments]);
+
+    const handleCancel = useCallback(() => {
+        setIsEditMode(false);
+        // Revert to saved adjustments
+        setAdjustments((prev) => ({ ...savedAdjustments }));
+    }, [savedAdjustments]);
+
+    const handleSave = useCallback(() => {
+        setIsEditMode(false);
+        // Save current adjustments
+        setSavedAdjustments((prev) => ({ ...adjustments }));
+        // You can add API call here to save to backend
+        alert("Price adjustments have been saved successfully!");
+    }, [adjustments]);
 
     const isAboveThreshold = (component: CostComponent) => {
         return component.percentageChange >= 5;
@@ -180,17 +218,24 @@ export default function CostTable({ partData }: CostTableProps) {
         }
     };
 
-    const PartLevel2Row = ({ part }: { part: any }) => {
+    const PartLevel2Row = memo(({ part, partKey }: { part: any; partKey: string }) => {
         const difference = part.currentYear.amount - part.lastYear.amount;
         const percentageChange = part.lastYear.amount !== 0 
             ? ((difference / part.lastYear.amount) * 100) 
+            : 0;
+
+        const adjustmentValue = isEditMode ? adjustments[partKey] : savedAdjustments[partKey];
+        const adjustedAmount = adjustmentValue ?? part.currentYear.amount;
+        const adjustedDifference = adjustedAmount - part.lastYear.amount;
+        const adjustedPercentageChange = part.lastYear.amount !== 0
+            ? ((adjustedDifference / part.lastYear.amount) * 100)
             : 0;
 
         return (
             <>
                 {/* Main Level 2 Part Row - spans all columns */}
                 <TableRow className="bg-gray-50 border-gray-300">
-                    <TableCell colSpan={6} className="pl-12 py-2">
+                    <TableCell colSpan={7} className="pl-12 py-2">
                         <div className="bg-white border border-gray-300 rounded-md p-3 shadow-sm">
                             <div className="text-sm font-medium text-gray-900 mb-2">
                                 {part.partNumber} - {part.partName}
@@ -205,6 +250,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <th className="text-right text-gray-600 py-1 px-2">Quantity</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Price/Item</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Total Amount</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Adjustment</th>
                                             <th className="text-right text-gray-600 py-1 pl-2">Difference</th>
                                         </tr>
                                     </thead>
@@ -214,6 +260,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <td className="text-right text-gray-700 py-1 px-2">{part.lastYear.quantity}</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
+                                            <td className="text-right text-gray-600 py-1 px-2">-</td>
                                             <td className="text-right text-gray-600 py-1 pl-2">-</td>
                                         </tr>
                                         <tr>
@@ -221,13 +268,35 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
+                                            <td className="text-right py-1 px-2" onClick={(e) => e.stopPropagation()}>
+                                                {isEditMode ? (
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        placeholder="Adjust"
+                                                        value={adjustments[partKey] ?? ""}
+                                                        onChange={(e) =>
+                                                            handleAdjustmentChange(partKey, e.target.value)
+                                                        }
+                                                        className="w-24 px-2 py-0.5 text-right border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-xs"
+                                                    />
+                                                ) : (
+                                                    savedAdjustments[partKey] !== null && savedAdjustments[partKey] !== undefined && (
+                                                        <span className="text-xs text-blue-600 font-medium">
+                                                            {formatCurrency(savedAdjustments[partKey]!)}
+                                                        </span>
+                                                    )
+                                                )}
+                                            </td>
                                             <td className="text-right py-1 pl-2">
-                                                <span className={getDifferenceColor(difference)}>
-                                                    {difference >= 0 ? "+" : "-"}{formatCurrency(Math.abs(difference))}
+                                                <span className={getDifferenceColor(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference)}>
+                                                    {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference) >= 0 ? "+" : "-"}
+                                                    {formatCurrency(Math.abs(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference))}
                                                 </span>
                                                 <div className="text-xs mt-1">
-                                                    <span className={`${percentageChange >= 0 ? 'text-red-500' : 'text-green-600'}`}>
-                                                        ({percentageChange >= 0 ? "+" : ""}{percentageChange.toFixed(1)}%)
+                                                    <span className={`${(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange) >= 0 ? 'text-red-500' : 'text-green-600'}`}>
+                                                        ({(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange) >= 0 ? "+" : ""}
+                                                        {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange).toFixed(1)}%)
                                                     </span>
                                                 </div>
                                             </td>
@@ -240,22 +309,23 @@ export default function CostTable({ partData }: CostTableProps) {
                 </TableRow>
             </>
         );
-    };
+    });
+    PartLevel2Row.displayName = 'PartLevel2Row';
 
-    const CostRow = ({
+    const CostRow = memo(({
         component,
         isSubItem = false,
         isTotal = false,
         isGrandTotal = false,
         sectionBg = "",
-        componentKey = "",
+        componentKey,
     }: {
         component: CostComponent;
         isSubItem?: boolean;
         isTotal?: boolean;
         isGrandTotal?: boolean;
         sectionBg?: string;
-        componentKey?: string;
+        componentKey: string;
     }) => {
         const cellClass = isGrandTotal
             ? "font-bold text-lg text-gray-900"
@@ -303,6 +373,26 @@ export default function CostTable({ partData }: CostTableProps) {
                         ? formatCurrency(component.currentYear)
                         : ""}
                 </TableCell>
+                <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                    {isEditMode && !isTotal && !isGrandTotal && !hasLevel2Parts ? (
+                        <input
+                            type="number"
+                            step="0.01"
+                            placeholder="Enter amount"
+                            value={adjustments[componentKey] ?? ""}
+                            onChange={(e) =>
+                                handleAdjustmentChange(componentKey, e.target.value)
+                            }
+                            className="w-full px-2 py-1 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        />
+                    ) : (
+                        !isTotal && !isGrandTotal && !hasLevel2Parts && savedAdjustments[componentKey] !== null && savedAdjustments[componentKey] !== undefined && (
+                            <span className="text-sm text-blue-600 font-medium">
+                                {formatCurrency(savedAdjustments[componentKey]!)}
+                            </span>
+                        )
+                    )}
+                </TableCell>
                 <TableCell className={`text-right ${cellClass}`}>
                     {component.lastYear
                         ? formatCurrency(component.lastYear)
@@ -343,13 +433,18 @@ export default function CostTable({ partData }: CostTableProps) {
                 </TableRow>
                 {/* Level 2 Parts */}
                 {hasLevel2Parts && isComponentOpen && component.parts?.map((part, index) => (
-                    <PartLevel2Row key={`${componentKey}-part-${index}`} part={part} />
+                    <PartLevel2Row 
+                        key={`${componentKey}-part-${index}`} 
+                        part={part} 
+                        partKey={`${componentKey}-part-${part.partNumber || index}`}
+                    />
                 ))}
             </>
         );
-    };
+    });
+    CostRow.displayName = 'CostRow';
 
-    const CollapsibleSection = ({
+    const CollapsibleSection = memo(({
         sectionKey,
         title,
         totalComponent,
@@ -383,6 +478,9 @@ export default function CostTable({ partData }: CostTableProps) {
                     <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.currentYear)}
                     </TableCell>
+                    <TableCell className="text-right">
+                        {/* Empty cell for adjustment column in section headers */}
+                    </TableCell>
                     <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.lastYear)}
                     </TableCell>
@@ -408,19 +506,56 @@ export default function CostTable({ partData }: CostTableProps) {
                 {isOpen && children}
             </>
         );
-    };
+    });
+    CollapsibleSection.displayName = 'CollapsibleSection';
 
     return (
         <>
             <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                 <CardHeader>
-                    <CardTitle className="text-gray-900">
-                        Cost Breakdown Analysis
-                    </CardTitle>
-                    <CardDescription className="text-gray-600">
-                        Detailed cost comparison showing year-over-year changes
-                        for all cost components
-                    </CardDescription>
+                    <div className="flex items-start justify-between">
+                        <div>
+                            <CardTitle className="text-gray-900">
+                                Cost Breakdown Analysis
+                            </CardTitle>
+                            <CardDescription className="text-gray-600">
+                                Detailed cost comparison showing year-over-year changes
+                                for all cost components
+                            </CardDescription>
+                        </div>
+                        <div className="flex gap-2">
+                            {!isEditMode ? (
+                                <Button
+                                    onClick={handleEdit}
+                                    size="sm"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                >
+                                    <Edit className="h-4 w-4 mr-1" />
+                                    Edit
+                                </Button>
+                            ) : (
+                                <>
+                                    <Button
+                                        onClick={handleCancel}
+                                        variant="outline"
+                                        size="sm"
+                                        className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                                    >
+                                        <XCircle className="h-4 w-4 mr-1" />
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={handleSave}
+                                        size="sm"
+                                        className="bg-green-600 hover:bg-green-700 text-white"
+                                    >
+                                        <Save className="h-4 w-4 mr-1" />
+                                        Save
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <div className="overflow-x-auto">
@@ -432,6 +567,9 @@ export default function CostTable({ partData }: CostTableProps) {
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
                                         Current Year
+                                    </TableHead>
+                                    <TableHead className="text-right text-gray-700">
+                                        Adjustment
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
                                         Last Year
@@ -492,10 +630,12 @@ export default function CostTable({ partData }: CostTableProps) {
                                 <CostRow
                                     component={partData.costs.toolingOuthouse}
                                     sectionBg="bg-yellow-50"
+                                    componentKey="toolingOuthouse"
                                 />
                                 <CostRow
                                     component={partData.costs.totalPurchaseCost}
                                     sectionBg="bg-pink-50"
+                                    componentKey="totalPurchaseCost"
                                 />
 
                                 {/* Processing Cost Section */}
@@ -512,6 +652,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                             partData.costs.processingCost.labor
                                         }
                                         isSubItem
+                                        componentKey="labor"
                                     />
                                     <CostRow
                                         component={
@@ -519,12 +660,14 @@ export default function CostTable({ partData }: CostTableProps) {
                                                 .fohFixed
                                         }
                                         isSubItem
+                                        componentKey="fohFixed"
                                     />
                                     <CostRow
                                         component={
                                             partData.costs.processingCost.fohVar
                                         }
                                         isSubItem
+                                        componentKey="fohVar"
                                     />
                                     <CostRow
                                         component={
@@ -532,6 +675,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                                 .unfinishDepre
                                         }
                                         isSubItem
+                                        componentKey="unfinishDepre"
                                     />
                                     <CostRow
                                         component={
@@ -539,6 +683,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                                 .exclusiveDepre
                                         }
                                         isSubItem
+                                        componentKey="exclusiveDepre"
                                     />
                                 </CollapsibleSection>
 
@@ -556,18 +701,21 @@ export default function CostTable({ partData }: CostTableProps) {
                                             partData.costs.packingCost.material
                                         }
                                         isSubItem
+                                        componentKey="packingMaterial"
                                     />
                                     <CostRow
                                         component={
                                             partData.costs.packingCost.labor
                                         }
                                         isSubItem
+                                        componentKey="packingLabor"
                                     />
                                     <CostRow
                                         component={
                                             partData.costs.packingCost.inland
                                         }
                                         isSubItem
+                                        componentKey="packingInland"
                                     />
                                 </CollapsibleSection>
 
@@ -575,6 +723,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                 <CostRow
                                     component={partData.costs.totalCost}
                                     isGrandTotal
+                                    componentKey="totalCost"
                                 />
                             </TableBody>
                         </Table>
