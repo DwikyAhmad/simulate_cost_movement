@@ -121,8 +121,11 @@ export default function CalculationPage() {
         }
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const hasRemark = (partNo: string, rowType: string) => {
-        return !!remarksData[generateRemarkKey(partNo, rowType)];
+        // Temporarily hiding all remarks
+        return false;
+        // return !!remarksData[generateRemarkKey(partNo, rowType)];
     };
 
     const closeRemark = () => {
@@ -301,7 +304,7 @@ export default function CalculationPage() {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                                 type="text"
-                                placeholder="Search by part number or engine type..."
+                                placeholder="Search by part number..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="pl-10 bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-md"
