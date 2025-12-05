@@ -47,33 +47,30 @@ export default function ControlPanel({
             </Select>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Current Period (2025)</label>
+            <label className="text-sm font-medium text-gray-700">Current Period</label>
             <Select value={selectedMonth} onValueChange={onMonthChange}>
               <SelectTrigger className="rounded-md border-2 border-gray-300 bg-white text-gray-900">
                 <SelectValue placeholder="Select month" />
               </SelectTrigger>
               <SelectContent className="bg-white border-gray-300">
                 <SelectItem value="august-2025" className="text-gray-900 hover:bg-blue-50">August 2025</SelectItem>
-                <SelectItem value="july-2025" className="text-gray-900 hover:bg-blue-50">July 2025</SelectItem>
-                <SelectItem value="june-2025" className="text-gray-900 hover:bg-blue-50">June 2025</SelectItem>
-                <SelectItem value="may-2025" className="text-gray-900 hover:bg-blue-50">May 2025</SelectItem>
-                <SelectItem value="april-2025" className="text-gray-900 hover:bg-blue-50">April 2025</SelectItem>
-                <SelectItem value="march-2025" className="text-gray-900 hover:bg-blue-50">March 2025</SelectItem>
+                <SelectItem value="february-2025" className="text-gray-900 hover:bg-blue-50">February 2025</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Comparison Year</label>
+            <label className="text-sm font-medium text-gray-700">Previous Period</label>
             <Select value={comparisonYear} onValueChange={onYearChange}>
               <SelectTrigger className="rounded-md border-2 border-gray-300 bg-white text-gray-900">
-                <SelectValue placeholder="Select comparison year" />
+                <SelectValue placeholder="Select previous period" />
               </SelectTrigger>
               <SelectContent className="bg-white border-gray-300">
-                <SelectItem value="2024" className="text-gray-900 hover:bg-blue-50">2024</SelectItem>
-                <SelectItem value="2023" className="text-gray-900 hover:bg-blue-50">2023</SelectItem>
-                <SelectItem value="2022" className="text-gray-900 hover:bg-blue-50">2022</SelectItem>
-                <SelectItem value="2021" className="text-gray-900 hover:bg-blue-50">2021</SelectItem>
-                <SelectItem value="2020" className="text-gray-900 hover:bg-blue-50">2020</SelectItem>
+                <SelectItem value="august-2024" className="text-gray-900 hover:bg-blue-50">August 2024</SelectItem>
+                <SelectItem value="february-2024" className="text-gray-900 hover:bg-blue-50">February 2024</SelectItem>
+                <SelectItem value="august-2023" className="text-gray-900 hover:bg-blue-50">August 2023</SelectItem>
+                <SelectItem value="february-2023" className="text-gray-900 hover:bg-blue-50">February 2023</SelectItem>
+                <SelectItem value="august-2022" className="text-gray-900 hover:bg-blue-50">August 2022</SelectItem>
+                <SelectItem value="february-2022" className="text-gray-900 hover:bg-blue-50">February 2022</SelectItem>
               </SelectContent>
             </Select>
           </div>

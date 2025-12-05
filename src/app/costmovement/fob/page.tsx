@@ -44,10 +44,6 @@ export default function FOBAnalysisPage() {
         router.push("/");
     };
 
-    const handleRefresh = () => {
-        router.refresh();
-    };
-
     const handleGoTo1v1 = () => {
         router.push('/costmovement/fob/compare');
     };

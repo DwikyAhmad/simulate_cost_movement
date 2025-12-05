@@ -133,7 +133,7 @@ export default function ComparisonResultsPage({
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-400">
-                                    Comparison Period
+                                    Previous Period
                                 </p>
                                 <p className="text-lg font-semibold text-white">
                                     August 2024

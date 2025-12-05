@@ -249,25 +249,24 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <th className="text-left text-gray-600 py-1 pr-2">Period</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Quantity</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Price/Item</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Final Current Period</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Total Amount</th>
-                                            <th className="text-right text-gray-600 py-1 px-2">Adjustment</th>
                                             <th className="text-right text-gray-600 py-1 pl-2">Difference</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr className="border-b border-gray-200">
-                                            <td className="text-gray-700 py-1 pr-2">Last Year</td>
+                                            <td className="text-gray-700 py-1 pr-2">Previous Period</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{part.lastYear.quantity}</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
-                                            <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
                                             <td className="text-right text-gray-600 py-1 px-2">-</td>
+                                            <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
                                             <td className="text-right text-gray-600 py-1 pl-2">-</td>
                                         </tr>
                                         <tr>
-                                            <td className="text-gray-900 py-1 pr-2 font-medium">Current Year</td>
+                                            <td className="text-gray-900 py-1 pr-2 font-medium">Current Period</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
-                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 px-2" onClick={(e) => e.stopPropagation()}>
                                                 {isEditMode ? (
                                                     <input
@@ -288,6 +287,7 @@ export default function CostTable({ partData }: CostTableProps) {
                                                     )
                                                 )}
                                             </td>
+                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 pl-2">
                                                 <span className={getDifferenceColor(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference)}>
                                                     {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference) >= 0 ? "+" : "-"}
@@ -374,7 +374,7 @@ export default function CostTable({ partData }: CostTableProps) {
                         : ""}
                 </TableCell>
                 <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
-                    {isEditMode && !isTotal && !isGrandTotal && !hasLevel2Parts ? (
+                    {isEditMode && !isTotal && !isGrandTotal && !hasLevel2Parts && componentKey !== "totalPurchaseCost" ? (
                         <input
                             type="number"
                             step="0.01"
@@ -386,7 +386,7 @@ export default function CostTable({ partData }: CostTableProps) {
                             className="w-full px-2 py-1 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         />
                     ) : (
-                        !isTotal && !isGrandTotal && !hasLevel2Parts && savedAdjustments[componentKey] !== null && savedAdjustments[componentKey] !== undefined && (
+                        !isTotal && !isGrandTotal && !hasLevel2Parts && componentKey !== "totalPurchaseCost" && savedAdjustments[componentKey] !== null && savedAdjustments[componentKey] !== undefined && (
                             <span className="text-sm text-blue-600 font-medium">
                                 {formatCurrency(savedAdjustments[componentKey]!)}
                             </span>
@@ -566,13 +566,13 @@ export default function CostTable({ partData }: CostTableProps) {
                                         Cost Component
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
-                                        Current Year
+                                        Current Period
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
-                                        Adjustment
+                                        Final Current Period
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
-                                        Last Year
+                                        Previous Period
                                     </TableHead>
                                     <TableHead className="text-right text-gray-700">
                                         Difference

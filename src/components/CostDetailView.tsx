@@ -17,7 +17,7 @@ export default function CostDetailView({ initialPart, onBackToList }: CostDetail
   const router = useRouter();
   const [selectedPart] = useState<string>(initialPart);
   const [selectedMonth, setSelectedMonth] = useState<string>("august-2025");
-  const [comparisonYear, setComparisonYear] = useState<string>("2024");
+  const [comparisonYear, setComparisonYear] = useState<string>("august-2024");
 
   const currentPart = engineParts[selectedPart];
 
@@ -25,11 +25,6 @@ export default function CostDetailView({ initialPart, onBackToList }: CostDetail
     if (newPart !== selectedPart) {
       router.push(`/costmovement/engine/${newPart}`);
     }
-  };
-
-  const handleRefresh = () => {
-    // Implement refresh logic here
-    console.log("Refreshing data...");
   };
 
   return (
@@ -41,7 +36,6 @@ export default function CostDetailView({ initialPart, onBackToList }: CostDetail
           subtitle={`Detailed cost analysis for ${currentPart.partNo}`}
           showBackButton
           onBackClick={onBackToList}
-          onRefreshClick={handleRefresh}
         />
 
         {/* Control Panel */}

@@ -24,17 +24,18 @@ export const getDifferenceColor = (change: number) => {
 export const getDisplayDate = (monthValue: string) => {
   const monthMap: { [key: string]: string } = {
     "august-2025": "August 2025",
-    "july-2025": "July 2025", 
-    "june-2025": "June 2025",
-    "may-2025": "May 2025",
-    "april-2025": "April 2025",
-    "march-2025": "March 2025"
+    "february-2025": "February 2025",
+    "august-2024": "August 2024",
+    "february-2024": "February 2024",
+    "august-2023": "August 2023",
+    "february-2023": "February 2023",
+    "august-2022": "August 2022",
+    "february-2022": "February 2022"
   };
   return monthMap[monthValue] || "August 2025";
 };
 
 export const getComparisonDate = (monthValue: string, compYear: string) => {
-  const monthName = monthValue.split('-')[0];
-  const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-  return `${capitalizedMonth} ${compYear}`;
+  // compYear is now a full month-year string like "march-2024"
+  return getDisplayDate(compYear);
 };

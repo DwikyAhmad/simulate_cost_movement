@@ -28,7 +28,7 @@ export default function PartInfo({ partNo, selectedMonth, comparisonYear }: Part
             <p className="text-lg font-semibold text-gray-900">{getDisplayDate(selectedMonth)}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-600">Comparison Period</p>
+            <p className="text-sm font-medium text-gray-600">Previous Period</p>
             <p className="text-lg font-semibold text-gray-900">{getComparisonDate(selectedMonth, comparisonYear)}</p>
           </div>
         </div>

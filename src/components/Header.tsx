@@ -1,22 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 interface HeaderProps {
   title: string;
   subtitle: string;
   showBackButton?: boolean;
   onBackClick?: () => void;
-  onRefreshClick?: () => void;
 }
 
 export default function Header({ 
   title, 
   subtitle, 
   showBackButton = false, 
-  onBackClick,
-  onRefreshClick 
+  onBackClick
 }: HeaderProps) {
   return (
     <div className="bg-white border-b-2 border-blue-100 shadow-sm p-4 md:p-6">
@@ -38,17 +36,6 @@ export default function Header({
             <p className="text-gray-600 mt-1 text-sm md:text-base">{subtitle}</p>
           </div>
         </div>
-        {onRefreshClick && (
-          <Button 
-            onClick={onRefreshClick}
-            variant="outline" 
-            className="flex items-center gap-2 rounded-md border-2 border-blue-200 bg-white text-gray-700 hover:bg-blue-50 hover:border-blue-300 transition-colors w-fit md:w-auto"
-          >
-            <RefreshCw className="h-4 w-4" />
-            <span className="hidden sm:inline">Refresh Data</span>
-            <span className="sm:hidden">Refresh</span>
-          </Button>
-        )}
       </div>
     </div>
   );
