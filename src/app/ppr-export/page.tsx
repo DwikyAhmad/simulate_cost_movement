@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Plus, Edit, Trash2, X } from "lucide-react";
+import { ArrowLeft, Plus, Edit, Trash2, X, Upload, Download, FileUp } from "lucide-react";
 import {
     Table,
     TableBody,
@@ -97,6 +97,7 @@ export default function PPRExportPage() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showUploadModal, setShowUploadModal] = useState(false);
     const [selectedEngine, setSelectedEngine] = useState<EngineParent | null>(null);
     const [formData, setFormData] = useState({
         partNo: "",
@@ -132,16 +133,31 @@ export default function PPRExportPage() {
         setShowDeleteModal(true);
     };
 
+    const handleOpenUploadModal = () => {
+        setShowUploadModal(true);
+    };
+
     const handleCloseModals = () => {
         setShowAddModal(false);
         setShowEditModal(false);
         setShowDeleteModal(false);
+        setShowUploadModal(false);
         setSelectedEngine(null);
         setFormData({
             partNo: "",
             partName: "",
             destinationCode: "",
         });
+    };
+
+    const handleDownloadTemplate = () => {
+        alert("Downloading template... This would download an Excel template file.");
+        // Implement actual template download logic here
+    };
+
+    const handleUploadData = () => {
+        alert("Upload data dialog would open here to select and upload an Excel file.");
+        // Implement actual file upload logic here
     };
 
     const handleAdd = () => {
@@ -223,14 +239,24 @@ export default function PPRExportPage() {
                                     Complete list of engine parent parts available for PPR export
                                 </CardDescription>
                             </div>
-                            <Button
-                                onClick={handleOpenAddModal}
-                                size="sm"
-                                className="bg-blue-600 hover:bg-blue-700 text-white"
-                            >
-                                <Plus className="h-4 w-4 mr-1" />
-                                New
-                            </Button>
+                            <div className="flex gap-2">
+                                <Button
+                                    onClick={handleOpenUploadModal}
+                                    size="sm"
+                                    className="bg-green-600 hover:bg-green-700 text-white"
+                                >
+                                    <Upload className="h-4 w-4 mr-1" />
+                                    Upload
+                                </Button>
+                                <Button
+                                    onClick={handleOpenAddModal}
+                                    size="sm"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                                >
+                                    <Plus className="h-4 w-4 mr-1" />
+                                    New
+                                </Button>
+                            </div>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -540,6 +566,50 @@ export default function PPRExportPage() {
                                 className="bg-red-600 hover:bg-red-700 text-white"
                             >
                                 Delete
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Upload Modal */}
+            {showUploadModal && (
+                <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg w-full max-w-md shadow-xl border border-gray-300">
+                        <div className="border-b border-gray-300 p-6 flex items-start justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    Upload Engine Data
+                                </h2>
+                                <p className="text-gray-600 text-sm mt-1">
+                                    Download template or upload your data file
+                                </p>
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={handleCloseModals}
+                                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                            >
+                                <X className="h-5 w-5" />
+                            </Button>
+                        </div>
+                        
+                        <div className="p-6 space-y-3">
+                            <Button
+                                onClick={handleDownloadTemplate}
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            >
+                                <Download className="h-4 w-4 mr-2" />
+                                Download Template
+                            </Button>
+
+                            <Button
+                                onClick={handleUploadData}
+                                className="w-full bg-green-600 hover:bg-green-700 text-white"
+                            >
+                                <FileUp className="h-4 w-4 mr-2" />
+                                Upload Data
                             </Button>
                         </div>
                     </div>
