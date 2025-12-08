@@ -99,7 +99,7 @@ export default function FOBDetailPage({
 
     if (!partData) {
         return (
-            <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+            <div className="min-h-screen bg-gray-50 p-3 md:p-6">
                 <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                     <Header
                         title="Part Not Found"
@@ -108,9 +108,9 @@ export default function FOBDetailPage({
                         onBackClick={handleBackToList}
                         onRefreshClick={handleRefresh}
                     />
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardContent className="py-12 text-center">
-                            <div className="text-gray-400">
+                            <div className="text-gray-600">
                                 Part {partNo} not found in the database
                             </div>
                         </CardContent>
@@ -163,7 +163,7 @@ export default function FOBDetailPage({
     ];
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="min-h-screen bg-gray-50 p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                 {/* Header */}
                 <Header
@@ -175,22 +175,22 @@ export default function FOBDetailPage({
                 />
 
                 {/* Period Selection */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardContent className="p-4">
                         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-                            <div className="text-white">
+                            <div className="text-gray-900">
                                 <h3 className="font-semibold">Analysis Period - {partNo}</h3>
-                                <p className="text-gray-300 text-sm">Select period to analyze cost changes</p>
+                                <p className="text-gray-600 text-sm">Select period to analyze cost changes</p>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Calendar className="h-4 w-4 text-gray-400" />
+                                <Calendar className="h-4 w-4 text-gray-500" />
                                 <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-                                    <SelectTrigger className="w-40 bg-gray-700 border-gray-600 text-white rounded-none">
+                                    <SelectTrigger className="w-40 bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-700 border-gray-600 text-white">
+                                    <SelectContent className="bg-white border-gray-300">
                                         {availablePeriods.map((period) => (
-                                            <SelectItem key={period} value={period}>
+                                            <SelectItem key={period} value={period} className="text-gray-900 hover:bg-blue-50">
                                                 {period}
                                             </SelectItem>
                                         ))}
@@ -202,16 +202,16 @@ export default function FOBDetailPage({
                 </Card>
 
                 {/* Cost Breakdown Table */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardContent className="p-0">
                         <Table>
                             <TableHeader>
-                                <TableRow className="border-gray-600 bg-gray-750">
-                                    <TableHead className="text-white font-semibold">Cost Component</TableHead>
-                                    <TableHead className="text-white font-semibold text-right">Current</TableHead>
-                                    <TableHead className="text-white font-semibold text-right">{selectedPeriod}</TableHead>
-                                    <TableHead className="text-white font-semibold text-right">Difference</TableHead>
-                                    <TableHead className="text-white font-semibold text-right">Change %</TableHead>
+                                <TableRow className="border-gray-200 bg-gray-50">
+                                    <TableHead className="text-gray-900 font-semibold">Cost Component</TableHead>
+                                    <TableHead className="text-gray-900 font-semibold text-right">Current</TableHead>
+                                    <TableHead className="text-gray-900 font-semibold text-right">{selectedPeriod}</TableHead>
+                                    <TableHead className="text-gray-900 font-semibold text-right">Difference</TableHead>
+                                    <TableHead className="text-gray-900 font-semibold text-right">Change %</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -224,29 +224,29 @@ export default function FOBDetailPage({
                                     return (
                                         <TableRow 
                                             key={index}
-                                            className="bg-gray-800 hover:bg-gray-750 border-gray-600"
+                                            className="bg-white hover:bg-gray-50 border-gray-200"
                                         >
-                                            <TableCell className="font-medium text-white py-3">
+                                            <TableCell className="font-medium text-gray-900 py-3">
                                                 {component.label}
                                             </TableCell>
-                                            <TableCell className="text-right text-white font-medium">
+                                            <TableCell className="text-right text-gray-900 font-medium">
                                                 {component.isUSD ? formatDollar(component.current) : formatRupiah(component.current)}
                                             </TableCell>
-                                            <TableCell className="text-right text-white font-medium">
+                                            <TableCell className="text-right text-gray-900 font-medium">
                                                 {component.isUSD ? formatDollar(component.previous) : formatRupiah(component.previous)}
                                             </TableCell>
-                                            <TableCell className={`text-right font-medium ${isPositive ? 'text-red-400' : 'text-green-400'}`}>
+                                            <TableCell className={`text-right font-medium ${isPositive ? 'text-red-600' : 'text-green-600'}`}>
                                                 {isPositive ? '+' : ''}{component.isUSD ? formatDollar(difference) : formatRupiah(difference)}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <span className={`font-medium ${isHighChange ? 'text-white' : 'text-gray-300'}`}>
+                                                    <span className={`font-medium ${isHighChange ? 'text-gray-900' : 'text-gray-600'}`}>
                                                         {isPositive ? '+' : ''}{percentage.toFixed(2)}%
                                                     </span>
                                                     {isHighChange && (
                                                         <Badge 
                                                             variant="destructive"
-                                                            className="rounded-none text-xs"
+                                                            className="rounded-md text-xs"
                                                         >
                                                             Warning: {isPositive ? '+' : ''}{percentage.toFixed(2)}%
                                                         </Badge>
@@ -254,7 +254,7 @@ export default function FOBDetailPage({
                                                     {!isHighChange && Math.abs(percentage) > 3 && (
                                                         <Badge 
                                                             variant="secondary"
-                                                            className="rounded-none text-xs"
+                                                            className="rounded-md text-xs"
                                                         >
                                                             {percentage.toFixed(2)}%
                                                         </Badge>

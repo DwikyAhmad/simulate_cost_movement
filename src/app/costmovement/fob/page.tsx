@@ -81,7 +81,7 @@ export default function FOBAnalysisPage() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="min-h-screen bg-gray-50 p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                 {/* Header */}
                 <Header
@@ -93,17 +93,17 @@ export default function FOBAnalysisPage() {
                 />
 
                 {/* Action Buttons */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardContent className="p-4">
                         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                            <div className="text-white">
+                            <div className="text-gray-900">
                                 <h3 className="font-semibold">FOB Analysis Options</h3>
-                                <p className="text-gray-300 text-sm">Select parts to view details or compare</p>
+                                <p className="text-gray-600 text-sm">Select parts to view details or compare</p>
                             </div>
                             <div className="flex gap-3">
                                 <Button
                                     onClick={handleGoTo1v1}
-                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-none border-2 border-orange-500"
+                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-md border-2 border-orange-500"
                                 >
                                     <Users className="h-4 w-4 mr-2" />
                                     1v1 Comparison
@@ -114,9 +114,9 @@ export default function FOBAnalysisPage() {
                 </Card>
 
                 {/* Filters */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader>
-                        <CardTitle className="text-white flex items-center gap-2">
+                        <CardTitle className="text-gray-900 flex items-center gap-2">
                             <Filter className="h-5 w-5" />
                             Filters
                         </CardTitle>
@@ -124,7 +124,7 @@ export default function FOBAnalysisPage() {
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Search Part Number
                                 </label>
                                 <div className="relative">
@@ -133,22 +133,22 @@ export default function FOBAnalysisPage() {
                                         placeholder="Search parts..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
+                                        className="pl-10 bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-md"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Model
                                 </label>
                                 <Select value={modelFilter} onValueChange={setModelFilter}>
-                                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white rounded-none">
+                                    <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue placeholder="All Models" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-700 border-gray-600 text-white">
-                                        <SelectItem value="all">All Models</SelectItem>
+                                    <SelectContent className="bg-white border-gray-300">
+                                        <SelectItem value="all" className="text-gray-900 hover:bg-blue-50">All Models</SelectItem>
                                         {models.map((model) => (
-                                            <SelectItem key={model} value={model}>
+                                            <SelectItem key={model} value={model} className="text-gray-900 hover:bg-blue-50">
                                                 {model}
                                             </SelectItem>
                                         ))}
@@ -156,17 +156,17 @@ export default function FOBAnalysisPage() {
                                 </Select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Destination
                                 </label>
                                 <Select value={destinationFilter} onValueChange={setDestinationFilter}>
-                                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white rounded-none">
+                                    <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue placeholder="All Destinations" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-700 border-gray-600 text-white">
-                                        <SelectItem value="all">All Destinations</SelectItem>
+                                    <SelectContent className="bg-white border-gray-300">
+                                        <SelectItem value="all" className="text-gray-900 hover:bg-blue-50">All Destinations</SelectItem>
                                         {destinations.map((destination) => (
-                                            <SelectItem key={destination} value={destination}>
+                                            <SelectItem key={destination} value={destination} className="text-gray-900 hover:bg-blue-50">
                                                 {destination}
                                             </SelectItem>
                                         ))}
@@ -174,17 +174,17 @@ export default function FOBAnalysisPage() {
                                 </Select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Engine Type
                                 </label>
                                 <Select value={engineTypeFilter} onValueChange={setEngineTypeFilter}>
-                                    <SelectTrigger className="bg-gray-700 border-gray-600 text-white rounded-none">
+                                    <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue placeholder="All Engine Types" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-700 border-gray-600 text-white">
-                                        <SelectItem value="all">All Engine Types</SelectItem>
+                                    <SelectContent className="bg-white border-gray-300">
+                                        <SelectItem value="all" className="text-gray-900 hover:bg-blue-50">All Engine Types</SelectItem>
                                         {engineTypes.map((engineType) => (
-                                            <SelectItem key={engineType} value={engineType}>
+                                            <SelectItem key={engineType} value={engineType} className="text-gray-900 hover:bg-blue-50">
                                                 {engineType}
                                             </SelectItem>
                                         ))}
@@ -193,7 +193,7 @@ export default function FOBAnalysisPage() {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <Badge variant="outline" className="rounded-none text-white">
+                            <Badge variant="outline" className="rounded-md text-gray-700 border-gray-300">
                                 {filteredParts.length} parts found
                             </Badge>
                         </div>
@@ -201,13 +201,13 @@ export default function FOBAnalysisPage() {
                 </Card>
 
                 {/* Parts List */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader>
-                        <CardTitle className="text-white flex items-center gap-2">
-                            <DollarSign className="h-5 w-5 text-orange-400" />
+                        <CardTitle className="text-gray-900 flex items-center gap-2">
+                            <DollarSign className="h-5 w-5 text-orange-500" />
                             FOB Analysis - Engine Parts
                         </CardTitle>
-                        <CardDescription className="text-gray-300">
+                        <CardDescription className="text-gray-600">
                             Select a part to view detailed FOB cost analysis
                         </CardDescription>
                     </CardHeader>
@@ -219,27 +219,27 @@ export default function FOBAnalysisPage() {
                                 return (
                                     <Card
                                         key={partNo}
-                                        className="cursor-pointer transition-all duration-200 rounded-none border-2 border-gray-600 bg-gray-700 hover:border-orange-500 hover:bg-gray-750"
+                                        className="cursor-pointer transition-all duration-200 rounded-lg border-2 border-gray-200 bg-white hover:border-orange-400 hover:shadow-md"
                                     >
                                         <CardContent className="p-3">
                                             <div className="flex items-center justify-between">
                                                 {/* Left side - Part info */}
                                                 <div className="flex items-center gap-6">
-                                                    <div className="font-semibold text-white min-w-[120px]">
+                                                    <div className="font-semibold text-gray-900 min-w-[120px]">
                                                         {partNo}
                                                     </div>
-                                                    <div className="flex items-center gap-4 text-sm text-gray-300">
-                                                        <span><span className="text-gray-400">Model:</span> {part.model}</span>
-                                                        <span><span className="text-gray-400">Destination:</span> {part.destination}</span>
-                                                        <span><span className="text-gray-400">Engine:</span> {part.engineType}</span>
+                                                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                                                        <span><span className="text-gray-500">Model:</span> {part.model}</span>
+                                                        <span><span className="text-gray-500">Destination:</span> {part.destination}</span>
+                                                        <span><span className="text-gray-500">Engine:</span> {part.engineType}</span>
                                                     </div>
                                                 </div>
 
                                                 {/* Center - FOB Summary */}
                                                 <div className="flex items-center gap-6 text-sm">
                                                     <div className="text-center">
-                                                        <div className="text-gray-400 text-xs">FOB Price</div>
-                                                        <div className="text-orange-300 font-medium">
+                                                        <div className="text-gray-500 text-xs">FOB Price</div>
+                                                        <div className="text-orange-600 font-medium">
                                                             {formatCurrency(fobData.fobPriceUSD)}
                                                         </div>
                                                     </div>
@@ -249,7 +249,7 @@ export default function FOBAnalysisPage() {
                                                 <Button
                                                     onClick={() => handleShowDetail(partNo)}
                                                     size="sm"
-                                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-none border-2 border-orange-500"
+                                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-md border-2 border-orange-500"
                                                 >
                                                     <Eye className="h-4 w-4 mr-2" />
                                                     Show Detail

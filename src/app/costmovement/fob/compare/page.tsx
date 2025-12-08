@@ -116,7 +116,7 @@ export default function FOBComparePage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="min-h-screen bg-gray-50 p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                 {/* Header */}
                 <Header
@@ -130,13 +130,13 @@ export default function FOBComparePage() {
                 {/* Part Selection Cards */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Part 1 Search */}
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-gray-900 flex items-center gap-2">
                                 <Search className="h-5 w-5" />
                                 Search First Part
                             </CardTitle>
-                            <CardDescription className="text-gray-300">
+                            <CardDescription className="text-gray-600">
                                 Type to search for the first part to analyze FOB costs
                             </CardDescription>
                         </CardHeader>
@@ -156,12 +156,12 @@ export default function FOBComparePage() {
                                             searchTerm1.trim() !== ""
                                         )
                                     }
-                                    className="pl-10 pr-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
+                                    className="pl-10 pr-10 bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-md"
                                 />
                                 {searchTerm1 && (
                                     <button
                                         onClick={() => clearSelection(1)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-900"
                                     >
                                         <X className="h-4 w-4" />
                                     </button>
@@ -170,7 +170,7 @@ export default function FOBComparePage() {
 
                             {/* Search Suggestions */}
                             {showSuggestions1 && (
-                                <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-600 rounded-none bg-gray-700">
+                                <div className="space-y-2 max-h-64 overflow-y-auto border-2 border-gray-300 rounded-md bg-white shadow-lg">
                                     {getFilteredParts(
                                         searchTerm1,
                                         selectedPart2
@@ -181,11 +181,11 @@ export default function FOBComparePage() {
                                                 onClick={() =>
                                                     handlePartSelect(partNo, 1)
                                                 }
-                                                className="w-full p-3 text-left hover:bg-blue-600 transition-colors border-b border-gray-600 last:border-b-0"
+                                                className="w-full p-3 text-left hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-b-0"
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <div className="font-semibold text-white">
+                                                        <div className="font-semibold text-gray-900">
                                                             {partNo}
                                                         </div>
                                                     </div>
@@ -197,7 +197,7 @@ export default function FOBComparePage() {
                                         searchTerm1,
                                         selectedPart2
                                     ).length === 0 && (
-                                        <div className="p-3 text-center text-gray-400">
+                                        <div className="p-3 text-center text-gray-500">
                                             No parts found matching &quot;
                                             {searchTerm1}&quot;
                                         </div>
@@ -207,8 +207,8 @@ export default function FOBComparePage() {
 
                             {/* Selected Part Display */}
                             {selectedPart1 && (
-                                <div className="p-3 bg-blue-900/30 border border-blue-600 rounded-none">
-                                    <div className="text-white font-semibold">
+                                <div className="p-3 bg-blue-50 border-2 border-blue-300 rounded-md">
+                                    <div className="text-gray-900 font-semibold">
                                         Selected: {selectedPart1}
                                     </div>
                                 </div>
@@ -217,13 +217,13 @@ export default function FOBComparePage() {
                     </Card>
 
                     {/* Part 2 Search */}
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-gray-900 flex items-center gap-2">
                                 <Search className="h-5 w-5" />
                                 Search Second Part
                             </CardTitle>
-                            <CardDescription className="text-gray-300">
+                            <CardDescription className="text-gray-600">
                                 Type to search for the second part to analyze FOB costs
                             </CardDescription>
                         </CardHeader>
@@ -243,12 +243,12 @@ export default function FOBComparePage() {
                                             searchTerm2.trim() !== ""
                                         )
                                     }
-                                    className="pl-10 pr-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400 rounded-none"
+                                    className="pl-10 pr-10 bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-md"
                                 />
                                 {searchTerm2 && (
                                     <button
                                         onClick={() => clearSelection(2)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-900"
                                     >
                                         <X className="h-4 w-4" />
                                     </button>
@@ -257,7 +257,7 @@ export default function FOBComparePage() {
 
                             {/* Search Suggestions */}
                             {showSuggestions2 && (
-                                <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-600 rounded-none bg-gray-700">
+                                <div className="space-y-2 max-h-64 overflow-y-auto border-2 border-gray-300 rounded-md bg-white shadow-lg">
                                     {getFilteredParts(
                                         searchTerm2,
                                         selectedPart1
@@ -268,11 +268,11 @@ export default function FOBComparePage() {
                                                 onClick={() =>
                                                     handlePartSelect(partNo, 2)
                                                 }
-                                                className="w-full p-3 text-left hover:bg-purple-600 transition-colors border-b border-gray-600 last:border-b-0"
+                                                className="w-full p-3 text-left hover:bg-purple-50 transition-colors border-b border-gray-200 last:border-b-0"
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <div className="font-semibold text-white">
+                                                        <div className="font-semibold text-gray-900">
                                                             {partNo}
                                                         </div>
                                                     </div>
@@ -284,7 +284,7 @@ export default function FOBComparePage() {
                                         searchTerm2,
                                         selectedPart1
                                     ).length === 0 && (
-                                        <div className="p-3 text-center text-gray-400">
+                                        <div className="p-3 text-center text-gray-500">
                                             No parts found matching &quot;
                                             {searchTerm2}&quot;
                                         </div>
@@ -294,8 +294,8 @@ export default function FOBComparePage() {
 
                             {/* Selected Part Display */}
                             {selectedPart2 && (
-                                <div className="p-3 bg-purple-900/30 border border-purple-600 rounded-none">
-                                    <div className="text-white font-semibold">
+                                <div className="p-3 bg-purple-50 border-2 border-purple-300 rounded-md">
+                                    <div className="text-gray-900 font-semibold">
                                         Selected: {selectedPart2}
                                     </div>
                                 </div>
@@ -306,28 +306,28 @@ export default function FOBComparePage() {
 
                 {/* Comparison Button */}
                 {isComparisonReady && (
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardContent className="p-6">
                             <div className="text-center space-y-4">
-                                <div className="text-white">
+                                <div className="text-gray-900">
                                     <div className="text-lg font-semibold mb-2">
                                         Ready to Analyze FOB Costs
                                     </div>
                                     <div className="flex items-center justify-center gap-4 text-sm">
-                                        <span className="bg-blue-600 px-3 py-1 rounded-none">
+                                        <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-md font-medium">
                                             {selectedPart1}
                                         </span>
 
-                                        <span>vs</span>
+                                        <span className="font-medium">vs</span>
 
-                                        <span className="bg-purple-600 px-3 py-1 rounded-none">
+                                        <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-md font-medium">
                                             {selectedPart2}
                                         </span>
                                     </div>
                                 </div>
                                 <Button
                                     onClick={handleStartComparison}
-                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-none border-2 border-orange-500 px-8 py-3"
+                                    className="bg-orange-600 hover:bg-orange-700 text-white rounded-md border-2 border-orange-500 px-8 py-3"
                                 >
                                     <DollarSign className="h-4 w-4 mr-2" />
                                     Start FOB Comparison

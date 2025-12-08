@@ -79,7 +79,7 @@ export default function ByPartComparisonResults({
 
     if (!part1Data || !part2Data) {
         return (
-            <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+            <div className="min-h-screen bg-gray-50 p-3 md:p-6">
                 <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                     <Header
                         title="Part Not Found"
@@ -88,9 +88,9 @@ export default function ByPartComparisonResults({
                         onBackClick={handleBackToSelection}
                         onRefreshClick={handleRefresh}
                     />
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardContent className="py-12 text-center">
-                            <div className="text-gray-400">
+                            <div className="text-gray-600">
                                 Parts {part1} or {part2} not found in the
                                 database
                             </div>
@@ -125,11 +125,11 @@ export default function ByPartComparisonResults({
     const getDifferenceIcon = (
         diff: ReturnType<typeof calculateRelativeDifference>
     ) => {
-        if (diff.isEqual) return <Minus className="h-4 w-4 text-gray-400" />;
+        if (diff.isEqual) return <Minus className="h-4 w-4 text-gray-500" />;
         return diff.isHigher ? (
-            <TrendingUp className="h-4 w-4 text-red-400" />
+            <TrendingUp className="h-4 w-4 text-red-600" />
         ) : (
-            <TrendingDown className="h-4 w-4 text-green-400" />
+            <TrendingDown className="h-4 w-4 text-green-600" />
         );
     };
 
@@ -138,7 +138,7 @@ export default function ByPartComparisonResults({
     ) => {
         if (diff.isEqual) {
             return (
-                <Badge variant="outline" className="rounded-none text-gray-400">
+                <Badge variant="outline" className="rounded-md text-gray-600 border-gray-300">
                     Same
                 </Badge>
             );
@@ -152,7 +152,7 @@ export default function ByPartComparisonResults({
                 : "default";
 
         return (
-            <Badge variant={variant} className="rounded-none">
+            <Badge variant={variant} className="rounded-md">
                 {diff.isHigher ? "+" : ""}
                 {diff.percentage.toFixed(2)}%
             </Badge>
@@ -178,27 +178,27 @@ export default function ByPartComparisonResults({
         const diff = calculateRelativeDifference(component1, component2);
 
         const cellClass = isGrandTotal
-            ? "font-bold text-white"
+            ? "font-bold text-gray-900"
             : isTotal
-            ? "font-semibold text-white"
-            : "text-gray-300";
+            ? "font-semibold text-gray-900"
+            : "text-gray-700";
 
         const rowClass = isGrandTotal
-            ? "bg-gray-700 border-t-4 border-gray-500"
+            ? "bg-gray-100 border-t-4 border-gray-300"
             : isTotal
-            ? "border-b-2 border-gray-600"
-            : "border-gray-700";
+            ? "border-b-2 border-gray-300"
+            : "border-gray-200";
 
         return (
             <TableRow
-                className={`${rowClass} border-gray-600`}
+                className={`${rowClass} hover:bg-gray-50 border-gray-200`}
             >
                 <TableCell
-                    className={`${cellClass} sticky left-0 bg-gray-800 min-w-[200px]`}
+                    className={`${cellClass} sticky left-0 bg-white min-w-[200px]`}
                 >
                     <div className="flex items-center">
                         {isSubItem && (
-                            <span className="mr-2 text-gray-400">•</span>
+                            <span className="mr-2 text-gray-500">•</span>
                         )}
                         {componentName}
                     </div>
@@ -208,7 +208,7 @@ export default function ByPartComparisonResults({
                         <div className={`text-sm font-semibold ${cellClass}`}>
                             {formatCurrency(component1.currentYear)}
                         </div>
-                        <div className="text-xs text-blue-400">Part 1</div>
+                        <div className="text-xs text-blue-600">Part 1</div>
                     </div>
                 </TableCell>
                 <TableCell className="text-center">
@@ -216,7 +216,7 @@ export default function ByPartComparisonResults({
                         <div className={`text-sm font-semibold ${cellClass}`}>
                             {formatCurrency(component2.currentYear)}
                         </div>
-                        <div className="text-xs text-purple-400">Part 2</div>
+                        <div className="text-xs text-purple-600">Part 2</div>
                     </div>
                 </TableCell>
                 <TableCell className="text-center">
@@ -226,10 +226,10 @@ export default function ByPartComparisonResults({
                             <span
                                 className={`text-sm font-semibold ${
                                     diff.isEqual
-                                        ? "text-gray-400"
+                                        ? "text-gray-500"
                                         : diff.isHigher
-                                        ? "text-red-400"
-                                        : "text-green-400"
+                                        ? "text-red-600"
+                                        : "text-green-600"
                                 }`}
                             >
                                 {diff.isHigher ? "+" : ""}
@@ -244,7 +244,7 @@ export default function ByPartComparisonResults({
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="min-h-screen bg-gray-50 p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                 {/* Header */}
                 <Header
@@ -259,7 +259,7 @@ export default function ByPartComparisonResults({
                 <div className="flex justify-center">
                     <Button
                         onClick={handleSwitchParts}
-                        className="bg-gray-600 hover:bg-gray-500 text-white rounded-none border-2 border-gray-500"
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-md border-2 border-gray-300"
                     >
                         <RefreshCw className="h-4 w-4 mr-2" />
                         Switch Part 1 ↔ Part 2
@@ -267,31 +267,31 @@ export default function ByPartComparisonResults({
                 </div>
 
                 {/* Period Selection Controls */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader className="pb-4">
                         <div className="flex items-center gap-2">
-                            <Calendar className="h-5 w-5 text-gray-300" />
-                            <CardTitle className="text-white text-lg">
+                            <Calendar className="h-5 w-5 text-gray-700" />
+                            <CardTitle className="text-gray-900 text-lg">
                                 Period Selection
                             </CardTitle>
                         </div>
-                        <CardDescription className="text-gray-300">
+                        <CardDescription className="text-gray-600">
                             Select submission periods for comparison (2x per year: February & August)
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-blue-300">
+                                <label className="block text-sm font-medium text-blue-700">
                                     Part 1 Period ({part1})
                                 </label>
                                 <Select value={selectedPeriod1} onValueChange={setSelectedPeriod1}>
-                                    <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                                    <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue placeholder="Select period for Part 1" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                                    <SelectContent className="bg-white border-gray-300">
                                         {availablePeriods.map((period) => (
-                                            <SelectItem key={period} value={period}>
+                                            <SelectItem key={period} value={period} className="text-gray-900 hover:bg-blue-50">
                                                 {period}
                                             </SelectItem>
                                         ))}
@@ -299,16 +299,16 @@ export default function ByPartComparisonResults({
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-purple-300">
+                                <label className="block text-sm font-medium text-purple-700">
                                     Part 2 Period ({part2})
                                 </label>
                                 <Select value={selectedPeriod2} onValueChange={setSelectedPeriod2}>
-                                    <SelectTrigger className="bg-gray-600 border-gray-500 text-white rounded-none">
+                                    <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-md">
                                         <SelectValue placeholder="Select period for Part 2" />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-gray-600 border-gray-500 text-white">
+                                    <SelectContent className="bg-white border-gray-300">
                                         {availablePeriods.map((period) => (
-                                            <SelectItem key={period} value={period}>
+                                            <SelectItem key={period} value={period} className="text-gray-900 hover:bg-purple-50">
                                                 {period}
                                             </SelectItem>
                                         ))}
@@ -320,12 +320,12 @@ export default function ByPartComparisonResults({
                 </Card>
 
                 {/* Detailed Comparison Table */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader>
-                        <CardTitle className="text-white">
+                        <CardTitle className="text-gray-900">
                             Detailed Cost Component Comparison
                         </CardTitle>
-                        <CardDescription className="text-gray-300">
+                        <CardDescription className="text-gray-600">
                             Side-by-side comparison showing relative differences between parts across selected periods
                         </CardDescription>
                     </CardHeader>
@@ -333,27 +333,27 @@ export default function ByPartComparisonResults({
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-gray-600">
-                                        <TableHead className="text-gray-300 sticky left-0 bg-gray-800 min-w-[200px]">
+                                    <TableRow className="border-gray-200 bg-gray-50">
+                                        <TableHead className="text-gray-900 font-semibold sticky left-0 bg-gray-50 min-w-[200px]">
                                             Cost Component
                                         </TableHead>
-                                        <TableHead className="text-center text-blue-300">
+                                        <TableHead className="text-center text-blue-700 font-semibold">
                                             <div className="space-y-1">
                                                 <div>{part1}</div>
-                                                <div className="text-xs font-normal text-gray-300">
+                                                <div className="text-xs font-normal text-gray-600">
                                                     {selectedPeriod1}
                                                 </div>
                                             </div>
                                         </TableHead>
-                                        <TableHead className="text-center text-purple-300">
+                                        <TableHead className="text-center text-purple-700 font-semibold">
                                             <div className="space-y-1">
                                                 <div>{part2}</div>
-                                                <div className="text-xs font-normal text-gray-300">
+                                                <div className="text-xs font-normal text-gray-600">
                                                     {selectedPeriod2}
                                                 </div>
                                             </div>
                                         </TableHead>
-                                        <TableHead className="text-center text-gray-300">
+                                        <TableHead className="text-center text-gray-900 font-semibold">
                                             Difference (Part 1 - Part 2)
                                         </TableHead>
                                     </TableRow>

@@ -36,7 +36,7 @@ export default function ComparisonResultsPage({
     };
 
     const getChangeBadge = (percentage: number) => {
-        const baseClasses = "rounded-none text-xs px-2 py-1";
+        const baseClasses = "rounded-md text-xs px-2 py-1";
 
         if (percentage >= 5) {
             return (
@@ -64,7 +64,7 @@ export default function ComparisonResultsPage({
             );
         }
         return (
-            <Badge variant="outline" className={`${baseClasses} text-gray-600`}>
+            <Badge variant="outline" className={`${baseClasses} text-gray-600 border-gray-300`}>
                 0.00%
             </Badge>
         );
@@ -81,7 +81,7 @@ export default function ComparisonResultsPage({
 
     if (partsData.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+            <div className="min-h-screen bg-gray-50 p-3 md:p-6">
                 <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                     <Header
                         title="Comparison Results"
@@ -90,9 +90,9 @@ export default function ComparisonResultsPage({
                         onBackClick={handleBackToList}
                         onRefreshClick={handleRefresh}
                     />
-                    <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                    <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                         <CardContent className="p-6">
-                            <p className="text-white text-center">
+                            <p className="text-gray-900 text-center">
                                 No parts data available for the selected parts:{" "}
                                 {selectedParts.join(", ")}
                             </p>
@@ -104,7 +104,7 @@ export default function ComparisonResultsPage({
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 p-3 md:p-6">
+        <div className="min-h-screen bg-gray-50 p-3 md:p-6">
             <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
                 <Header
                     title="Engine Parts Comparison"
@@ -115,35 +115,35 @@ export default function ComparisonResultsPage({
                 />
 
                 {/* Period Information */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader>
-                        <CardTitle className="text-white">
+                        <CardTitle className="text-gray-900">
                             Cost Movement Analysis - Multiple Parts Comparison
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                             <div>
-                                <p className="text-sm font-medium text-gray-400">
+                                <p className="text-sm font-medium text-gray-500">
                                     Current Period
                                 </p>
-                                <p className="text-lg font-semibold text-white">
+                                <p className="text-lg font-semibold text-gray-900">
                                     August 2025
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-400">
+                                <p className="text-sm font-medium text-gray-500">
                                     Previous Period
                                 </p>
-                                <p className="text-lg font-semibold text-white">
+                                <p className="text-lg font-semibold text-gray-900">
                                     August 2024
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-400">
+                                <p className="text-sm font-medium text-gray-500">
                                     Parts Selected
                                 </p>
-                                <p className="text-lg font-semibold text-white">
+                                <p className="text-lg font-semibold text-gray-900">
                                     {partsData.length} parts
                                 </p>
                             </div>
@@ -156,19 +156,19 @@ export default function ComparisonResultsPage({
                                 >
                                     <Badge
                                         variant="outline"
-                                        className="rounded-none text-white border-gray-500 bg-gray-700"
+                                        className="rounded-md text-gray-900 border-gray-300 bg-gray-50"
                                     >
                                         {part.partNo}
                                     </Badge>
                                     <Badge
                                         variant="outline"
-                                        className="text-xs rounded-none text-blue-300 border-blue-300"
+                                        className="text-xs rounded-md text-blue-700 border-blue-300 bg-blue-50"
                                     >
                                         {part.model}
                                     </Badge>
                                     <Badge
                                         variant="outline"
-                                        className="text-xs rounded-none text-green-300 border-green-300"
+                                        className="text-xs rounded-md text-green-700 border-green-300 bg-green-50"
                                     >
                                         {part.destination}
                                     </Badge>
@@ -179,9 +179,9 @@ export default function ComparisonResultsPage({
                 </Card>
 
                 {/* Horizontal Comparison Table */}
-                <Card className="rounded-none border-2 bg-gray-800 border-gray-600">
+                <Card className="rounded-lg border-2 bg-white border-blue-100 shadow-sm">
                     <CardHeader>
-                        <CardTitle className="text-white">
+                        <CardTitle className="text-gray-900">
                             Cost Component Comparison
                         </CardTitle>
                     </CardHeader>
@@ -190,20 +190,20 @@ export default function ComparisonResultsPage({
                             <div className="min-w-fit">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow className="border-gray-600">
-                                            <TableHead className="text-gray-300 min-w-[200px] sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 bg-gray-50">
+                                            <TableHead className="text-gray-900 font-semibold min-w-[200px] sticky left-0 bg-gray-50 z-10">
                                                 Cost Component
                                             </TableHead>
                                             {partsData.map((part) => (
                                                 <TableHead
                                                     key={part.partNo}
-                                                    className="text-center text-gray-300 min-w-[200px]"
+                                                    className="text-center text-gray-900 font-semibold min-w-[200px]"
                                                 >
                                                     <div>
                                                         <div className="font-semibold">
                                                             {part.partNo}
                                                         </div>
-                                                        <div className="text-xs text-gray-400">
+                                                        <div className="text-xs text-gray-600 font-normal">
                                                             Current / Change / %
                                                         </div>
                                                     </div>
@@ -213,8 +213,8 @@ export default function ComparisonResultsPage({
                                     </TableHeader>
                                     <TableBody>
                                         {/* NON LVA Section */}
-                                        <TableRow className="bg-blue-900/30 border-gray-600">
-                                            <TableCell className="text-white font-semibold sticky left-0 bg-blue-900/30 z-10">
+                                        <TableRow className="bg-blue-50 border-gray-200">
+                                            <TableCell className="text-gray-900 font-semibold sticky left-0 bg-blue-50 z-10">
                                                 NON LVA
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -223,15 +223,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white font-semibold">
+                                                        <div className="text-gray-900 font-semibold">
                                                             {formatCurrency(
                                                                 part.costs.nonLVA.total.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.nonLVA.total.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.nonLVA.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.total.difference)}
@@ -245,8 +245,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* JSP */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 JSP
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -255,15 +255,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.nonLVA.jsp.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.nonLVA.jsp.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.nonLVA.jsp.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.jsp.difference)}
@@ -277,8 +277,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* MSP */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 MSP
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -287,15 +287,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.nonLVA.msp.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.nonLVA.msp.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.nonLVA.msp.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.msp.difference)}
@@ -309,8 +309,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* LVA Section */}
-                                        <TableRow className="bg-green-900/30 border-gray-600">
-                                            <TableCell className="text-white font-semibold sticky left-0 bg-green-900/30 z-10">
+                                        <TableRow className="bg-green-50 border-gray-200">
+                                            <TableCell className="text-gray-900 font-semibold sticky left-0 bg-green-50 z-10">
                                                 LVA
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -319,15 +319,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white font-semibold">
+                                                        <div className="text-gray-900 font-semibold">
                                                             {formatCurrency(
                                                                 part.costs.lva.total.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.lva.total.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.lva.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.total.difference)}
@@ -341,8 +341,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Local OH */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 Local OH
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -351,15 +351,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.lva.localOH.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.lva.localOH.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.lva.localOH.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.localOH.difference)}
@@ -373,8 +373,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Raw Material */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 Raw Material
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -383,15 +383,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.lva.rawMaterial.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.lva.rawMaterial.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.lva.rawMaterial.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.rawMaterial.difference)}
@@ -405,8 +405,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Tooling Outhouse */}
-                                        <TableRow className="bg-yellow-900/30 border-gray-600">
-                                            <TableCell className="text-white font-semibold sticky left-0 bg-yellow-900/30 z-10">
+                                        <TableRow className="bg-yellow-50 border-gray-200">
+                                            <TableCell className="text-gray-900 font-semibold sticky left-0 bg-yellow-50 z-10">
                                                 Tooling Outhouse
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -415,15 +415,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.toolingOuthouse.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.toolingOuthouse.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.toolingOuthouse.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.toolingOuthouse.difference)}
@@ -437,8 +437,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Total Purchase Cost */}
-                                        <TableRow className="bg-pink-900/30 border-gray-600">
-                                            <TableCell className="text-white font-semibold sticky left-0 bg-pink-900/30 z-10">
+                                        <TableRow className="bg-pink-50 border-gray-200">
+                                            <TableCell className="text-gray-900 font-semibold sticky left-0 bg-pink-50 z-10">
                                                 Total Purchase Cost
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -447,15 +447,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white font-semibold">
+                                                        <div className="text-gray-900 font-semibold">
                                                             {formatCurrency(
                                                                 part.costs.totalPurchaseCost.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.totalPurchaseCost.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.totalPurchaseCost.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.totalPurchaseCost.difference)}
@@ -469,8 +469,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Processing Cost Section */}
-                                        <TableRow className="bg-purple-900/30 border-gray-600">
-                                            <TableCell className="text-white font-semibold sticky left-0 bg-purple-900/30 z-10">
+                                        <TableRow className="bg-purple-50 border-gray-200">
+                                            <TableCell className="text-gray-900 font-semibold sticky left-0 bg-purple-50 z-10">
                                                 Processing Cost
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -479,15 +479,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white font-semibold">
+                                                        <div className="text-gray-900 font-semibold">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.total.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.total.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.total.difference)}
@@ -501,8 +501,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Labor */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 Labor
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -511,15 +511,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.labor.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.labor.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.labor.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.labor.difference)}
@@ -533,8 +533,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* FOH Fixed */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 FOH Fixed
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -543,15 +543,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.fohFixed.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.fohFixed.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.fohFixed.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.fohFixed.difference)}
@@ -565,8 +565,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* FOH Variable */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 FOH Variable
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -575,15 +575,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.fohVar.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.fohVar.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.fohVar.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.fohVar.difference)}
@@ -597,8 +597,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Unfinish Depreciation */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 Unfinish Depreciation
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -607,15 +607,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.unfinishDepre.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.unfinishDepre.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.unfinishDepre.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.unfinishDepre.difference)}
@@ -629,8 +629,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Exclusive Depreciation */}
-                                        <TableRow className="border-gray-600">
-                                            <TableCell className="text-white pl-6 sticky left-0 bg-gray-800 z-10">
+                                        <TableRow className="border-gray-200 hover:bg-gray-50">
+                                            <TableCell className="text-gray-900 pl-6 sticky left-0 bg-white z-10">
                                                 Exclusive Depreciation
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -639,15 +639,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white">
+                                                        <div className="text-gray-900">
                                                             {formatCurrency(
                                                                 part.costs.processingCost.exclusiveDepre.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm ${
                                                             part.costs.processingCost.exclusiveDepre.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.processingCost.exclusiveDepre.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.exclusiveDepre.difference)}
@@ -661,8 +661,8 @@ export default function ComparisonResultsPage({
                                         </TableRow>
 
                                         {/* Total Cost */}
-                                        <TableRow className="bg-gray-700 border-t-4 border-gray-500">
-                                            <TableCell className="text-white font-bold text-lg sticky left-0 bg-gray-700 z-10">
+                                        <TableRow className="bg-gray-100 border-t-4 border-gray-300">
+                                            <TableCell className="text-gray-900 font-bold text-lg sticky left-0 bg-gray-100 z-10">
                                                 Total Cost
                                             </TableCell>
                                             {partsData.map((part) => (
@@ -671,15 +671,15 @@ export default function ComparisonResultsPage({
                                                     className="text-center"
                                                 >
                                                     <div className="space-y-1">
-                                                        <div className="text-white font-bold text-lg">
+                                                        <div className="text-gray-900 font-bold text-lg">
                                                             {formatCurrency(
                                                                 part.costs.totalCost.currentYear
                                                             )}
                                                         </div>
                                                         <div className={`text-sm font-semibold ${
                                                             part.costs.totalCost.difference >= 0
-                                                                ? "text-red-400"
-                                                                : "text-green-400"
+                                                                ? "text-red-600"
+                                                                : "text-green-600"
                                                         }`}>
                                                             {part.costs.totalCost.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.totalCost.difference)}
