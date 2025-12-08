@@ -86,19 +86,19 @@ export default function CostTable({ partData }: CostTableProps) {
     const handleEdit = useCallback(() => {
         setIsEditMode(true);
         // Load saved adjustments into current adjustments for editing
-        setAdjustments((prev) => ({ ...savedAdjustments }));
+        setAdjustments(() => ({ ...savedAdjustments }));
     }, [savedAdjustments]);
 
     const handleCancel = useCallback(() => {
         setIsEditMode(false);
         // Revert to saved adjustments
-        setAdjustments((prev) => ({ ...savedAdjustments }));
+        setAdjustments(() => ({ ...savedAdjustments }));
     }, [savedAdjustments]);
 
     const handleSave = useCallback(() => {
         setIsEditMode(false);
         // Save current adjustments
-        setSavedAdjustments((prev) => ({ ...adjustments }));
+        setSavedAdjustments(() => ({ ...adjustments }));
         // You can add API call here to save to backend
         alert("Price adjustments have been saved successfully!");
     }, [adjustments]);

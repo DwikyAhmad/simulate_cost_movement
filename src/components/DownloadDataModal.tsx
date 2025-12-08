@@ -16,7 +16,6 @@ import {
     Download,
     FileText,
     Clock,
-    User,
     CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";

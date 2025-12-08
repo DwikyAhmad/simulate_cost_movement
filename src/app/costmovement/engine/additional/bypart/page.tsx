@@ -11,9 +11,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { engineParts } from "@/data/sampleData";
 
 export default function ByPartComparisonPage() {
@@ -185,7 +184,6 @@ export default function ByPartComparisonPage() {
                                         searchTerm1,
                                         selectedPart2
                                     ).map((partNo) => {
-                                        const summary = getPartSummary(partNo);
                                         return (
                                             <button
                                                 key={partNo}
@@ -273,7 +271,6 @@ export default function ByPartComparisonPage() {
                                         searchTerm2,
                                         selectedPart1
                                     ).map((partNo) => {
-                                        const summary = getPartSummary(partNo);
                                         return (
                                             <button
                                                 key={partNo}

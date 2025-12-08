@@ -22,7 +22,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TrendingUp, TrendingDown, Minus, RefreshCw, Calendar, DollarSign } from "lucide-react";
-import { engineParts } from "@/data/sampleData";
 import { formatCurrency } from "@/lib/utils";
 
 interface FOBComparisonResultsProps {
