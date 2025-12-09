@@ -104,7 +104,7 @@ export default function CostTable({ partData }: CostTableProps) {
     }, [adjustments]);
 
     const isAboveThreshold = (component: CostComponent) => {
-        return component.percentageChange >= 5;
+        return Math.abs(component.percentageChange) > 15;
     };
 
     const getRemarkContent = (componentName: string) => {
@@ -133,25 +133,16 @@ export default function CostTable({ partData }: CostTableProps) {
     };
 
     const getChangeBadge = (percentage: number) => {
-        if (percentage >= 5) {
+        if (Math.abs(percentage) > 15) {
             return (
                 <Badge variant="destructive" className="ml-2 rounded-md">
-                    Warning: +{percentage.toFixed(2)}%
+                    Warning: {percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%
                 </Badge>
             );
-        } else if (percentage > 0) {
+        } else if (percentage !== 0) {
             return (
-                <Badge variant="secondary" className="ml-2 rounded-md">
-                    +{percentage.toFixed(2)}%
-                </Badge>
-            );
-        } else if (percentage < 0) {
-            return (
-                <Badge
-                    variant="default"
-                    className="ml-2 bg-green-100 text-green-800 rounded-md"
-                >
-                    {percentage.toFixed(2)}%
+                <Badge variant="outline" className="ml-2 text-gray-900 border-gray-300 rounded-md">
+                    {percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%
                 </Badge>
             );
         }
@@ -192,7 +183,7 @@ export default function CostTable({ partData }: CostTableProps) {
         }
 
         return childComponents.filter(
-            (component) => component.percentageChange >= 5
+            (component) => Math.abs(component.percentageChange) > 15
         ).length;
     };
 
@@ -289,12 +280,12 @@ export default function CostTable({ partData }: CostTableProps) {
                                             </td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 pl-2">
-                                                <span className={getDifferenceColor(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference)}>
+                                                <span className="text-gray-900">
                                                     {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference) >= 0 ? "+" : "-"}
                                                     {formatCurrency(Math.abs(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference))}
                                                 </span>
                                                 <div className="text-xs mt-1">
-                                                    <span className={`${(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange) >= 0 ? 'text-red-500' : 'text-green-600'}`}>
+                                                    <span className={`${Math.abs(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange) > 15 ? 'text-red-600 font-semibold' : 'text-gray-900'}`}>
                                                         ({(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange) >= 0 ? "+" : ""}
                                                         {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedPercentageChange : percentageChange).toFixed(1)}%)
                                                     </span>

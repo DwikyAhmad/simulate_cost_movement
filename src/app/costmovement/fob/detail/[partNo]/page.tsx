@@ -219,7 +219,7 @@ export default function FOBDetailPage({
                                     const difference = calculateDifference(component.current, component.previous);
                                     const percentage = calculatePercentage(component.current, component.previous);
                                     const isPositive = difference > 0;
-                                    const isHighChange = Math.abs(percentage) > 8;
+                                    const isHighChange = Math.abs(percentage) > 15;
 
                                     return (
                                         <TableRow 
@@ -235,12 +235,12 @@ export default function FOBDetailPage({
                                             <TableCell className="text-right text-gray-900 font-medium">
                                                 {component.isUSD ? formatDollar(component.previous) : formatRupiah(component.previous)}
                                             </TableCell>
-                                            <TableCell className={`text-right font-medium ${isPositive ? 'text-red-600' : 'text-green-600'}`}>
+                                            <TableCell className="text-right font-medium text-gray-900">
                                                 {isPositive ? '+' : ''}{component.isUSD ? formatDollar(difference) : formatRupiah(difference)}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <span className={`font-medium ${isHighChange ? 'text-gray-900' : 'text-gray-600'}`}>
+                                                    <span className="font-medium text-gray-900">
                                                         {isPositive ? '+' : ''}{percentage.toFixed(2)}%
                                                     </span>
                                                     {isHighChange && (
@@ -249,14 +249,6 @@ export default function FOBDetailPage({
                                                             className="rounded-md text-xs"
                                                         >
                                                             Warning: {isPositive ? '+' : ''}{percentage.toFixed(2)}%
-                                                        </Badge>
-                                                    )}
-                                                    {!isHighChange && Math.abs(percentage) > 3 && (
-                                                        <Badge 
-                                                            variant="secondary"
-                                                            className="rounded-md text-xs"
-                                                        >
-                                                            {percentage.toFixed(2)}%
                                                         </Badge>
                                                     )}
                                                 </div>

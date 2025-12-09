@@ -38,28 +38,19 @@ export default function ComparisonResultsPage({
     const getChangeBadge = (percentage: number) => {
         const baseClasses = "rounded-md text-xs px-2 py-1";
 
-        if (percentage >= 5) {
+        if (Math.abs(percentage) > 15) {
             return (
                 <Badge variant="destructive" className={baseClasses}>
-                    +{percentage.toFixed(2)}%
+                    {percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%
                 </Badge>
             );
-        } else if (percentage > 0) {
+        } else if (percentage !== 0) {
             return (
                 <Badge
-                    variant="secondary"
-                    className={`${baseClasses} bg-yellow-100 text-yellow-800`}
+                    variant="outline"
+                    className={`${baseClasses} text-gray-900 border-gray-300`}
                 >
-                    +{percentage.toFixed(2)}%
-                </Badge>
-            );
-        } else if (percentage < 0) {
-            return (
-                <Badge
-                    variant="default"
-                    className={`${baseClasses} bg-green-100 text-green-800`}
-                >
-                    {percentage.toFixed(2)}%
+                    {percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%
                 </Badge>
             );
         }
@@ -228,11 +219,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.nonLVA.total.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.nonLVA.total.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.nonLVA.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.total.difference)}
                                                         </div>
@@ -260,11 +247,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.nonLVA.jsp.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.nonLVA.jsp.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.nonLVA.jsp.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.jsp.difference)}
                                                         </div>
@@ -292,11 +275,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.nonLVA.msp.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.nonLVA.msp.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.nonLVA.msp.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.nonLVA.msp.difference)}
                                                         </div>
@@ -324,11 +303,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.lva.total.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.lva.total.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.lva.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.total.difference)}
                                                         </div>
@@ -356,11 +331,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.lva.localOH.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.lva.localOH.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.lva.localOH.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.localOH.difference)}
                                                         </div>
@@ -388,11 +359,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.lva.rawMaterial.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.lva.rawMaterial.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.lva.rawMaterial.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.lva.rawMaterial.difference)}
                                                         </div>
@@ -420,11 +387,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.toolingOuthouse.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.toolingOuthouse.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.toolingOuthouse.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.toolingOuthouse.difference)}
                                                         </div>
@@ -452,11 +415,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.totalPurchaseCost.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.totalPurchaseCost.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.totalPurchaseCost.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.totalPurchaseCost.difference)}
                                                         </div>
@@ -484,11 +443,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.total.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.total.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.total.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.total.difference)}
                                                         </div>
@@ -516,11 +471,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.labor.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.labor.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.labor.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.labor.difference)}
                                                         </div>
@@ -548,11 +499,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.fohFixed.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.fohFixed.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.fohFixed.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.fohFixed.difference)}
                                                         </div>
@@ -580,11 +527,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.fohVar.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.fohVar.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.fohVar.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.fohVar.difference)}
                                                         </div>
@@ -612,11 +555,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.unfinishDepre.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.unfinishDepre.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.unfinishDepre.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.unfinishDepre.difference)}
                                                         </div>
@@ -644,11 +583,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.processingCost.exclusiveDepre.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm ${
-                                                            part.costs.processingCost.exclusiveDepre.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm text-gray-900">
                                                             {part.costs.processingCost.exclusiveDepre.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.processingCost.exclusiveDepre.difference)}
                                                         </div>
@@ -676,11 +611,7 @@ export default function ComparisonResultsPage({
                                                                 part.costs.totalCost.currentYear
                                                             )}
                                                         </div>
-                                                        <div className={`text-sm font-semibold ${
-                                                            part.costs.totalCost.difference >= 0
-                                                                ? "text-red-600"
-                                                                : "text-green-600"
-                                                        }`}>
+                                                        <div className="text-sm font-semibold text-gray-900">
                                                             {part.costs.totalCost.difference >= 0 ? "+" : ""}
                                                             {formatCurrency(part.costs.totalCost.difference)}
                                                         </div>

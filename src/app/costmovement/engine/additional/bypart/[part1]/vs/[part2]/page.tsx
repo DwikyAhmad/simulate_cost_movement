@@ -126,10 +126,11 @@ export default function ByPartComparisonResults({
         diff: ReturnType<typeof calculateRelativeDifference>
     ) => {
         if (diff.isEqual) return <Minus className="h-4 w-4 text-gray-500" />;
+        const isHighChange = Math.abs(diff.percentage) > 15;
         return diff.isHigher ? (
-            <TrendingUp className="h-4 w-4 text-red-600" />
+            <TrendingUp className={`h-4 w-4 ${isHighChange ? 'text-red-600' : 'text-gray-500'}`} />
         ) : (
-            <TrendingDown className="h-4 w-4 text-green-600" />
+            <TrendingDown className={`h-4 w-4 ${isHighChange ? 'text-red-600' : 'text-gray-500'}`} />
         );
     };
 
@@ -144,15 +145,10 @@ export default function ByPartComparisonResults({
             );
         }
 
-        const variant =
-            Math.abs(diff.percentage) >= 10
-                ? "destructive"
-                : Math.abs(diff.percentage) >= 5
-                ? "secondary"
-                : "default";
+        const variant = Math.abs(diff.percentage) > 15 ? "destructive" : "outline";
 
         return (
-            <Badge variant={variant} className="rounded-md">
+            <Badge variant={variant} className={`rounded-md ${variant === 'outline' ? 'text-gray-900 border-gray-300' : ''}`}>
                 {diff.isHigher ? "+" : ""}
                 {diff.percentage.toFixed(2)}%
             </Badge>

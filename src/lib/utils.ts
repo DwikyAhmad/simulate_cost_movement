@@ -16,9 +16,8 @@ export const formatCurrency = (amount: number) => {
 };
 
 export const getDifferenceColor = (change: number) => {
-  if (change > 0) return "text-red-400";
-  if (change < 0) return "text-green-400";
-  return "text-gray-300";
+  // Neutral color for all changes - warnings handled separately by percentage thresholds
+  return "text-gray-900";
 };
 
 export const getDisplayDate = (monthValue: string) => {

@@ -33,7 +33,7 @@ export default function PartNumberFilter({ onFilterChange, onStartComparison }: 
     ];
 
     return components.filter(component => 
-      Math.abs(component.percentageChange) >= 5
+      Math.abs(component.percentageChange) > 15
     ).length;
   };
 

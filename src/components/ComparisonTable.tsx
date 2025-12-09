@@ -31,14 +31,12 @@ export default function ComparisonTable({ selectedParts }: ComparisonTableProps)
   const getChangeBadge = (percentage: number, size: 'sm' | 'xs' = 'xs') => {
     const baseClasses = `rounded-none ${size === 'xs' ? 'text-xs px-1' : 'text-sm px-2'}`;
     
-    if (percentage >= 5) {
-      return <Badge variant="destructive" className={baseClasses}>+{percentage.toFixed(2)}%</Badge>;
-    } else if (percentage > 0) {
-      return <Badge variant="secondary" className={baseClasses}>+{percentage.toFixed(2)}%</Badge>;
-    } else if (percentage < 0) {
-      return <Badge variant="default" className={`${baseClasses} bg-green-100 text-green-800`}>{percentage.toFixed(2)}%</Badge>;
+    if (Math.abs(percentage) > 15) {
+      return <Badge variant="destructive" className={baseClasses}>{percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%</Badge>;
+    } else if (percentage !== 0) {
+      return <Badge variant="outline" className={`${baseClasses} text-gray-900 border-gray-300`}>{percentage > 0 ? '+' : ''}{percentage.toFixed(2)}%</Badge>;
     }
-    return <Badge variant="outline" className={`${baseClasses} text-white`}>0.00%</Badge>;
+    return <Badge variant="outline" className={`${baseClasses} text-gray-600 border-gray-300`}>0.00%</Badge>;
   };
 
 

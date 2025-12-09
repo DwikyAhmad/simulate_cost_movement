@@ -71,7 +71,7 @@ export default function EnginePartsList({
         ];
 
         return components.filter(
-            (component) => component.percentageChange <= -5
+            (component) => Math.abs(component.percentageChange) > 15
         ).length;
     };
 
