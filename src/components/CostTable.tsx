@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useCallback, memo } from "react";
+import { useState, useRef } from "react";
 import {
     Card,
     CardContent,
@@ -43,9 +43,8 @@ export default function CostTable({ partData }: CostTableProps) {
 
     const [selectedRemark, setSelectedRemark] = useState<string | null>(null);
 
-    const [adjustments, setAdjustments] = useState<{
-        [key: string]: number | null;
-    }>({});
+    // Use ref to store adjustment values - NO re-render while typing!
+    const adjustmentsRef = useRef<{ [key: string]: string }>({});
 
     const [savedAdjustments, setSavedAdjustments] = useState<{
         [key: string]: number | null;
@@ -53,55 +52,66 @@ export default function CostTable({ partData }: CostTableProps) {
 
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const toggleSection = useCallback((section: string) => {
+    const toggleSection = (section: string) => {
         setOpenSections((prev) => ({
             ...prev,
             [section]: !prev[section],
         }));
-    }, []);
+    };
 
-    const toggleComponent = useCallback((componentKey: string) => {
+    const toggleComponent = (componentKey: string) => {
         setOpenComponents((prev) => ({
             ...prev,
             [componentKey]: !prev[componentKey],
         }));
-    }, []);
+    };
 
-    const showRemark = useCallback((componentName: string) => {
+    const showRemark = (componentName: string) => {
         setSelectedRemark(componentName);
-    }, []);
+    };
 
-    const closeRemark = useCallback(() => {
+    const closeRemark = () => {
         setSelectedRemark(null);
-    }, []);
+    };
 
-    const handleAdjustmentChange = useCallback((componentKey: string, value: string) => {
-        const numValue = value === "" ? null : parseFloat(value);
-        setAdjustments((prev) => ({
-            ...prev,
-            [componentKey]: numValue,
-        }));
-    }, []);
+    const handleAdjustmentChange = (componentKey: string, value: string) => {
+        // Just update the ref, NO state change, NO re-render!
+        adjustmentsRef.current[componentKey] = value;
+    };
 
-    const handleEdit = useCallback(() => {
+    const handleEdit = () => {
+        // Load saved adjustments into ref
+        adjustmentsRef.current = {};
+        Object.keys(savedAdjustments).forEach(key => {
+            if (savedAdjustments[key] !== null) {
+                adjustmentsRef.current[key] = savedAdjustments[key]!.toString();
+            }
+        });
         setIsEditMode(true);
-        // Load saved adjustments into current adjustments for editing
-        setAdjustments(() => ({ ...savedAdjustments }));
-    }, [savedAdjustments]);
+    };
 
-    const handleCancel = useCallback(() => {
+    const handleCancel = () => {
+        adjustmentsRef.current = {};
         setIsEditMode(false);
-        // Revert to saved adjustments
-        setAdjustments(() => ({ ...savedAdjustments }));
-    }, [savedAdjustments]);
+    };
 
-    const handleSave = useCallback(() => {
+    const handleSave = () => {
+        // Convert string adjustments to numbers and save
+        const numericAdjustments: { [key: string]: number | null } = {};
+        Object.keys(adjustmentsRef.current).forEach(key => {
+            const value = adjustmentsRef.current[key];
+            if (value && value.trim() !== "") {
+                const num = parseFloat(value);
+                if (!isNaN(num)) {
+                    numericAdjustments[key] = num;
+                }
+            }
+        });
+        setSavedAdjustments(numericAdjustments);
+        adjustmentsRef.current = {};
         setIsEditMode(false);
-        // Save current adjustments
-        setSavedAdjustments(() => ({ ...adjustments }));
-        // You can add API call here to save to backend
         alert("Price adjustments have been saved successfully!");
-    }, [adjustments]);
+    };
 
     const isAboveThreshold = (component: CostComponent) => {
         return Math.abs(component.percentageChange) > 15;
@@ -209,13 +219,15 @@ export default function CostTable({ partData }: CostTableProps) {
         }
     };
 
-    const PartLevel2Row = memo(({ part, partKey }: { part: any; partKey: string }) => {
+    const PartLevel2Row = ({ part, partKey }: { part: any; partKey: string }) => {
         const difference = part.currentYear.amount - part.lastYear.amount;
         const percentageChange = part.lastYear.amount !== 0 
             ? ((difference / part.lastYear.amount) * 100) 
             : 0;
 
-        const adjustmentValue = isEditMode ? adjustments[partKey] : savedAdjustments[partKey];
+        // Get saved adjustment value for display
+        const adjustmentValue = savedAdjustments[partKey] || null;
+        
         const adjustedAmount = adjustmentValue ?? part.currentYear.amount;
         const adjustedDifference = adjustedAmount - part.lastYear.amount;
         const adjustedPercentageChange = part.lastYear.amount !== 0
@@ -240,8 +252,8 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <th className="text-left text-gray-600 py-1 pr-2">Period</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Quantity</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Price/Item</th>
-                                            <th className="text-right text-gray-600 py-1 px-2">Final Current Period</th>
                                             <th className="text-right text-gray-600 py-1 px-2">Total Amount</th>
+                                            <th className="text-right text-gray-600 py-1 px-2">Final Current Period</th>
                                             <th className="text-right text-gray-600 py-1 pl-2">Difference</th>
                                         </tr>
                                     </thead>
@@ -250,35 +262,36 @@ export default function CostTable({ partData }: CostTableProps) {
                                             <td className="text-gray-700 py-1 pr-2">Previous Period</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{part.lastYear.quantity}</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.pricePerItem)}</td>
-                                            <td className="text-right text-gray-600 py-1 px-2">-</td>
                                             <td className="text-right text-gray-700 py-1 px-2">{formatCurrency(part.lastYear.amount)}</td>
+                                            <td className="text-right text-gray-600 py-1 px-2">-</td>
                                             <td className="text-right text-gray-600 py-1 pl-2">-</td>
                                         </tr>
                                         <tr>
                                             <td className="text-gray-900 py-1 pr-2 font-medium">Current Period</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{part.currentYear.quantity}</td>
                                             <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.pricePerItem)}</td>
+                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 px-2" onClick={(e) => e.stopPropagation()}>
                                                 {isEditMode ? (
                                                     <input
-                                                        type="number"
-                                                        step="0.01"
+                                                        type="text"
                                                         placeholder="Adjust"
-                                                        value={adjustments[partKey] ?? ""}
-                                                        onChange={(e) =>
-                                                            handleAdjustmentChange(partKey, e.target.value)
-                                                        }
+                                                        defaultValue={adjustmentsRef.current[partKey] || ""}
+                                                        onChange={(e) => handleAdjustmentChange(partKey, e.target.value)}
                                                         className="w-24 px-2 py-0.5 text-right border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-xs"
                                                     />
                                                 ) : (
-                                                    savedAdjustments[partKey] !== null && savedAdjustments[partKey] !== undefined && (
+                                                    savedAdjustments[partKey] ? (
                                                         <span className="text-xs text-blue-600 font-medium">
                                                             {formatCurrency(savedAdjustments[partKey]!)}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-900">
+                                                            {formatCurrency(part.currentYear.amount)}
                                                         </span>
                                                     )
                                                 )}
                                             </td>
-                                            <td className="text-right text-gray-900 py-1 px-2 font-medium">{formatCurrency(part.currentYear.amount)}</td>
                                             <td className="text-right py-1 pl-2">
                                                 <span className="text-gray-900">
                                                     {(adjustmentValue !== null && adjustmentValue !== undefined ? adjustedDifference : difference) >= 0 ? "+" : "-"}
@@ -300,10 +313,9 @@ export default function CostTable({ partData }: CostTableProps) {
                 </TableRow>
             </>
         );
-    });
-    PartLevel2Row.displayName = 'PartLevel2Row';
+    };
 
-    const CostRow = memo(({
+    const CostRow = ({
         component,
         isSubItem = false,
         isTotal = false,
@@ -336,6 +348,21 @@ export default function CostTable({ partData }: CostTableProps) {
         const hasLevel2Parts = component.parts && component.parts.length > 0;
         const isComponentOpen = openComponents[componentKey];
 
+        // Calculate adjusted difference and percentage if there's a saved adjustment
+        const adjustmentValue = savedAdjustments[componentKey];
+        const adjustedAmount = adjustmentValue ?? component.currentYear;
+        const adjustedDifference = adjustedAmount - component.lastYear;
+        const adjustedPercentageChange = component.lastYear !== 0
+            ? ((adjustedDifference / component.lastYear) * 100)
+            : 0;
+
+        const displayDifference = adjustmentValue !== null && adjustmentValue !== undefined 
+            ? adjustedDifference 
+            : component.difference;
+        const displayPercentage = adjustmentValue !== null && adjustmentValue !== undefined 
+            ? adjustedPercentageChange 
+            : component.percentageChange;
+
         return (
             <>
                 <TableRow
@@ -367,21 +394,26 @@ export default function CostTable({ partData }: CostTableProps) {
                 <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                     {isEditMode && !isTotal && !isGrandTotal && !hasLevel2Parts && componentKey !== "totalPurchaseCost" ? (
                         <input
-                            type="number"
-                            step="0.01"
+                            type="text"
                             placeholder="Enter amount"
-                            value={adjustments[componentKey] ?? ""}
-                            onChange={(e) =>
-                                handleAdjustmentChange(componentKey, e.target.value)
-                            }
+                            defaultValue={adjustmentsRef.current[componentKey] || ""}
+                            onChange={(e) => handleAdjustmentChange(componentKey, e.target.value)}
                             className="w-full px-2 py-1 text-right border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         />
-                    ) : (
-                        !isTotal && !isGrandTotal && !hasLevel2Parts && componentKey !== "totalPurchaseCost" && savedAdjustments[componentKey] !== null && savedAdjustments[componentKey] !== undefined && (
+                    ) : !isTotal && !isGrandTotal && !hasLevel2Parts && componentKey !== "totalPurchaseCost" ? (
+                        savedAdjustments[componentKey] ? (
                             <span className="text-sm text-blue-600 font-medium">
                                 {formatCurrency(savedAdjustments[componentKey]!)}
                             </span>
+                        ) : (
+                            <span className={`text-sm ${cellClass}`}>
+                                {formatCurrency(component.currentYear)}
+                            </span>
                         )
+                    ) : (
+                        <span className={`${cellClass}`}>
+                            {component.currentYear ? formatCurrency(component.currentYear) : ""}
+                        </span>
                     )}
                 </TableCell>
                 <TableCell className={`text-right ${cellClass}`}>
@@ -390,19 +422,19 @@ export default function CostTable({ partData }: CostTableProps) {
                         : ""}
                 </TableCell>
                 <TableCell className={`text-right ${cellClass}`}>
-                    {component.difference !== undefined && (
+                    {displayDifference !== undefined && (
                         <span
-                            className={getDifferenceColor(component.difference)}
+                            className={getDifferenceColor(displayDifference)}
                         >
-                            {component.difference >= 0 ? "+" : "-"}
-                            {formatCurrency(Math.abs(component.difference))}
+                            {displayDifference >= 0 ? "+" : "-"}
+                            {formatCurrency(Math.abs(displayDifference))}
                         </span>
                     )}
                 </TableCell>
                 <TableCell className="text-right">
-                    {component.percentageChange !== undefined &&
+                    {displayPercentage !== undefined &&
                         component.name !== "Total Cost" &&
-                        getChangeBadge(component.percentageChange)}
+                        getChangeBadge(displayPercentage)}
                 </TableCell>
                 <TableCell className="text-center">
                     {isAboveThreshold(component) &&
@@ -432,10 +464,9 @@ export default function CostTable({ partData }: CostTableProps) {
                 ))}
             </>
         );
-    });
-    CostRow.displayName = 'CostRow';
+    };
 
-    const CollapsibleSection = memo(({
+    const CollapsibleSection = ({
         sectionKey,
         title,
         totalComponent,
@@ -469,8 +500,8 @@ export default function CostTable({ partData }: CostTableProps) {
                     <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.currentYear)}
                     </TableCell>
-                    <TableCell className="text-right">
-                        {/* Empty cell for adjustment column in section headers */}
+                    <TableCell className="text-right font-semibold text-gray-900">
+                        {formatCurrency(totalComponent.currentYear)}
                     </TableCell>
                     <TableCell className="text-right font-semibold text-gray-900">
                         {formatCurrency(totalComponent.lastYear)}
@@ -497,8 +528,7 @@ export default function CostTable({ partData }: CostTableProps) {
                 {isOpen && children}
             </>
         );
-    });
-    CollapsibleSection.displayName = 'CollapsibleSection';
+    };
 
     return (
         <>
