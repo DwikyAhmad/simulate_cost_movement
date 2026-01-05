@@ -68,6 +68,14 @@ export default function ComparisonResultsPage({
             .map((partNo) => engineParts[partNo]);
     };
 
+    // Generate previous period for each part (can be different for each part)
+    const getPreviousPeriod = (partNo: string): string => {
+        // Use part number to deterministically assign a previous period
+        const periods = ["February 2024", "August 2024", "February 2025"];
+        const hash = partNo.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return periods[hash % periods.length];
+    };
+
     const partsData = getPartsData();
 
     if (partsData.length === 0) {
@@ -113,21 +121,13 @@ export default function ComparisonResultsPage({
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                             <div>
                                 <p className="text-sm font-medium text-gray-500">
                                     Current Period
                                 </p>
                                 <p className="text-lg font-semibold text-gray-900">
                                     August 2025
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-sm font-medium text-gray-500">
-                                    Previous Period
-                                </p>
-                                <p className="text-lg font-semibold text-gray-900">
-                                    August 2024
                                 </p>
                             </div>
                             <div>
@@ -139,11 +139,11 @@ export default function ComparisonResultsPage({
                                 </p>
                             </div>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="space-y-2">
                             {partsData.map((part) => (
                                 <div
                                     key={part.partNo}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-2 py-1"
                                 >
                                     <Badge
                                         variant="outline"
@@ -194,7 +194,10 @@ export default function ComparisonResultsPage({
                                                         <div className="font-semibold">
                                                             {part.partNo}
                                                         </div>
-                                                        <div className="text-xs text-gray-600 font-normal">
+                                                        <div className="text-xs text-gray-500 font-normal mt-1">
+                                                            Previous Period: {getPreviousPeriod(part.partNo)}
+                                                        </div>
+                                                        <div className="text-xs text-gray-600 font-normal mt-1">
                                                             Current / Change / %
                                                         </div>
                                                     </div>
