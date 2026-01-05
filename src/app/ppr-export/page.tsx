@@ -25,6 +25,7 @@ interface EngineParent {
     partNo: string;
     partName: string;
     destinationCode: string;
+    destinationName: string;
 }
 
 export default function PPRExportPage() {
@@ -37,60 +38,70 @@ export default function PPRExportPage() {
             partNo: "1NR-0377200",
             partName: "1NR-FE Engine Assembly",
             destinationCode: "THA",
+            destinationName: "Thailand",
         },
         {
             id: "2",
             partNo: "2NR-0377200",
             partName: "2NR-FE Engine Assembly",
             destinationCode: "IDN",
+            destinationName: "Indonesia",
         },
         {
             id: "3",
             partNo: "1ZR-0377200",
             partName: "1ZR-FE Engine Assembly",
             destinationCode: "MYS",
+            destinationName: "Malaysia",
         },
         {
             id: "4",
             partNo: "2ZR-0377200",
             partName: "2ZR-FE Engine Assembly",
             destinationCode: "PHL",
+            destinationName: "Philippines",
         },
         {
             id: "5",
             partNo: "8NR-0377200",
             partName: "8NR-FTS Engine Assembly",
             destinationCode: "VNM",
+            destinationName: "Vietnam",
         },
         {
             id: "6",
             partNo: "1GD-0377200",
             partName: "1GD-FTV Engine Assembly",
             destinationCode: "THA",
+            destinationName: "Thailand",
         },
         {
             id: "7",
             partNo: "2GD-0377200",
             partName: "2GD-FTV Engine Assembly",
             destinationCode: "IDN",
+            destinationName: "Indonesia",
         },
         {
             id: "8",
             partNo: "1KD-0377200",
             partName: "1KD-FTV Engine Assembly",
             destinationCode: "THA",
+            destinationName: "Thailand",
         },
         {
             id: "9",
             partNo: "1TR-0377200",
             partName: "1TR-FE Engine Assembly",
             destinationCode: "MYS",
+            destinationName: "Malaysia",
         },
         {
             id: "10",
             partNo: "2TR-0377200",
             partName: "2TR-FE Engine Assembly",
             destinationCode: "THA",
+            destinationName: "Thailand",
         },
     ]);
 
@@ -103,6 +114,7 @@ export default function PPRExportPage() {
         partNo: "",
         partName: "",
         destinationCode: "",
+        destinationName: "",
     });
 
     const handleBackToHome = () => {
@@ -114,6 +126,7 @@ export default function PPRExportPage() {
             partNo: "",
             partName: "",
             destinationCode: "",
+            destinationName: "",
         });
         setShowAddModal(true);
     };
@@ -124,6 +137,7 @@ export default function PPRExportPage() {
             partNo: engine.partNo,
             partName: engine.partName,
             destinationCode: engine.destinationCode,
+            destinationName: engine.destinationName,
         });
         setShowEditModal(true);
     };
@@ -147,6 +161,7 @@ export default function PPRExportPage() {
             partNo: "",
             partName: "",
             destinationCode: "",
+            destinationName: "",
         });
     };
 
@@ -276,6 +291,9 @@ export default function PPRExportPage() {
                                         <TableHead className="text-gray-700 font-semibold">
                                             Destination Code
                                         </TableHead>
+                                        <TableHead className="text-gray-700 font-semibold">
+                                            Destination Name
+                                        </TableHead>
                                         <TableHead className="text-gray-700 font-semibold text-center">
                                             Actions
                                         </TableHead>
@@ -300,6 +318,9 @@ export default function PPRExportPage() {
                                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                                     {engine.destinationCode}
                                                 </span>
+                                            </TableCell>
+                                            <TableCell className="text-gray-900">
+                                                {engine.destinationName}
                                             </TableCell>
                                             <TableCell className="text-center">
                                                 <div className="flex gap-2 justify-center">
@@ -402,6 +423,20 @@ export default function PPRExportPage() {
                                     placeholder="e.g., THA"
                                 />
                             </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Destination Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="destinationName"
+                                    value={formData.destinationName}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="e.g., Thailand"
+                                />
+                            </div>
                         </div>
                         
                         <div className="border-t border-gray-300 p-6 flex gap-3 justify-end">
@@ -415,7 +450,7 @@ export default function PPRExportPage() {
                             <Button
                                 onClick={handleAdd}
                                 className="bg-blue-600 hover:bg-blue-700 text-white"
-                                disabled={!formData.partNo || !formData.partName || !formData.destinationCode}
+                                disabled={!formData.partNo || !formData.partName || !formData.destinationCode || !formData.destinationName}
                             >
                                 Add Engine
                             </Button>
@@ -486,6 +521,19 @@ export default function PPRExportPage() {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Destination Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="destinationName"
+                                    value={formData.destinationName}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
                         </div>
                         
                         <div className="border-t border-gray-300 p-6 flex gap-3 justify-end">
@@ -499,7 +547,7 @@ export default function PPRExportPage() {
                             <Button
                                 onClick={handleEdit}
                                 className="bg-blue-600 hover:bg-blue-700 text-white"
-                                disabled={!formData.partNo || !formData.partName || !formData.destinationCode}
+                                disabled={!formData.partNo || !formData.partName || !formData.destinationCode || !formData.destinationName}
                             >
                                 Save Changes
                             </Button>

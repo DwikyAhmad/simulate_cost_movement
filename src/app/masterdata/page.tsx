@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Plus, Search, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Search, Edit } from 'lucide-react';
 
 interface MasterDataItem {
   id: string;
@@ -81,43 +81,6 @@ export default function MasterDataPage() {
       valueNumber: "0.06",
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01"
-    },
-    // Engine Type Suffix (only valueText, no valueNumber)
-    {
-      id: "8",
-      category: "Engine Type Suffix",
-      name: "Y*** prefix",
-      valueText: "NR",
-      valueNumber: "",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "9",
-      category: "Engine Type Suffix",
-      name: "1*** prefix",
-      valueText: "TR",
-      valueNumber: "",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "10",
-      category: "Engine Type Suffix",
-      name: "2*** prefix",
-      valueText: "TR",
-      valueNumber: "",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
-    },
-    {
-      id: "11",
-      category: "Engine Type Suffix",
-      name: "0*** prefix",
-      valueText: "NR",
-      valueNumber: "",
-      createdAt: "2024-01-01",
-      updatedAt: "2024-01-01"
     }
   ]);
 
@@ -126,8 +89,6 @@ export default function MasterDataPage() {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [editingItem, setEditingItem] = useState<MasterDataItem | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [newItem, setNewItem] = useState<Omit<MasterDataItem, 'id' | 'createdAt' | 'updatedAt'>>({
     category: '',
     name: '',
@@ -164,10 +125,6 @@ export default function MasterDataPage() {
       alert('Value Number is required for Calculation Parameter');
       return;
     }
-    if (newItem.category === 'Engine Type Suffix' && !newItem.valueText.trim()) {
-      alert('Value Text is required for Engine Type Suffix');
-      return;
-    }
 
     // Maximum length validation [Appendix Error Message 5]
     if (newItem.category.length > 50) {
@@ -197,7 +154,7 @@ export default function MasterDataPage() {
     }
 
     let finalValueNumber = newItem.valueNumber;
-    let finalValueText = newItem.valueText;
+    let finalValueText = '';
 
     // Format validation and conversion for Calculation Parameter [Appendix Error Message 7]
     if (newItem.category === 'Calculation Parameter') {
@@ -216,15 +173,6 @@ export default function MasterDataPage() {
         const percentValue = parseFloat(value.replace('%', ''));
         finalValueNumber = (percentValue / 100).toString();
       }
-      finalValueText = ''; // Clear valueText for Calculation Parameter
-    }
-
-    if (newItem.category === 'Engine Type Suffix') {
-      if (!/^[A-Z]{2}$/.test(newItem.valueText.trim())) {
-        alert('Value Text for Engine Type Suffix must be exactly 2 uppercase letters (e.g., NR, TR)');
-        return;
-      }
-      finalValueNumber = ''; // Clear valueNumber for Engine Type Suffix
     }
 
     // If all validations pass, save the data and display success message [6]
@@ -265,10 +213,6 @@ export default function MasterDataPage() {
         alert('Value Number is required for Calculation Parameter');
         return;
       }
-      if (editingItem.category === 'Engine Type Suffix' && !editingItem.valueText.trim()) {
-        alert('Value Text is required for Engine Type Suffix');
-        return;
-      }
 
       // Maximum length validation [Appendix Error Message 5]
       if (editingItem.category.length > 50) {
@@ -300,7 +244,7 @@ export default function MasterDataPage() {
       }
 
       let finalValueNumber = editingItem.valueNumber;
-      let finalValueText = editingItem.valueText;
+      let finalValueText = '';
 
       // Format validation and conversion for Calculation Parameter [Appendix Error Message 7]
       if (editingItem.category === 'Calculation Parameter') {
@@ -319,15 +263,6 @@ export default function MasterDataPage() {
           const percentValue = parseFloat(value.replace('%', ''));
           finalValueNumber = (percentValue / 100).toString();
         }
-        finalValueText = ''; // Clear valueText for Calculation Parameter
-      }
-
-      if (editingItem.category === 'Engine Type Suffix') {
-        if (!/^[A-Z]{2}$/.test(editingItem.valueText.trim())) {
-          alert('Value Text for Engine Type Suffix must be exactly 2 uppercase letters (e.g., NR, TR)');
-          return;
-        }
-        finalValueNumber = ''; // Clear valueNumber for Engine Type Suffix
       }
 
       // If all validations pass, save the data and display success message
@@ -339,24 +274,6 @@ export default function MasterDataPage() {
       setEditingItem(null);
       alert('Data has been successfully updated in staging table');
     }
-  };
-
-  const handleDelete = (id: string) => {
-    setItemToDelete(id);
-    setDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (itemToDelete) {
-      setMasterData(masterData.filter(item => item.id !== itemToDelete));
-      setDeleteModalOpen(false);
-      setItemToDelete(null);
-    }
-  };
-
-  const cancelDelete = () => {
-    setDeleteModalOpen(false);
-    setItemToDelete(null);
   };
 
   const handleCancelEdit = () => {
@@ -407,14 +324,13 @@ export default function MasterDataPage() {
           {isAddingNew && (
             <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-lg space-y-3">
               <h3 className="text-gray-900 font-semibold text-lg">Add New Master Data</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <Select value={newItem.category} onValueChange={(value) => setNewItem({ ...newItem, category: value, valueText: '', valueNumber: '' })}>
                   <SelectTrigger className="bg-white border-2 border-gray-300 text-gray-900 rounded-lg hover:border-blue-400 transition-all">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                     <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                    <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input
@@ -424,18 +340,10 @@ export default function MasterDataPage() {
                   className="bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
                 />
                 <Input
-                  placeholder={newItem.category === 'Engine Type Suffix' ? "Value Text (Required)" : "Value Text (Not used)"}
-                  value={newItem.valueText}
-                  onChange={(e) => setNewItem({ ...newItem, valueText: e.target.value })}
-                  className="bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
-                  disabled={newItem.category === 'Calculation Parameter'}
-                />
-                <Input
-                  placeholder={newItem.category === 'Calculation Parameter' ? "Value Number (Required)" : "Value Number (Not used)"}
+                  placeholder="Value Number (Required)"
                   value={newItem.valueNumber}
                   onChange={(e) => setNewItem({ ...newItem, valueNumber: e.target.value })}
                   className="bg-white border-2 border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg focus:border-blue-400 transition-all"
-                  disabled={newItem.category === 'Engine Type Suffix'}
                 />
               </div>
                 <div className="flex gap-2">
@@ -492,7 +400,6 @@ export default function MasterDataPage() {
                 <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                   <SelectItem value="all">All Categories</SelectItem>
                   <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                  <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -508,7 +415,6 @@ export default function MasterDataPage() {
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">ID</th>
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">Category</th>
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">Name</th>
-                  <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">ValueText</th>
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">ValueNumber</th>
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">createdAt</th>
                   <th className="border-b-2 border-blue-800 p-3 text-left font-semibold text-white text-sm">updatedAt</th>
@@ -518,7 +424,7 @@ export default function MasterDataPage() {
               <tbody>
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center">
+                    <td colSpan={7} className="p-8 text-center">
                       <div className="flex flex-col items-center justify-center space-y-3">
                         <div className="bg-gray-100 rounded-full p-4">
                           <Search className="h-8 w-8 text-gray-400" />
@@ -542,14 +448,10 @@ export default function MasterDataPage() {
                           </SelectTrigger>
                           <SelectContent className="bg-white border border-gray-200 text-gray-900 rounded-lg">
                             <SelectItem value="Calculation Parameter">Calculation Parameter</SelectItem>
-                            <SelectItem value="Engine Type Suffix">Engine Type Suffix</SelectItem>
                           </SelectContent>
                         </Select>
                       ) : (
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          item.category === 'Calculation Parameter' ? 'bg-blue-100 text-blue-700 border border-blue-300' :
-                          'bg-purple-100 text-purple-700 border border-purple-300'
-                        }`}>
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-300">
                           {item.category}
                         </span>
                       )}
@@ -568,22 +470,9 @@ export default function MasterDataPage() {
                     <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
                       {editingItem?.id === item.id ? (
                         <Input
-                          value={editingItem.valueText}
-                          onChange={(e) => setEditingItem({ ...editingItem, valueText: e.target.value })}
-                          className="bg-white border-2 border-gray-300 text-gray-900 text-sm h-8 rounded-lg"
-                          disabled={editingItem.category === 'Calculation Parameter'}
-                        />
-                      ) : (
-                        <span className="text-gray-900">{item.valueText || '-'}</span>
-                      )}
-                    </td>
-                    <td className="border-b border-gray-200 p-3 text-gray-900 text-sm">
-                      {editingItem?.id === item.id ? (
-                        <Input
                           value={editingItem.valueNumber}
                           onChange={(e) => setEditingItem({ ...editingItem, valueNumber: e.target.value })}
                           className="bg-white border-2 border-gray-300 text-gray-900 text-sm h-8 rounded-lg"
-                          disabled={editingItem.category === 'Engine Type Suffix'}
                         />
                       ) : (
                         <span className="font-medium text-gray-900">{item.valueNumber || '-'}</span>
@@ -611,26 +500,15 @@ export default function MasterDataPage() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={() => handleEdit(item)}
-                            size="sm"
-                            variant="outline"
-                            className="border-2 border-blue-400 text-blue-600 hover:bg-blue-50 rounded-lg transition-all px-3 py-1 h-8"
-                          >
-                            <Edit className="h-3 w-3 mr-1" />
-                            Edit
-                          </Button>
-                          <Button
-                            onClick={() => handleDelete(item.id)}
-                            size="sm"
-                            variant="outline"
-                            className="border-2 border-red-400 text-red-600 hover:bg-red-50 rounded-lg transition-all px-3 py-1 h-8"
-                          >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            Delete
-                          </Button>
-                        </div>
+                        <Button
+                          onClick={() => handleEdit(item)}
+                          size="sm"
+                          variant="outline"
+                          className="border-2 border-blue-400 text-blue-600 hover:bg-blue-50 rounded-lg transition-all px-3 py-1 h-8"
+                        >
+                          <Edit className="h-3 w-3 mr-1" />
+                          Edit
+                        </Button>
                       )}
                     </td>
                   </tr>
@@ -641,42 +519,6 @@ export default function MasterDataPage() {
           </div>
         </div>
 
-        {/* Delete Confirmation Modal */}
-        {deleteModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 space-y-4">
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0">
-                  <div className="bg-red-100 rounded-full p-3">
-                    <Trash2 className="h-6 w-6 text-red-600" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">Delete Confirmation</h3>
-                  <p className="text-gray-600 mt-2">
-                    Are you sure you want to delete this item? This action cannot be undone.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-3 justify-end pt-4">
-                <Button
-                  onClick={cancelDelete}
-                  variant="outline"
-                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-100 rounded-lg transition-all px-6 py-2"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={confirmDelete}
-                  className="bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm transition-all px-6 py-2"
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
