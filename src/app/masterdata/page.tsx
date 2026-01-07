@@ -154,7 +154,7 @@ export default function MasterDataPage() {
     }
 
     let finalValueNumber = newItem.valueNumber;
-    let finalValueText = '';
+    const finalValueText = '';
 
     // Format validation and conversion for Calculation Parameter [Appendix Error Message 7]
     if (newItem.category === 'Calculation Parameter') {
@@ -244,7 +244,7 @@ export default function MasterDataPage() {
       }
 
       let finalValueNumber = editingItem.valueNumber;
-      let finalValueText = '';
+      const finalValueText = '';
 
       // Format validation and conversion for Calculation Parameter [Appendix Error Message 7]
       if (editingItem.category === 'Calculation Parameter') {

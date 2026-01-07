@@ -181,6 +181,7 @@ export default function PPRExportPage() {
             partNo: formData.partNo,
             partName: formData.partName,
             destinationCode: formData.destinationCode,
+            destinationName: formData.destinationName,
         };
         setEngineParents([...engineParents, newEngine]);
         handleCloseModals();

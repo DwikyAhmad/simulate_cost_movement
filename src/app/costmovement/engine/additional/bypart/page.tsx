@@ -44,15 +44,6 @@ export default function ByPartComparisonPage() {
 
     const allPartNumbers = Object.keys(engineParts);
 
-    const getPartSummary = (partNo: string) => {
-        const part = engineParts[partNo];
-        return {
-            totalCost: part.costs.totalCost.currentYear,
-            totalChange: part.costs.totalCost.difference,
-            percentageChange: part.costs.totalCost.percentageChange,
-        };
-    };
-
     // Filter parts based on search terms
     const getFilteredParts = (searchTerm: string, excludePart?: string) => {
         if (!searchTerm.trim()) return [];

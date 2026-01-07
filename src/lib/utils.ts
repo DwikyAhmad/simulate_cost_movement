@@ -15,7 +15,7 @@ export const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export const getDifferenceColor = (change: number) => {
+export const getDifferenceColor = (_change: number) => {
   // Neutral color for all changes - warnings handled separately by percentage thresholds
   return "text-gray-900";
 };
